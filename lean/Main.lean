@@ -4,6 +4,8 @@ namespace Landau
 
 #check canonical_recursive_certificate_saving
 #check canonical_recursive_certificate_saving_rational
+#check recursiveCellSavingFromTerms_int_eq_max
+#check recursiveCertificateSaving_width_factor
 #check certified_recursive_core_envelope_eq
 #check certified_recursive_core_assembly_once
 #check certified_recursive_core_no_double_subtraction
@@ -13,10 +15,16 @@ namespace Landau
 #check recursive_pointwise_rpow_lt_of_dyadic_block
 #check common_domain_subset_analytic_domain
 #check analytic_domain_subset_containing_domain
+#check alphaCell_width_eq
+#check four_alpha_lo_le_on_cell
+#check addWeightedClipped_subset_lower_underflow
 #check pairChildUpper_typeII_branch
 #check pairChildUpper_recursive_branch
+#check alpha_div_gamma_mono_on_retained
 #check sieve_parameter_ge_iff_beta_le_threshold
 #check upper_sieve_measure_coefficient
+#check pair_delta_upper_endpoints_are_proof_adverse
+#check pair_beta_lower_endpoint_is_proof_adverse
 #check interior_typeII_interval_strict
 #check interior_exponent_ledger
 #check interior_shifted_parameter_order

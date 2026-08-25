@@ -62,7 +62,12 @@ x > 2^13230,  0 <= n <= 2*x  ==>  n^1.323 < x^1.3231.
 The canonical `1200 x 300 x 160` block equalities are evaluated with
 `native_decide`; after the block projections, the exact saving sum, division,
 rational normalization, and endpoint inequalities are checked without
-re-expanding the native computations. The analytic Type-I/II, standard
+re-expanding the native computations.  The native compiler is therefore a
+trust boundary for the four block values; the C++ and Python implementations
+remain independent cross-checks.  Kernel-checked lemmas record the cell sign
+as `max(0, 4alpha+A1+A3+T-A0-A2)`, the `1/(12n)` cell width, conservative
+clipping, and proof-adverse endpoint directions.  They do not prove that the
+integer algorithm equals the analytic `H(alpha)` integral. The analytic Type-I/II, standard
 linear-sieve, Mellin--Perron transfer, and the quoted Buchstab-function lower
 bound remain conventional external inputs, as stated in the paper.
 

@@ -25,6 +25,22 @@ theorem alpha_div_gamma_eq_three_alpha_div
   · field_simp
     ring
 
+/-- On the retained range, `α/γ(α)` is increasing.  Therefore evaluating
+the positive `A₀` and `A₂` prefactor at `α_hi` is an upper estimate on the
+whole cell.  This is rational monotonicity only and does not prove that the
+Fundamental Proposition or Type II applies. -/
+theorem alpha_div_gamma_mono_on_retained
+    {alpha alphaHi : ℚ} (halpha : alpha ≤ alphaHi)
+    (hhi : alphaHi < 5 / 4) :
+    alpha / switchingGammaQ alpha ≤
+      alphaHi / switchingGammaQ alphaHi := by
+  rw [alpha_div_gamma_eq_three_alpha_div,
+    alpha_div_gamma_eq_three_alpha_div]
+  have hden : 0 < 5 - 4 * alpha := by linarith
+  have hdenHi : 0 < 5 - 4 * alphaHi := by linarith
+  apply (div_le_div_iff₀ hden hdenHi).2
+  nlinarith
+
 /-- Gate 5 (certificate/code alignment): on an alpha cell, the exact
 `α_hi/γ(α_hi)` ratio equals the rational expression whose outward-rounded
 integer implementation is `ceilScaled (3*hiNum) (4*(n-i-1))`.  This is an
@@ -152,6 +168,34 @@ theorem upperLinearSieveEnvelopeQ_eq (beta1 beta2 : ℚ) :
     upperLinearSieveEnvelopeQ beta1 beta2 =
       max (2 / (1 / 2 - beta1 - beta2)) (2 / (3 * beta2)) := by
   rfl
+
+/-- For a child box, replacing `β₁+β₂` by the sum of the upper endpoints
+makes `δ₂=1/2-β₁-β₂` smaller and hence makes `2/δ₂` larger.  This proves the
+proof-adverse direction used by `byDelta`; it does not prove the upper linear
+sieve itself. -/
+theorem pair_delta_upper_endpoints_are_proof_adverse
+    {beta1 beta2 beta1Hi beta2Hi : ℚ}
+    (hbeta1 : beta1 ≤ beta1Hi) (hbeta2 : beta2 ≤ beta2Hi)
+    (hdeltaMin : 0 < 1 / 2 - beta1Hi - beta2Hi) :
+    2 / (1 / 2 - beta1 - beta2) ≤
+      2 / (1 / 2 - beta1Hi - beta2Hi) := by
+  have hdenle : 1 / 2 - beta1Hi - beta2Hi ≤
+      1 / 2 - beta1 - beta2 := by linarith
+  have hdelta : 0 < 1 / 2 - beta1 - beta2 := lt_of_lt_of_le hdeltaMin hdenle
+  apply (div_le_div_iff₀ hdelta hdeltaMin).2
+  nlinarith
+
+/-- Replacing `β₂` by its positive lower endpoint makes `2/(3β₂)` larger.
+This is the proof-adverse direction used by `byBeta`; it does not establish
+the analytic `F(s)` upper bound. -/
+theorem pair_beta_lower_endpoint_is_proof_adverse
+    {beta2Lo beta2 : ℚ} (hlo : 0 < beta2Lo) (hbeta : beta2Lo ≤ beta2) :
+    2 / (3 * beta2) ≤ 2 / (3 * beta2Lo) := by
+  have hbeta0 : 0 < beta2 := lt_of_lt_of_le hlo hbeta
+  have hbetaPos : 0 < 3 * beta2 := mul_pos (by norm_num) hbeta0
+  have hloPos : 0 < 3 * beta2Lo := mul_pos (by norm_num) hlo
+  apply (div_le_div_iff₀ hbetaPos hloPos).2
+  nlinarith
 
 /-- Gate 5 (`U_LS` integer alignment): the `byDelta` expression in
 `pairChildUpper` is an outward-rounded upper bound for

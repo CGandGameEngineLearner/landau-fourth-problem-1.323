@@ -219,6 +219,45 @@ structure RecursiveCellData where
   a3 : Nat
 deriving DecidableEq, Repr
 
+/-- The six proof-directed contributions entering one cell.  The positive
+terms are `4α`, `A₁`, `A₃`, and the retained tail `T`; the negative terms are
+the upper bounds for `A₀` and `A₂`.  Natural subtraction deliberately clips
+the saving at zero.  This is the finite certificate ledger, not a theorem
+identifying the code with the analytic integral `H(α)`. -/
+def recursiveCellSavingFromTerms
+    (linearLower a1Lower a3Lower tailLower a0Upper a2Upper : Nat) : Nat :=
+  linearLower + a1Lower + a3Lower + tailLower - (a0Upper + a2Upper)
+
+/-- Natural-number underflow is exactly the positive part of the signed
+difference.  In the certificate this can only decrease the retained saving;
+it cannot create an over-certificate. -/
+theorem natCast_sub_eq_max_zero (positive negative : Nat) :
+    ((positive - negative : Nat) : Int) =
+      max 0 ((positive : Int) - negative) := by
+  by_cases h : negative ≤ positive
+  · rw [Nat.cast_sub h]
+    rw [max_eq_right]
+    exact sub_nonneg.mpr (by exact_mod_cast h)
+  · have hle : positive ≤ negative := Nat.le_of_not_ge h
+    rw [Nat.sub_eq_zero_of_le hle]
+    simp only [Nat.cast_zero]
+    rw [max_eq_left]
+    exact sub_nonpos.mpr (by exact_mod_cast hle)
+
+/-- The sign of a single cell is therefore precisely
+`max(0, 4α + A₁ + A₃ + T - A₀ - A₂)` at the fixed-point integer level.
+This is a definition-level sign check only; it does not prove any Type-II,
+linear-sieve, or integral estimate. -/
+theorem recursiveCellSavingFromTerms_int_eq_max
+    (linearLower a1Lower a3Lower tailLower a0Upper a2Upper : Nat) :
+    ((recursiveCellSavingFromTerms linearLower a1Lower a3Lower tailLower
+      a0Upper a2Upper : Nat) : Int) =
+      max 0 ((linearLower : Int) + a1Lower + a3Lower + tailLower -
+        (a0Upper + a2Upper)) := by
+  unfold recursiveCellSavingFromTerms
+  simpa only [Nat.cast_add] using natCast_sub_eq_max_zero
+    (linearLower + a1Lower + a3Lower + tailLower) (a0Upper + a2Upper)
+
 def recursiveCellData (n b tailSteps i : Nat) : RecursiveCellData :=
   let alphaLoNum := 14 * n + i
   let alphaHiNum := alphaLoNum + 1
@@ -248,8 +287,8 @@ def recursiveCellData (n b tailSteps i : Nat) : RecursiveCellData :=
       let a3Lower := mulDown alphaLo triple
       let tailLower := recursiveTailLower (recursiveAlphaBounds i n) tailSteps
       let linearLower := floorScaled (4 * alphaLoNum) (12 * n)
-      { saving := linearLower + a1Lower + a3Lower + tailLower -
-          (a0Upper + a2Upper)
+      { saving := recursiveCellSavingFromTerms linearLower a1Lower a3Lower
+          tailLower a0Upper a2Upper
         tail := tailLower
         a3 := a3Lower }
 
@@ -291,5 +330,14 @@ def addRecursiveCertificateData
 
 def recursiveCertificateSaving (n b tailSteps : Nat) : Nat :=
   (recursiveCertificateData n b tailSteps).savingSum / (12 * n)
+
+/-- The final certificate divides the sum of the `n` alpha-cell lower bounds
+by `12n`, the reciprocal of the exact alpha-cell width proved in
+`HarmanProofAdverseGeometry`.  This is the finite grid normalization only,
+not an assertion that the grid sum equals the analytic switching integral. -/
+theorem recursiveCertificateSaving_width_factor (n b tailSteps : Nat) :
+    recursiveCertificateSaving n b tailSteps =
+      (recursiveCertificateData n b tailSteps).savingSum / (12 * n) := by
+  rfl
 
 end Landau

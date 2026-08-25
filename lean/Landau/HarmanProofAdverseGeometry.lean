@@ -18,6 +18,24 @@ def alphaCellHiQ (n i : Nat) : ℚ := (14 * n + i + 1 : Nat) / (12 * n : Nat)
 def switchingGammaQ (alpha : ℚ) : ℚ := (5 - 4 * alpha) / 3
 def switchingTauQ (alpha : ℚ) : ℚ := (3 / 2 - alpha) / 2
 
+/-- Every alpha cell has exact width `1/(12n)`.  Consequently summing the
+cell lower bounds and dividing by `12n` is the finite Riemann-grid factor.
+This does not identify the resulting sum with the analytic integral. -/
+theorem alphaCell_width_eq {n i : Nat} (hn : 0 < n) :
+    alphaCellHiQ n i - alphaCellLoQ n i = (1 : ℚ) / (12 * n : Nat) := by
+  unfold alphaCellHiQ alphaCellLoQ
+  have hnq : (n : ℚ) ≠ 0 := by exact_mod_cast hn.ne'
+  push_cast
+  field_simp [hnq]
+
+/-- The positive `4α` contribution is evaluated at `α_lo`; hence throughout
+the cell it is no larger than the corresponding pointwise positive term.
+This is a one-sided algebraic check, not a proof of the formula for `H(α)`. -/
+theorem four_alpha_lo_le_on_cell {n i : Nat} {alpha : ℚ}
+    (halpha : alphaCellLoQ n i ≤ alpha) :
+    4 * alphaCellLoQ n i ≤ 4 * alpha := by
+  linarith
+
 /-- Gate 4 (common lower domain): the first common-grid endpoint is exactly
 `γ(α_lo)`.  This is an integer/rational identity only; it does not prove a
 lower bound for `A₁` or `A₃`. -/
@@ -107,6 +125,20 @@ theorem analytic_domain_subset_containing_domain
     linarith
   · dsimp [switchingTauQ] at hbetaHi ⊢
     linarith
+
+/-- If an `A₃` subset lower endpoint underflows because `aMax < betaLo`,
+natural subtraction becomes zero and the subsequent clipping starts at
+`domainLo`.  Thus the integer convention cannot create an interval outside
+the certified domain; an underflowed upper endpoint may only delete or
+shorten a contribution.  No analytic integral inequality is asserted. -/
+theorem addWeightedClipped_subset_lower_underflow
+    {aMax betaLo hi weight domainLo domainHi : Nat}
+    (xs : List WeightedInterval) (hunder : aMax < betaLo) :
+    addWeightedClipped (aMax - betaLo) hi weight domainLo domainHi xs =
+      addWeightedClipped domainLo hi weight domainLo domainHi xs := by
+  have hz : aMax - betaLo = 0 := Nat.sub_eq_zero_of_le hunder.le
+  rw [hz]
+  simp [addWeightedClipped]
 
 /-- Gate 4 (`A₃` lower direction): when the complete pair cell lies inside
 `[aMax,sigmaMin]`, the code seeds the entire clipped third-prime domain with
