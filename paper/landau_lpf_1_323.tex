@@ -1,0 +1,1103 @@
+\documentclass[10pt,reqno]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={A recursive Buchstab switching improvement for the greatest prime factor of n squared plus 1},
+  pdfsubject={A greatest-prime-factor weak form of Landau's fourth problem},
+  pdfkeywords={Landau's fourth problem, greatest prime factor, Harman sieve, Buchstab identity, computer-assisted proof}
+}
+
+\newcommand{\Pplus}{P^{+}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\Bcal}{\mathcal{B}}
+\newcommand{\1}{\mathbf{1}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title[Recursive Buchstab switching]{A recursive Buchstab switching improvement for the greatest prime factor of $n^2+1$}
+
+\author{JinWen Li}
+\address{SouthWest Petroleum University}
+\email{lifesize1@163.com}
+\date{25 August 2026}
+
+\subjclass[2020]{11N32, 11N35, 11N75}
+\keywords{greatest prime factor, quadratic polynomial, Harman sieve, Buchstab identity, Landau's fourth problem, computer-assisted proof, Lean}
+
+\begin{document}
+\raggedbottom
+
+\begin{abstract}
+Let $\Pplus(m)$ denote the greatest prime factor of $m$.
+Grimmelt and Merikoski recently proved unconditionally the Type I and Type II
+ranges that had previously yielded, under Selberg's eigenvalue conjecture,
+the exponent $1.312$ for $\Pplus(n^2+1)$.  Li subsequently announced the
+exponent $1.317$ by sharpening the numerical Buchstab integrations.  We use
+the same unconditional arithmetic input but recursively expose the
+one-prime tail in the linear-sieve range $7/6<\alpha<5/4$.  The resulting
+three-prime children are bounded using either the available Type II estimate
+or a lower dimension-one linear sieve.  An outward-rounded integer
+certificate, independently recomputed in Lean, fixed-width C++, and
+arbitrary-precision Python, proves that this switching saves at least
+$0.032303187971$ on the normalized sieve scale.
+Together with the original
+published upper bounds and an independent elementary lower bound for the
+subtracted one-prime term, this gives
+\[
+  \Pplus(n^2+1)>n^{1.323}
+\]
+for infinitely many positive integers $n$.  The internal block exponent is
+$1.3231$ and the exact final normalized bound is
+$8997005488261/9000000000000<1$.  Lean 4 verifies the finite Buchstab sign
+ledger, the recursive integer switching certificate, the primitive
+outward-rounding rules, and the exact rational endpoint budget.  The displayed
+endpoint budget still treats the cited analytic estimates and their finite
+Mellin--Perron transfer as external inputs.  This is a quantitative weak form of
+Landau's fourth problem: it produces a prime divisor exceeding $n^{1.323}$
+and hence a complementary cofactor smaller than $n^{0.677+o(1)}$, but it does
+not overcome the sieve parity barrier.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Landau's fourth problem asks whether $n^2+1$ is prime for infinitely many
+positive integers $n$.  Iwaniec proved that $n^2+1$ is a prime or a product
+of two primes for infinitely many $n$ \cite{Iwaniec1978}; the possibility
+that all surviving values are semiprimes is the classical parity
+obstruction.  A standard quantitative complement is to make
+$\Pplus(n^2+1)$ as large as possible.  Merikoski proved that
+$\Pplus(n^2+1)>n^{1.279}$ infinitely often and obtained $1.312$ conditionally
+on Selberg's eigenvalue conjecture \cite{Merikoski2020}.  Pascadi obtained the
+unconditional exponent $1.3$ \cite{Pascadi2026}.  Grimmelt and Merikoski then
+recovered $1.312$ unconditionally by proving uniform Type I and Type II
+estimates for roots of quadratic congruences
+\cite{GrimmeltMerikoski2025}.  Li announced $1.317$, using sharper numerical
+bounds for the same Buchstab decomposition \cite{Li2025}.
+
+These exponents quantify progress toward Landau's problem: a bound
+$\Pplus(n^2+1)>n^\vartheta$ leaves a cofactor
+$m<n^{2-\vartheta+o(1)}$.  Theorem~\ref{thm:main} lowers this exponent to
+$0.677$, while still leaving the parity distinction $m=1$ versus
+$m>1$ unresolved.
+
+Our new input is a recursive Buchstab switching in the range where the old
+argument used the linear sieve.  Merikoski already observed that Buchstab's
+identity could be applied more times there to generate additional Type II
+sums \cite[Remark 12]{Merikoski2020}.  With the stronger range now available
+unconditionally, this produces a numerically substantial saving.  In
+addition to retaining Type II three-prime children, we use the lower linear
+sieve for the complementary children and recursively upper-bound the
+two-prime descendants of the previously discarded one-prime tail.
+Li explicitly keeps the same sieve decomposition and changes only the
+numerical estimates for its terms \cite[Lemmas 2.1 and 2.2]{Li2025}; in particular,
+the contribution on $7/6<\alpha<5/4$ remains the old linear-sieve term minus
+the one-prime Type II term.  The three-prime term below is therefore absent
+from the previously announced $1.317$ argument.
+
+\begin{theorem}\label{thm:main}
+There are infinitely many positive integers $n$ such that
+\[
+  \Pplus(n^2+1)>n^{1323/1000}=n^{1.323}.
+\]
+\end{theorem}
+
+\begin{remark}[Proof-status boundary]
+The theorem is presented as the paper's candidate result conditional on the
+cited Grimmelt--Merikoski Type~I/II estimates, the standard dimension-one
+linear sieve, and the finite Mellin--Perron transfer in
+Section~\ref{sec:switching}.  The source transfer in
+Section~\ref{sec:transfer} records the cited external inputs and their
+normalization.  These conventional analytic inputs are not formalized in
+Lean.  Lean verifies the finite Buchstab signs, integer certificate,
+outward-rounding rules, and exact rational endpoint budget; it should not be
+read as having verified the full analytic theorem or solved Landau's fourth
+problem.
+\end{remark}
+
+\begin{remark}[Comparison with an isolated larger claim]
+Carella's arXiv note \cite[Section 5, (5.3)--(5.4)]{Carella2025} claims the
+exponent $3/2$, but the
+transition from its (5.3) to (5.4) replaces
+\[
+ \sum_{d\mid m}\Lambda(d)=\log m
+ \quad\hbox{by}\quad
+ \sum_{p\mid m}\log p=\log\operatorname{rad}(m)
+\]
+while retaining a lower bound.  The latter quantity is at most the former,
+and $n^2+1$ need not be squarefree (for example,
+$7^2+1=2\cdot5^2$).  That step therefore does not establish the claimed
+bound.  Our comparison frontier is the Grimmelt--Merikoski theorem and
+Li's subsequent $1.317$ calculation.
+\end{remark}
+
+The gain over $1.317$ is $0.006$.  The argument is computer assisted only in
+the evaluation of an explicit finite family of piecewise-rational integrals.
+The certificate uses no floating-point operations.  We retain Merikoski's
+original, relatively loose upper bounds for all positive Buchstab deficiencies
+before $7/6$, so Li's Mathematica integrations are not an input.
+
+\section{Transferred arithmetic information}\label{sec:transfer}
+
+We use the notation of \cite[Section 2]{Merikoski2020}.  Let $b$ be a fixed
+nonnegative smooth function supported on $[x,2x]$, put
+\[
+  |\Acal_d|=\sum_{\ell^2+1\equiv0\pmod d}b(\ell),
+  \qquad X_b=\int_{\mathbb R}b(t)\,dt,
+\]
+and let
+\[
+  \rho(d)=\#\{\nu\pmod d:\nu^2+1\equiv0\pmod d\}.
+\]
+The model sequence replaces $|\Acal_d|$ by $X_b\rho(d)/d$.  For a smooth
+modulus weight $\psi_P$ supported on $[P,4P]$, write
+\[
+  S(x,P)=\sum_p\psi_P(p)|\Acal_p|\log p.
+\]
+
+\begin{proposition}[Grimmelt--Merikoski transfer]\label{prop:transfer}
+Fix a sufficiently small interior margin $\eta>0$.  The Type I estimate used
+in \cite[Proposition 3]{Merikoski2020} is available with
+$D\le x^{1/2-\eta}$.  If $MN=x^\alpha$ and $M\ge N$, the Type II estimate in
+\cite[Proposition 4(i)]{Merikoski2020} is available, with a power-saving
+error, throughout every closed interior subrange of
+\begin{equation}\label{eq:typeII}
+  x^{\alpha-1}<N<x^{(2-\alpha)/3},
+\end{equation}
+for divisor-bounded coefficients whose $N$-coefficient is supported on
+squarefree integers.
+\end{proposition}
+
+\begin{proof}
+Take the fixed shift $a=h=1$ in
+\cite[Corollaries 7.1 and 7.2]{GrimmeltMerikoski2025}.  Corollary 7.1 gives
+the Type I level $x^{1/2-\eta}$.  More precisely, it bounds the sum over
+$d\le D$ of the absolute value of each modulus-$d$ discrepancy.  Therefore
+the triangle inequality permits arbitrary divisor-bounded coefficients
+$\lambda_d$, at a cost $x^{o(1)}$ absorbed by the displayed power saving.
+Corollary 7.2 gives
+\[
+  x^{\alpha-1+2\eta}\le N
+  \le x^{(2-\alpha)/3-4\eta/3}.
+\]
+Since $\eta$ is arbitrary, this supplies every fixed closed interior range
+in \eqref{eq:typeII}.  Its coefficient hypotheses are exactly those stated
+above.  Also $N\le x^{1/3}$, so $M=x^\alpha/N\ge N$ in the ranges used here.
+The smooth-weight and Mellin separations are those already used in
+\cite[Section 3.4]{Merikoski2020}.
+
+More explicitly, the error exponents in Corollaries 7.1 and 7.2 are,
+up to an $x^{o(1)}$ factor,
+\[
+  1-(1-2\theta)\eta+\varepsilon/4,
+  \qquad
+  1-(1-2\theta)\eta+\varepsilon/8.
+\]
+Unconditionally $\theta=7/64$.  For example, after fixing the sieve margin,
+choosing $\varepsilon=\eta$ gives respectively
+$1-17\eta/32$ and $1-21\eta/32$; the logarithmic losses below are therefore
+absorbed by a fixed power saving.  For $a=h=1$, the auxiliary character condition in
+\cite[Theorem 1.1]{GrimmeltMerikoski2025} is unconditional by the zero-free
+region discussion following that theorem.  The authors explicitly state
+that their corollaries recover precisely the Type I and Type II ranges used
+under Selberg's eigenvalue conjecture and invoke the calculation in the
+proof of \cite[Theorem 2]{Merikoski2020}.
+\end{proof}
+
+We also use Merikoski's Fundamental Proposition II with Selberg parameter
+zero.  In the present notation it evaluates
+\begin{equation}\label{eq:fundamentalII}
+  \sum_{u\le x^{\xi-\eta}}\lambda_u
+  S(\Acal(P)_u,x^{\gamma-\eta})
+\end{equation}
+by its model, for divisor-bounded $\lambda_u$, where
+\begin{equation}\label{eq:parameters}
+  \sigma=\frac{2-\alpha}{3},\qquad
+  \gamma=\sigma-\alpha+1=\frac{5-4\alpha}{3},\qquad
+  \xi=\frac32-\alpha.
+\end{equation}
+This follows from Proposition \ref{prop:transfer} by the proof of
+\cite[Proposition 6]{Merikoski2020}.
+
+\section{The recursive switching}\label{sec:switching}
+
+Fix $7/6<\alpha<5/4$ and put
+\[
+  a=\alpha-1,\qquad \tau=\frac{\xi}{2}.
+\]
+Then $0<\gamma<\tau<a<\sigma$.  We suppress the harmless interior margins
+in the displayed limiting formulae, but record one compatible choice here.
+If $\nu>0$ is the parameter in Corollary~7.2 of
+\cite{GrimmeltMerikoski2025}, put
+\begin{equation}\label{eq:margin-parameters}
+ \begin{aligned}
+ a_\nu&=a+3\nu, & \sigma_\nu&=\sigma-2\nu,\\
+ \gamma_\nu&=\gamma-4\nu,
+ &\xi_\nu&=\xi-3\nu,\qquad \tau_\nu=\xi_\nu/2.
+ \end{aligned}
+\end{equation}
+The available Type~II interval is
+$[a+2\nu,\sigma-4\nu/3]$, so
+$[a_\nu,\sigma_\nu]$ lies strictly inside it.  The proof of the
+fundamental proposition works uniformly for $u\le x^{\xi_\nu}$ and sieve
+level $x^{\gamma_\nu}$: its Type~I part has
+\[
+ x^{a+2\nu}x^{\xi_\nu}=x^{1/2-\nu},
+\]
+while the first Type~II prefix in its complementary part is smaller than
+\[
+ x^{a+2\nu+\gamma_\nu}=x^{\sigma-2\nu}
+   <x^{\sigma-4\nu/3}.
+\]
+Thus the two published corollaries give exactly this margin version, not
+merely the limiting endpoint.  On the compact range $\alpha<1.22$ used
+by the certificate, all inequalities
+$0<\gamma_\nu<\tau_\nu<a<\sigma$ hold once $\nu$ is sufficiently small.
+We use these shifted parameters in the analytic sums and let
+$\nu\to0^+$ only after obtaining the uniform estimates.
+
+\subsection{Uniform localization and prefix sieving}
+
+We record two standard uniformity facts because the recursive decomposition
+uses them in combinations not written explicitly in the earlier papers.  The
+first is the finite Mellin--Perron device used below.
+
+\begin{lemma}[Finite cross-condition localization]\label{lem:localization}
+Fix $R,C,J\ge1$.  Consider a dyadically localized bilinear sum with
+$MN\asymp x^\alpha$, whose two coefficients are bounded by $\tau_R$, and
+impose at most $J$ strict conditions
+\[
+ U(\boldsymbol m)<V(\boldsymbol n).
+\]
+Here $U$ and $V$ are positive integer-valued functions of the variables
+assigned to the $M$- and $N$-coefficients, respectively, and
+$U,V\le x^C$.  A fixed smooth function of $MN/P$ and a factor $\log(MN)$
+may also be present.  Then the sum is a multiple Mellin--Perron integral of
+ordinary Type~II sums whose coefficients are bounded by
+$O_{C,J}(\tau_R)$.  The total $L^1$ mass of the kernels is
+$O((\log x)^{O_{C,J}(1)})$, and the truncation error is $O_A(x^{-A})$
+for any fixed $A>0$, after increasing the truncation height.
+Consequently any fixed power-saving Type~II estimate that is uniform for
+divisor-bounded coefficients survives all these localizations.
+\end{lemma}
+
+\begin{proof}
+Since $U,V$ are integers, the strict comparison is equivalent to
+$U<V-1/2$.  Perron's formula with $c=1/\log x$ and height $T$ gives
+\[
+ \1_{U<V}=\frac{1}{2\pi i}\int_{c-iT}^{c+iT}
+       \left(\frac{V-1/2}{U}\right)^s\frac{ds}{s}
+   +O\!\left(\min\left\{1,
+       \frac{1}{T\,|\log((V-1/2)/U)|}\right\}\right).
+\]
+The factors $U^{-s}$ and $(V-1/2)^s$ belong to opposite coefficients.
+On this line their absolute values are $O_C(1)$, and the integral kernel
+has $L^1$ norm $O(\log T)$.  Moreover
+$|V-1/2-U|\ge1/2$ and $U,V\le x^C$, so
+$|\log((V-1/2)/U)|\gg_C x^{-C}$.  The number of tuples before applying the
+arithmetic estimate is at most $x^{O(1)}$ in the fixed decomposition;
+choosing $T=x^{A'}$ with
+$A'$ sufficiently large therefore makes the aggregate Perron error
+$O_A(x^{-A})$.  Iterating a fixed number of comparisons costs only a fixed
+power of $\log x$.
+
+For a smooth compactly supported $W$, Mellin inversion separates
+$W(MN/P)$; rapid decay of its Mellin transform gives the same arbitrary
+power truncation error.  Finally
+$\log(MN)=\log M+\log N$, with the logarithms handled by partial
+summation.  All vertical factors have size $O_C(1)$, so the coefficients
+remain uniformly divisor bounded.  The fixed polylogarithmic kernel mass
+is absorbed after decreasing the power-saving exponent.  This proves the
+lemma.  This argument is the
+quantitative version of the cross-condition removals in
+\cite[Sections 2.3 and 3.4]{Merikoski2020}.
+\end{proof}
+
+\begin{proposition}[Prefix-uniform linear sieve]\label{prop:prefix-sieve}
+Let a fixed ordered prefix consist of at most three primes, all at least
+$z=x^\zeta$, and let its product have exponent $s_0$.  The cutoff $z$ may
+also be the least prefix prime after dyadic localization.  The Type~I estimate
+in Proposition~\ref{prop:transfer}, summed over any dyadically localized
+family of such prefixes with divisor-bounded weights, permits the standard
+dimension-one upper and lower linear sieve with remainder level
+\[
+ D=x^{1/2-s_0-\nu}.
+\]
+After removal of the common Euler factor, the corresponding sieve parameter
+is $s=(1/2-s_0-\nu)/\zeta$ and the main-term multipliers are
+$e^{-\gamma_E}F(s)$ and $e^{-\gamma_E}f(s)$.  The lower multiplier is
+understood to be zero for $s\le2$.  The aggregate remainder is
+$O(x^{1-\delta})$ for some $\delta=\delta(\nu)>0$.
+\end{proposition}
+
+\begin{proof}
+Insert the upper or lower Rosser weights $\lambda_d^\pm$, supported on
+$d\le D$ and composed of primes below $z$.  If the prefix product is $u$,
+then $ud\le x^{1/2-\nu}$ and $(u,d)=1$.  On collecting equal total moduli
+$e=ud$, the number of representations is bounded by a fixed divisor
+function (the prefix has at most three prime factors), while
+$|\lambda_d^\pm|\le1$.  Corollary~7.1 of
+\cite{GrimmeltMerikoski2025} bounds the sum of the absolute discrepancies
+over these total moduli.  Multiplication by the fixed divisor bound and the
+$O((\log x)^{O(1)})$ dyadic localizations costs $x^{o(1)}$, which is
+absorbed by its power saving.  The model sequence is multiplicative on the
+coprime prefix and Rosser variables.  If $z$ is the least prefix prime, the
+Rosser weight may depend on the particular prefix representation; after
+collecting $e=ud$, its absolute contribution is still bounded by the same
+fixed divisor function because $|\lambda_d^\pm|\le1$.  Thus the absolute
+Type~I discrepancy sum supplies exactly the required uniformity, without a
+fixed weight shared by all prefixes.  The usual fundamental lemma of the
+dimension-one linear sieve then gives the asserted $F$ and $f$ factors.  The
+conversion of the remaining prime sums to Buchstab integrals is the same as
+\cite[Lemma 7]{Merikoski2020}.
+\end{proof}
+
+The decomposition preceding the old linear-sieve term is
+\begin{equation}\label{eq:retain-F6}
+ S(\Acal(P),2\sqrt P)
+ \le S(\Acal(P),x^a)
+ -\sum_{x^a<q<x^\sigma}S(\Acal(P)_q,q).
+\end{equation}
+The negative sum in \eqref{eq:retain-F6} is retained unchanged; its model
+contribution is the term $F_6$ bounded in Section~5.  We improve only the
+first term.  The first Buchstab split is
+\begin{equation}\label{eq:first-switch}
+ \begin{aligned}
+  S(\Acal(P),x^a)
+  &=S(\Acal(P),x^\gamma)
+   -\sum_{x^\gamma<q_1<x^\tau}S(\Acal(P)_{q_1},q_1)-R_1,\\
+  R_1&:=\sum_{x^\tau<q_1<x^a}S(\Acal(P)_{q_1},q_1).
+ \end{aligned}
+\end{equation}
+Applying Buchstab twice more to the retained sum yields
+\begin{equation}\label{eq:four-terms}
+  S(\Acal(P),x^a)=A_0-A_1+A_2-A_3-R_1,
+\end{equation}
+where
+\begin{align*}
+ A_0&=S(\Acal(P),x^\gamma),\\
+ A_1&=\sum_{x^\gamma<q_1<x^\tau}
+       S(\Acal(P)_{q_1},x^\gamma),\\
+ A_2&=\sum_{x^\gamma<q_2<q_1<x^\tau}
+       S(\Acal(P)_{q_1q_2},x^\gamma),\\
+ A_3&=\sum_{x^\gamma<q_3<q_2<q_1<x^\tau}
+       S(\Acal(P)_{q_1q_2q_3},q_3).
+\end{align*}
+The first three terms are covered by \eqref{eq:fundamentalII}, since
+$q_1\le x^\tau$ and $q_1q_2\le x^{2\tau}=x^\xi$.
+
+For $A_3$, retain only tuples for which at least one of
+\begin{equation}\label{eq:subset-sums}
+ \beta_1+\beta_2,\quad \beta_1+\beta_3,\quad
+ \beta_2+\beta_3,\quad \beta_1+\beta_2+\beta_3
+\end{equation}
+lies in the shifted Type II interval $[a_\nu,\sigma_\nu]$.  The
+corresponding product of
+distinct primes is squarefree and may be chosen as the Type II variable.
+Fix a sufficiently fine exponent mesh and discard cells meeting a Type~II
+endpoint or a priority boundary.  This is one-sided in the required
+direction, since we seek a lower bound for $A_3$; the model loss tends to
+zero with the mesh by dominated convergence.  On every remaining cell,
+Lemma~\ref{lem:localization} removes the finitely many ordering and
+roughness cross-conditions and leaves divisor-bounded coefficients.  This
+Type~II part gives one lower bound for $A_3$.  Unlike the earlier
+three-step argument, we also
+lower-bound complementary triples by the dimension-one lower linear sieve
+and take the larger available weight.  Since $A_3$ occurs with a negative
+sign, every such lower bound may be subtracted in \eqref{eq:four-terms}.
+
+\begin{lemma}\label{lem:A3-transfer}
+After restoring fixed interior margins, the retained part of $A_3$ has the
+same asymptotic formula for $\Acal(P)$ and $\Bcal(P)$, with a power-saving
+error on each smooth $P$-block.
+\end{lemma}
+
+\begin{proof}
+Order the four subsets in \eqref{eq:subset-sums} and assign each good prime
+triple to the first subset whose exponent sum lies in the fixed interior of
+$[a_\nu,\sigma_\nu]$.  For every earlier subset, nonmembership is the disjoint union
+of the alternatives ``below the lower endpoint'' and ``above the upper
+endpoint''.  Expanding these alternatives produces only finitely many
+priority classes (at most $1+2+2^2+2^3$ before empty classes are removed).
+Smoothly localize the three prime variables.  For an assigned
+subset $I$, put $N=\prod_{i\in I}q_i$ and put the complementary prime factors
+and the sifted cofactor into $M$.  Then $MN\asymp x^\alpha$,
+\[
+ x^{a_\nu}\le N\le x^{\sigma_\nu},\qquad M\ge N,
+\]
+and $N$ is squarefree.  The coefficient of $N$ has only divisor-boundedly
+many prime representations.  The coefficient of $M$ is also divisor
+bounded, since it records at most the complementary prime factors and one
+cofactor.
+
+Here are the coefficient and roughness details.  From the definition of a
+sifted sum,
+\[
+ S(\Acal(P)_{q_1q_2q_3},q_3)
+ =\sum_{(r,P(q_3))=1}|\Acal_{q_1q_2q_3r}|
+   \psi_P(q_1q_2q_3r)\log(q_1q_2q_3r).
+\]
+Insert the finite identity
+\[
+ \1_{(r,P(q_3))=1}
+   =\sum_{d\mid r,\,d\mid P(q_3)}\mu(d)
+\]
+and write $r=ds$.  If $N=\prod_{i\in I}q_i$ is the selected subset,
+put $M=(\prod_{i\notin I}q_i)ds$.  After dyadic subdivision, the resulting
+sum has exactly the bilinear form of Proposition \ref{prop:transfer}.
+The $N$-coefficient is supported on squarefree integers: the selected
+$q_i$ are distinct.  More quantitatively, if $t=|I|$, then before the
+separation of cross-conditions the numbers of possible factorizations obey
+the uniform bounds
+\[
+ \#\{N=\textstyle\prod_{i\in I}q_i\}\le \tau_t(N),\qquad
+ \sum_{M=(\prod_{i\notin I}q_i)ds}|\mu(d)|
+       \le \tau_{5-t}(M).
+\]
+The harmless conventions $\tau_0(1)=1$ and
+$\tau_j\le\tau_5$ may be used.  Thus both coefficients are bounded by a
+fixed divisor function.  Repeated prime factors shared by $M$ and $N$ do
+not affect this conclusion: Corollary 7.2 requires squarefree support only
+for the $N$ coefficient and imposes no coprimality condition on $M,N$.
+
+There is one genuine cross-condition when $q_3$ belongs to the selected
+product $N$.  For $d>1$ the condition $d\mid P(q_3)$ is equivalently
+\[
+ \mu(d)\ne0,\qquad P^+(d)<q_3;
+\]
+the term $d=1$ is automatic.  Hence the only datum from the $M$ side which
+must be compared with the $N$ side is the single integer $P^+(d)$.  A
+truncated Perron integral separates
+$P^+(d)<q_3$ into $(P^+(d))^{it}$ and $q_3^{-it}$.  If $q_3\notin N$, this
+condition is already internal to the $M$ coefficient.  This makes explicit
+that expanding the roughness condition does not create an unbounded number
+of cross variables.
+
+It remains to separate conditions that involve variables on both sides.
+Prime ordering and the strict comparison $P^+(d)<q_3$ have exactly the
+integer form covered by Lemma~\ref{lem:localization}; using $q_3-1/2$ in
+the latter comparison also removes any equality ambiguity in truncated
+Perron inversion.  The selected-subset priority is already fixed on the
+interior exponent cell.  The product cutoff and logarithm are handled by
+the Mellin and partial-summation separations in that lemma.  Hence the two
+coefficient bounds above remain $O(\tau_5(M))$ and
+$O(\tau_5(N))$, while all kernel and dyadic losses are powers of
+$\log x$.  These are absorbed by the fixed power saving in Proposition
+\ref{prop:transfer}.
+
+This is precisely the mechanism in the proof of Merikoski's Fundamental
+Proposition and in the evaluation of its three-prime term
+\cite[Sections 2.3, 2.4.3, and 3.4]{Merikoski2020}.  Most importantly, the
+paper explicitly states there that \emph{any combination} of
+$q_1,q_2,q_3$ lying in the Type II range may be used.  The new term changes
+only the outer exponent boxes; every retained box lies in the unconditional
+interior supplied by Proposition \ref{prop:transfer}.  Summing the four
+disjoint priority classes proves the lemma.
+\end{proof}
+
+Let $\omega$ be the Buchstab function and set
+\[
+  u_+=0.5617,\qquad u_-=0.5607.
+\]
+The bounds
+\begin{equation}\label{eq:omega-bounds}
+  \omega(v)\le u_+\quad(v\ge4),\qquad
+  \omega(v)\ge u_-\quad(v\ge2.47)
+\end{equation}
+are quoted in \cite[(2.5)]{Merikoski2020}.  On the retained range
+$\alpha<1.22$, an ordered three-prime child has
+\[
+ \frac{\alpha-\beta_1-\beta_2-\beta_3}{\beta_3}
+ >\frac{3-2\alpha}{\alpha-1}>2.54.
+\]
+The one- and two-prime fundamental-proposition bases have arguments at
+least $9$ and $7.5$, respectively.  If $\beta_1+\beta_2\le\sigma$, the
+ordered Type II pair has argument at least
+$2(\alpha-\sigma)/\sigma\ge6.4$.  Thus every use of
+\eqref{eq:omega-bounds} is within its stated range.
+
+We also use the standard dimension-one linear-sieve functions $F$ and $f$
+\cite[Chapter 12]{FriedlanderIwaniec2010}.  Define the rational lower
+envelope
+\begin{equation}\label{eq:Phi}
+ \Phi(s)=
+ \begin{cases}
+  0,&s<2,\\
+  4(s-2)/s^2,&2\le s\le4,\\
+  1/2,&s\ge4.
+ \end{cases}
+\end{equation}
+For $2\le s\le4$ the identity
+$e^{-\gamma_{!E}}f(s)=2\log(s-1)/s$ and
+$\log(1+t)\ge2t/(2+t)$ give
+\begin{equation}\label{eq:Phi-lower}
+ \Phi(s)\le e^{-\gamma_{!E}}f(s).
+\end{equation}
+At $s=4$ the rational value is $1/2$, and the standard monotonicity of $f$
+gives the continuation in \eqref{eq:Phi}.  Similarly,
+$e^{-\gamma_{!E}}F(s)=2/s$ for $1\le s\le3$ and is at most $2/3$ for
+$s\ge3$.
+
+For an ordered triple put
+\[
+ s_3=\frac{1/2-\beta_1-\beta_2-\beta_3}{\beta_3},
+ \qquad
+ W_3=\max\{u_-\1_{\rm good},\Phi(s_3)\},
+\]
+where $\1_{\rm good}$ indicates that one of \eqref{eq:subset-sums} lies in
+$[a,\sigma]$.  Proposition \ref{prop:transfer} handles the first weight;
+Proposition~\ref{prop:prefix-sieve} handles the second.  Indeed, after a
+fixed prefix of total exponent $s_0$, the available sieve level is
+$x^{1/2-s_0-\nu}$, and combining its Rosser weight with at most three prime
+indicators still gives a fixed divisor-bounded coefficient.  Hence
+\begin{equation}\label{eq:A3lower}
+ A_3^{\rm low}(\alpha)=\alpha
+ \int_{\gamma<\beta_3<\beta_2<\beta_1<\tau}
+ W_3\,\frac{d\beta_1\,d\beta_2\,d\beta_3}
+ {\beta_1\beta_2\beta_3^2}
+\end{equation}
+is a valid limiting lower model for $A_3$.
+
+It remains to retain part of $R_1$.  For $\tau<\beta_1<a$, Buchstab gives
+\[
+ S(\Acal(P)_{q_1},q_1)
+ =S(\Acal(P)_{q_1},x^\gamma)
+  -\sum_{x^\gamma<q_2<q_1}S(\Acal(P)_{q_1q_2},q_2).
+\]
+Put $\delta_2=1/2-\beta_1-\beta_2$ and define the proof-adverse upper
+linear-sieve envelope
+\[
+ U_{\rm LS}(\beta_1,\beta_2)
+ =\max\left\{\frac2{\delta_2},\frac2{3\beta_2}\right\}.
+\]
+Let $U_2(\beta_1,\beta_2)$ be the minimum of $U_{\rm LS}$ and the following
+available upper bounds:
+\begin{align*}
+ &\frac{u_+}{\beta_2},
+ &&\text{if }\beta_1+\beta_2\in[a,\sigma],\\
+ &\frac{u_+}{\gamma}
+   -\int_\gamma^{\beta_2}
+      W_3(\beta_1,\beta_2,\beta_3)\frac{d\beta_3}{\beta_3^2},
+ &&\text{if }\beta_1+\beta_2\le\xi,
+\end{align*}
+where the second candidate is used only when it is nonnegative.
+The second line is one more Buchstab identity: Fundamental Proposition II
+evaluates its base and \eqref{eq:A3lower} lower-bounds its children.
+The proof-adverse linear-sieve option is uniform over the two-prime prefix
+by Proposition~\ref{prop:prefix-sieve}.
+Consequently
+\begin{equation}\label{eq:Tlower}
+ T(\alpha)=\alpha\int_\tau^a
+ \left[\frac{u_-}{\gamma}
+ -\int_\gamma^{\beta_1}U_2(\beta_1,\beta_2)
+       \frac{d\beta_2}{\beta_2}\right]_+
+ \frac{d\beta_1}{\beta_1}
+\end{equation}
+is a lower model for $R_1$.
+
+\subsection{Complete branch-to-input ledger}
+
+Put
+\[
+ \mathfrak M(P):=X_b\int_0^\infty\psi_P(u)\,\frac{du}{u}.
+\]
+This is the common smooth block factor in
+\cite[Lemma 7]{Merikoski2020}.  For a fixed $\nu>0$ and a fixed exponent
+mesh, let $H_\nu(\alpha)$ denote the expression below with the shifted
+parameters in \eqref{eq:margin-parameters} and the proof-adverse cell
+endpoints used by the certificate.
+
+\begin{proposition}[Analytic branch ledger]\label{prop:branch-ledger}
+Uniformly for $7/6<\alpha<1.22$, the recursive decomposition uses exactly
+the one-sided estimates in the following table.  Each row is valid with a
+power-saving remainder before the finite sums of dyadic and Perron pieces.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{0.13\textwidth}|
+>{\raggedright\arraybackslash}p{0.29\textwidth}|
+>{\raggedright\arraybackslash}p{0.43\textwidth}|}
+\hline
+term & analytic input & proof direction and condition \\
+\hline
+$A_0$ & Fundamental Proposition II & upper bound, $u=1$, using
+$u_+/\gamma$ \\
+\hline
+$A_1$ & Fundamental Proposition II & lower bound on the common one-prime
+domain, using $u_-/\gamma$ \\
+\hline
+$A_2$ & Fundamental Proposition II & upper bound on a containing ordered
+two-prime domain, using $u_+/(2\gamma)$ after symmetry \\
+\hline
+$A_3$ & Corollary 7.2 & lower bound whenever a complete subset-product cell
+lies in $[a_\nu,\sigma_\nu]$ \\
+\hline
+$A_3$ & Proposition~\ref{prop:prefix-sieve} & lower linear-sieve bound on
+the same child; take the larger of the two available lower bounds \\
+\hline
+$R_1$ base & Fundamental Proposition II & lower bound because
+$\beta_1<a<\xi$ \\
+\hline
+two-prime child & Proposition~\ref{prop:prefix-sieve} & universal upper
+linear-sieve envelope $U_{\rm LS}$ \\
+\hline
+two-prime child & Corollary 7.2 or one more Buchstab split & take the smaller
+upper bound: direct Type~II when $\beta_1+\beta_2\in[a_\nu,\sigma_\nu]$;
+otherwise base upper minus $A_3$ lower when
+$\beta_1+\beta_2\le\xi_\nu$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Consequently, in the normalization above,
+\[
+ S(\Acal(P),x^a)
+ \le \bigl(H_\nu(\alpha)+o(1)\bigr)\mathfrak M(P),
+\]
+where the $o(1)$ is uniform on compact shifted cells.  Letting the fixed
+margin and mesh width tend to zero gives $H(\alpha)$ below.
+\end{proposition}
+
+\begin{proof}
+The signs $A_0-A_1+A_2-A_3-R_1$ determine the required directions.  The
+first three rows follow from \eqref{eq:fundamentalII}, since their prefix
+exponents are at most $0,\tau$, and $2\tau=\xi$, respectively.  The two
+$A_3$ rows are Lemma~\ref{lem:A3-transfer} and
+Proposition~\ref{prop:prefix-sieve}; the maximum of two lower bounds for the
+same nonnegative child remains a lower bound.
+
+For $R_1$, Buchstab's identity writes each node as a base minus its
+two-prime children.  A base lower bound minus children upper bounds is
+therefore a node lower bound.  Each child has the universal upper
+linear-sieve bound.  On a complete Type~II pair cell, Corollary 7.2 supplies
+the second upper bound.  If the pair exponent is at most $\xi_\nu$, one
+more Buchstab identity instead gives a base upper bound minus the already
+proved three-prime lower bound.  Taking the minimum of valid upper bounds
+is valid.  Lemma~\ref{lem:localization} preserves all these estimates after
+the finitely many cross-condition separations.  Summing the rows proves the
+claim.
+\end{proof}
+
+\begin{remark}[Exhaustive branch coverage]\label{rem:branch-coverage}
+The supplementary branch-coverage audit checks the complete canonical grid
+using integer comparisons only.  It visits $34\,215\,168$
+ordered $A_3$ boxes and $19\,635\,200$ two-prime tail boxes.  Every row of
+the ledger occurs.  The proof-adverse minimum Buchstab arguments are,
+respectively,
+\[
+ 5.206977117,\qquad 9.007506255,\qquad
+ 8.002880298,\qquad 7.508771632
+\]
+for the $A_3$ Type~II lower branch, the $R_1$ base, the direct pair
+Type~II upper branch, and the recursive-base upper branch.  Thus the first
+two exceed $2.47$ and the last two exceed $4$, as required for the constants
+$u_-$ and $u_+$.  The audit terminates with
+\texttt{BRANCH\_LEDGER\_CERTIFIED=YES}.
+\end{remark}
+
+Finally put $L=\log(\tau/\gamma)$.  The complete recursive upper envelope is
+\begin{equation}\label{eq:H}
+ H(\alpha)=\frac{\alpha}{\gamma}
+ \left(u_+-u_-L+\frac{u_+}{2}L^2\right)
+ -A_3^{\rm low}(\alpha)-T(\alpha).
+\end{equation}
+The original linear-sieve envelope is $4\alpha$, so the new saving is
+\begin{equation}\label{eq:Delta}
+ \Delta=\int_{7/6}^{5/4}
+ \max\{0,4\alpha-H(\alpha)\}\,d\alpha.
+\end{equation}
+
+\section{Integer certificate for the switching integral}
+
+\begin{proposition}\label{prop:certificate}
+The integral in \eqref{eq:Delta} satisfies
+\[
+  \Delta\ge\frac{32303187971}{10^{12}}
+  =0.032303187971>\frac4{125}.
+\]
+\end{proposition}
+
+\begin{proof}
+We describe the exact certificate implemented in the accompanying file
+\texttt{scripts/certify\_harman\_recursive\_tail.cpp}.  It uses $N=1200$
+equal $\alpha$-cells, $B=300$ cells for \eqref{eq:A3lower}, and $C=160$
+cells for the tail \eqref{eq:Tlower}.  All quantities are stored as integer
+multiples of $10^{-12}$.  Products use signed $128$-bit intermediates;
+lower bounds are rounded down, upper bounds are rounded up, and every
+narrowing conversion is checked for overflow.
+
+For an $\alpha$-cell $[\alpha_i,\alpha_{i+1}]$, monotonicity gives the common
+domain
+\[
+ [\gamma(\alpha_i),\tau(\alpha_{i+1})]
+\]
+and the containing domain
+\[
+ [\gamma(\alpha_{i+1}),\tau(\alpha_i)].
+\]
+The first three terms in \eqref{eq:H} are bounded, in proof-adverse
+directions, by
+\begin{align*}
+ A_{0,i}^{+}&=u_+\frac{\alpha_{i+1}}{\gamma(\alpha_{i+1})},\\
+ A_{1,i}^{-}&=u_-\frac{\alpha_i}{\gamma(\alpha_i)}R^-_B,
+ \\
+ A_{2,i}^{+}&=\frac{u_+}{2}
+ \frac{\alpha_{i+1}}{\gamma(\alpha_{i+1})}(R^+_B)^2,
+\end{align*}
+where $R^-_B$ is the right-endpoint lower Riemann sum for
+$\int d\beta/\beta$ over the common domain, and $R^+_B$ is the left-endpoint
+upper sum over the containing domain.
+
+For the three-prime lower term, each ordered $\beta_1,\beta_2$ box produces
+a finite family of rational $\beta_3$ intervals.  Some are uniformly Type
+II throughout the entire $\alpha,\beta_1,\beta_2$ cell.  The others come
+from the 21 rational lower-sieve thresholds between $2.01$ and $4$.
+Overlapping intervals take the largest certified lower weight.  The
+$\beta_3$ integral is evaluated exactly by
+\[
+ \int_r^s\frac{d\beta_3}{\beta_3^2}=\frac1r-\frac1s,
+\]
+and $1/(\beta_1\beta_2)$ is replaced by its value at the upper box
+endpoints.  Thus the resulting $A_{3,i}^{-}$ is a lower bound.
+
+For the recursive tail, a $\beta_1$ cell lies in the common intersection
+$[\tau(\alpha_i),a(\alpha_i)]$.  Its child $\beta_2$ cells cover a containing
+domain from $\gamma(\alpha_{i+1})$ to the upper endpoint of the
+$\beta_1$ cell.  Each child upper bound is the minimum of the proof-adverse
+linear-sieve bound, a uniformly available Type II bound, and the recursive
+base-minus-children bound when the two-prime prefix is at most $\xi$.
+The same-exponent-cell region is subtracted in full.  This deliberately
+overcounts both distinct primes in one cell and the harmless region
+$\beta_2\ge\beta_1$; it cannot make the tail lower bound too large.
+
+It follows pointwise on the cell that
+\[
+ \max\{0,4\alpha-H(\alpha)\}
+ \ge \max\{0,4\alpha_i-
+ (A_{0,i}^{+}-A_{1,i}^{-}+A_{2,i}^{+}
+   -A_{3,i}^{-}-T_i^{-})\}.
+\]
+Only $\alpha<1.22$ is retained; zero is used elsewhere.
+
+The exact integer output is
+\begin{verbatim}
+scale=1000000000000
+alpha_steps=1200 beta_steps=300 tail_beta_steps=160
+positive_alpha_cells=727
+tail_lower_integral=0.018330264130
+a3_lower_integral=0.044459636636
+saving_lower_units=32303187971
+saving_lower=0.032303187971
+target=0.032000000000
+CERTIFIED=YES
+\end{verbatim}
+The last comparison is the integer inequality
+$32303187971>32000000000$.
+
+The module \texttt{HarmanRecursiveCertificate.lean} is a third,
+kernel-checked implementation of the complete fixed-point algorithm.  Lean
+evaluates the canonical grid by \texttt{native\_decide} in four 192-cell
+blocks and one zero block.  The respective unscaled saving sums are
+\[
+ 154113574025565,\quad151615832402575,\quad
+ 117510700363272,\quad41925800002266,\quad0.
+\]
+Their sum is $465165906793678$; downward division by $12N=14400$ is
+$32303187971$.  Small projection modules connect every expensive block
+computation to its exact natural-number value, after which
+\texttt{HarmanRecursiveCertificateCanonical.lean} proves the final sum and
+strict target inequality without re-expanding the computations.
+
+As an implementation-level cross-check, the accompanying Python audit
+program independently
+reconstructs every cell using Python arbitrary-precision integers.  It does
+not call or parse the C++ executable and uses an independent sweep-line
+algorithm for weighted interval maxima.  On the canonical grid it reports
+the same totals.  With the optional \texttt{--dump-cells} flag, all 1200
+canonical cell records agree byte for byte; both dumps have SHA-256
+\par\smallskip
+\noindent\hspace*{1em}\texttt{6e1901ca1dc8b2c32ae6bcc3759a42ea}\par
+\noindent\hspace*{1em}\texttt{9a3dab8932870eeb3f6e2d42f0ac3175}.\par\smallskip
+Thus the Lean, fixed-width, and arbitrary-precision implementations all
+prove the displayed lower bound independently.
+\end{proof}
+
+\begin{remark}
+The same source compiled with GCC's undefined-behavior sanitizer gives the
+same result.  The finer grids $1800\times400\times220$ and
+$2400\times500\times280$ give the respective lower bounds
+$0.033508163100$ and $0.034213110567$.  These values support convergence but
+are not used in the theorem.
+\end{remark}
+
+To pass from the analytic margin statement to the certified limiting
+integral, use the explicit parameters in
+\eqref{eq:margin-parameters} and denote the resulting region by $G_\nu$.
+We keep only $\alpha<1.22$, as does the certificate.  On this compact
+range, $\gamma$ is bounded away from zero and all integrands above have a
+common integrable bound.  The Type II, lower-sieve threshold, ordering, and
+cell boundaries lie in a finite union of affine hyperplanes, a null set.
+Their fixed-margin indicators converge pointwise away from this set.
+Dominated convergence therefore shows that the full switched envelope with
+margins converges to \eqref{eq:Delta} as $\nu\to0^+$.  The exact endpoint
+margin in \eqref{eq:budget} is
+$2994511739/9000000000000>0$; choose a fixed positive $\nu$ and a
+sufficiently fine fixed priority mesh for which the total integral loss is
+less than half this margin.
+After that choice, the power-saving and $o(1)$ errors are absorbed by taking
+$x$ sufficiently large.
+
+\section{An independent lower bound for the old subtractive term}
+
+The original decomposition retains
+\begin{equation}\label{eq:F6}
+ F_6=\int_{7/6}^{5/4}\alpha
+ \int_{\alpha-1}^{\sigma}
+ \omega\left(\frac{\alpha-\beta}{\beta}\right)
+ \frac{d\beta}{\beta^2}\,d\alpha.
+\end{equation}
+We need a stronger bound than the conservative $0.035631$ printed in the
+original paper, but it can be obtained without numerical Buchstab
+integration.
+
+\begin{lemma}\label{lem:F6}
+One has
+\[
+ F_6>\frac{149403}{2500000}=0.0597612.
+\]
+\end{lemma}
+
+\begin{proof}
+Set $v=\alpha/\beta-1$.  The inner integral in \eqref{eq:F6} becomes
+\[
+ \int_{(4\alpha-2)/(2-\alpha)}^{1/(\alpha-1)}\omega(v)\,dv.
+\]
+Throughout $7/6\le\alpha\le5/4$, this interval lies in $[3.2,6]$.
+Thus the lower bound in \eqref{eq:omega-bounds} applies and
+\[
+ F_6\ge0.5607\int_{7/6}^{5/4}w(\alpha)\,d\alpha,
+ \qquad
+ w(\alpha)=\frac1{\alpha-1}+4-\frac6{2-\alpha}.
+\]
+\par\noindent Moreover,
+\[
+ w''(\alpha)=\frac2{(\alpha-1)^3}-\frac{12}{(2-\alpha)^3}>0,
+\]
+since the first term is at least $128$ and the second at most $768/27$.
+Therefore the composite midpoint sum is a lower bound.  Ten equal panels
+give, by exact rational arithmetic,
+\begin{align*}
+ 0.5607\int_{7/6}^{5/4}w(\alpha)\,d\alpha
+ &\ge \frac{5607}{10000}\frac1{120}
+ \sum_{j=0}^{9}w\left(\frac76+\frac{2j+1}{240}\right)\\
+ &=0.0597612998251544\ldots>0.0597612.
+\end{align*}
+\end{proof}
+
+\section{The endpoint budget and proof of the theorem}
+
+Merikoski's published strict upper bounds for the other terms are
+\begin{align*}
+ F_1&<0.0287,& F_2&<0.08622,& F_3&<0.03107,\\
+ F_4&<0.00011,& F_5&=\frac{29}{72}.
+\end{align*}
+Combining these with Lemma \ref{lem:F6} and the complete lower bound in Proposition
+\ref{prop:certificate}, the normalized contribution through exponent $5/4$
+is strictly smaller than
+\begin{align}\label{eq:core}
+  C&=\frac16+\frac{287}{10000}+\frac{8622}{100000}
+      +\frac{3107}{100000}+\frac{11}{100000}+\frac{29}{72}\notag\\
+  &\qquad-\frac{149403}{2500000}-\frac{32303187971}{10^{12}}\notag\\
+  &=\frac{5611320508261}{9000000000000}.
+\end{align}
+
+Above $5/4$, the unchanged dimension-one linear sieve contributes through a
+block exponent $\varpi$
+\begin{equation}\label{eq:tail}
+ 4\int_{5/4}^{\varpi}\alpha\,d\alpha
+ =2\left(\varpi^2-\left(\frac54\right)^2\right).
+\end{equation}
+Choose
+\[
+ \varpi_*:=\frac{13231}{10000}=1.3231.
+\]
+Exact rational arithmetic gives
+\begin{align}\label{eq:budget}
+ C+2\left(\varpi_*^2-\left(\frac54\right)^2\right)
+ &=\frac{8997005488261}{9000000000000}<1,\\
+ 1-\frac{8997005488261}{9000000000000}
+ &=\frac{2994511739}{9000000000000}.
+\end{align}
+
+Let $P_x$ denote the greatest prime factor among the values $n^2+1$ selected
+by the smooth index block.  The Chebyshev--Hooley identity used in
+\cite{Merikoski2020} is
+\begin{equation}\label{eq:chebyshev}
+ \sum_{x<p\le P_x}|\Acal_p|\log p=X_b\log x+O(x).
+\end{equation}
+If $P_x\le x^{\varpi_*}$, summing the smooth modulus blocks and applying
+\eqref{eq:core}, \eqref{eq:tail}, and the interior-margin discussion gives a
+strict upper bound smaller than $X_b\log x$, contradicting
+\eqref{eq:chebyshev} for all sufficiently large $x$.  Hence every
+sufficiently large index block $[x,2x]$ contains an $n$ such that
+\begin{equation}\label{eq:block-result}
+ \Pplus(n^2+1)>x^{1.3231}.
+\end{equation}
+
+Finally put $a=1323/1000=1.323$ and
+$b=13231/10000=1.3231$.  Then $b-a=1/10000$ and
+$a/(b-a)=13230$.  For $x>2^{13230}$ and $n\le2x$,
+\[
+ n^a\le(2x)^a=2^a x^a<x^{b-a}x^a=x^b.
+\]
+Together with \eqref{eq:block-result}, this proves Theorem \ref{thm:main}.
+
+\section{Formal verification and scope}
+
+The focused Lean project contains the finite weighted Buchstab identity, its
+disjoint first-bad-index iteration, the sign pattern
+$A_0-A_1+A_2-A_3$, the recursive node upper/lower rules, and the
+subtractive-tail inequality used in Section~\ref{sec:switching}.  Its
+rational-envelope module proves the elementary lower envelope used in the
+finite certificate.  The recursive-certificate module and its four block
+modules independently recompute the exact outward-rounded certificate; the
+value and canonical modules aggregate the block totals while keeping peak
+elaboration memory bounded.  The endpoint module checks only the exact
+rational comparisons, including
+$1323/1000<13231/10000$ and the strict normalized budget.  The focused project
+builds with Lean 4 and Mathlib v4.22.0.
+
+The formal development treats the published analytic estimates and their
+Type II/Perron application in Lemma \ref{lem:A3-transfer}, together with the
+standard upper and lower linear-sieve theorem, as analytic inputs.
+The finite Buchstab decomposition, the complete integer computation, its
+primitive outward-rounding rules, and the exact rational endpoint arithmetic
+are checked in Lean.  The previously used ten-panel $F_6$ midpoint,
+convexity/Jensen argument, and real-power dyadic conversion are not part of
+the focused Lean project.  No floating-point or proprietary computer-algebra
+calculation is an input to the finite certificate.
+
+\par\medskip
+\begin{remark}[AI-assisted proof development]
+The author discloses that GPT-5.6 Sol was used as a reasoning and coding
+assistant in developing the core recursive Buchstab switching argument, the
+proof-direction and branch ledger, the Lean certificate implementation, the
+exact-integer audit scripts, and the manuscript exposition. The author
+reviewed the final mathematical statements and takes responsibility for the
+submitted content. GPT-5.6 Sol is an AI-assisted development tool, not an
+author or an independent verifier. The Lean project checks only the finite
+combinatorial, integer, rounding, and rational endpoint components; the cited
+analytic Type-I/II, linear-sieve, and Mellin--Perron transfers remain external
+inputs.
+\end{remark}
+
+\par\medskip
+\begin{remark}[Supplementary material]
+The accompanying source archive contains the Lean project and locked
+toolchain, the fixed-width C++ certificate
+\nolinkurl{certify_harman_recursive_tail.cpp}, and the independent
+arbitrary-precision Python audit
+\nolinkurl{audit_harman_recursive_tail.py}.  The command line
+\texttt{1200 300 160} selects the canonical grid in both external
+implementations; each prints
+\texttt{saving\_lower}${}={}$\texttt{0.032303187971} and
+\texttt{CERTIFIED=YES}.  No precomputed binary data are needed.  A public
+version of the paper will cite an immutable archive of these exact files.
+The separate script
+\nolinkurl{audit_harman_recursive_branch_coverage.py} exhaustively checks
+the analytic branch gates summarized in Remark~\ref{rem:branch-coverage}.
+A supplied build script packages the paper, PDF, locked Lean project,
+audits, and analytic ledger into one checksummed review archive.
+The archive also includes a source-version ledger with theorem locations and
+SHA-256 hashes for the external PDFs; the external PDFs themselves are not
+redistributed.
+The public verification repository is
+\url{https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323}.
+\end{remark}
+
+\begin{remark}[Analytic review boundary]
+The finite cross-condition localization and prefix-uniform sieve are proved
+in Lemma~\ref{lem:localization} and Proposition~\ref{prop:prefix-sieve}, but
+they are not formalized in Lean.  Together with the quoted Type~I/II and
+linear-sieve theorems, these are the parts that require conventional
+analytic-number-theory refereeing.
+\end{remark}
+
+\par\medskip
+\begin{remark}[Distance from Landau's problem]
+Theorem \ref{thm:main} implies infinitely often a factorization
+\[
+ n^2+1=pm,\qquad p>n^{1.323},\qquad m<n^{0.677+o(1)},
+\]
+but it neither forces $m=1$ nor overcomes the parity barrier.  It is a new
+greatest-prime-factor weak form of Landau's fourth problem, not a proof of
+the prime-values conjecture.
+\end{remark}
+
+\begin{thebibliography}{99}
+
+\bibitem{Carella2025}
+N. A. Carella,
+\emph{Largest prime factors of polynomials},
+arXiv:2308.10075v7, 2025.
+
+\bibitem{GrimmeltMerikoski2025}
+L. Grimmelt and J. Merikoski,
+\emph{On the greatest prime factor and uniform equidistribution of quadratic polynomials},
+arXiv:2505.00493v2, 2025.
+
+\bibitem{FriedlanderIwaniec2010}
+J. Friedlander and H. Iwaniec,
+\emph{Opera de Cribro},
+American Mathematical Society Colloquium Publications, vol.~57,
+American Mathematical Society, Providence, 2010.
+
+\bibitem{Iwaniec1978}
+H. Iwaniec,
+\emph{Almost-primes represented by quadratic polynomials},
+Invent. Math. \textbf{47} (1978), 171--188,
+\href{https://doi.org/10.1007/BF01578070}{doi:10.1007/BF01578070}.
+
+\bibitem{Li2025}
+R. Li,
+\emph{On the largest prime factor of quadratic polynomials},
+arXiv:2406.07575v2, 2025.
+
+\bibitem{Merikoski2020}
+J. Merikoski,
+\emph{On the largest prime factor of $n^2+1$},
+J. Eur. Math. Soc. (JEMS) \textbf{25} (2023), 1253--1284,
+\href{https://doi.org/10.4171/JEMS/1216}{doi:10.4171/JEMS/1216}.
+
+\bibitem{Pascadi2026}
+A. Pascadi,
+\emph{Large sieve inequalities for exceptional Maass forms and the greatest prime factor of $n^2+1$},
+Forum Math. Pi \textbf{14} (2026), e8,
+1--54,
+\href{https://doi.org/10.1017/fmp.2026.10025}{doi:10.1017/fmp.2026.10025}.
+
+\end{thebibliography}
+
+\end{document}
