@@ -4,7 +4,25 @@ namespace Landau
 
 #check canonical_recursive_certificate_saving
 #check canonical_recursive_certificate_saving_rational
+#check certified_recursive_core_envelope_eq
+#check certified_recursive_core_assembly_once
+#check certified_recursive_core_no_double_subtraction
+#check certified_recursive_endpoint_budget
 #check recursive_switching_target_endpoint_budget
+#check g6_width_integral_certified
+#check recursive_pointwise_rpow_lt_of_dyadic_block
+#check common_domain_subset_analytic_domain
+#check analytic_domain_subset_containing_domain
+#check pairChildUpper_typeII_branch
+#check pairChildUpper_recursive_branch
+#check sieve_parameter_ge_iff_beta_le_threshold
+#check upper_sieve_measure_coefficient
+#check interior_typeII_interval_strict
+#check interior_exponent_ledger
+#check interior_shifted_parameter_order
+#check nat_strict_iff_cast_lt_half_threshold
+#check half_threshold_distance_ge
+#check three_prime_prefix_coefficient_bound
 #check three_step_buchstab_signs
 
 end Landau

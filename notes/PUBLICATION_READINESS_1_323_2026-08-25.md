@@ -59,9 +59,10 @@ external inputs.
    `0.032303187971 > 0.032` in C++, Python, and Lean.
 3. The exact endpoint total is
    `8997005488261/9000000000000 < 1`.
-4. The endpoint module checks the rational strict comparison
-   `1323/1000 < 13231/10000`; the full analytic dyadic-to-pointwise passage
-   is not part of the focused Lean project.
+4. The endpoint and real-power modules check both the rational strict
+   comparison `1323/1000 < 13231/10000` and the finite implication
+   `x>2^13230, 0<=n<=2x => n^1.323<x^1.3231`. The preceding analytic block
+   estimate remains external.
 5. The manuscript states the Grimmelt--Merikoski Type-I/II ranges with their
    squarefree-support and divisor-bounded coefficient hypotheses.
 6. The manuscript now contains a quantitative finite cross-condition
@@ -98,6 +99,20 @@ not merely the final numerical certificate.
 
 The theorem should remain labelled a complete candidate result until these
 six gates receive an independent signed review.
+
+## Six-gate Lean/expert boundary
+
+| Gate | Lean now checks | Still requires an analytic-number-theory expert |
+| --- | --- | --- |
+| 1. Source/interior transfer | The shifted `nu` definitions, strict interior interval, exponent-ledger identities, `gamma>0.04`, and cutoff order. | The statements, uniform constants, dyadic use, and applicability of Grimmelt--Merikoski Corollaries 7.1 and 7.2. |
+| 2. Perron localization | Integer strict comparison versus `V-1/2` and the exact rational separation by at least `1/2`. | The truncated Perron/Mellin formulas, aggregate kernel error, and their application to every real ordering/roughness condition. |
+| 3. Variable sieve cutoff | An abstract triangle-inequality coefficient bound and a fixed divisor-tuple representation bound for at most three prefix slots plus one divisor slot. | Construction of the actual collected Rosser/prefix coefficient, prefix-dependent weights, and especially the use of Corollary 7.1 for that coefficient. |
+| 4. One-sided cells | Common-domain and containing-domain endpoints/inclusions, Type-II/subset branch equations, recursive `pairChildUpper` gates, and containing tail-child mesh. | That the cited analytic estimates apply uniformly on those cells and that discarded boundaries/margins pass to the limiting integrals in the required direction. |
+| 5. Model normalization | `alpha/gamma`, the `s3` `t+1` threshold, `Phi(p/q)`, outward rounding, and the two algebraic branches of `U_LS`. | Matching the actual sifted sums to Merikoski's Lemma 7 normalization and the analytic origin/validity of the standard linear-sieve `F/f` factors. |
+| 6. Endpoint assembly | The `F6` convex ten-panel width certificate, exact core/sign assembly with one `F6` and one saving subtraction, endpoint fraction, and dyadic real-power conversion. | The quoted Buchstab lower bound as applied to the original `F6`, the published analytic component estimates, and the full analytic implication leading to the block estimate. |
+
+This table is an audit map, not a claim that Lean proves the six analytic
+gates or the main greatest-prime-factor theorem.
 
 ## Reproduction commands
 

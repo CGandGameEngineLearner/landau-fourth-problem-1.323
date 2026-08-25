@@ -29,7 +29,7 @@ explicitly acknowledged.
 
 - `paper/landau_lpf_1_323.tex`: arXiv-ready manuscript source.
 - `output/landau_lpf_1_323.pdf`: rendered manuscript.
-- `lean/`: focused Lean 4 project containing the 16-module dependency closure
+- `lean/`: focused Lean 4 project containing the 22-module dependency closure
   of the recursive `1.323` certificate; unrelated Gaussian/Atkin--Lehner
   research modules are intentionally excluded.
 - `scripts/`: exact C++, arbitrary-precision Python, and branch-coverage
@@ -50,10 +50,30 @@ lake build
 
 The project contains no `sorry`, `admit`, or user-supplied axioms in the
 Lean source. The formalization checks the finite Buchstab identities, signs,
-recursive node inequalities, rational sieve envelope, endpoint ledger, and
-the rational comparison `1323/1000 < 13231/10000`. The analytic Type-I/II,
-linear-sieve, Mellin--Perron, and dyadic-to-pointwise passages remain
-conventional external inputs, as stated in the paper.
+recursive node inequalities, rational sieve envelope, primitive integer
+rounding specifications, the convex ten-panel midpoint certificate for the
+elementary `F6` width integral, the endpoint ledger, and the real-power
+implication
+
+```text
+x > 2^13230,  0 <= n <= 2*x  ==>  n^1.323 < x^1.3231.
+```
+
+The canonical `1200 x 300 x 160` block equalities are evaluated with
+`native_decide`; after the block projections, the exact saving sum, division,
+rational normalization, and endpoint inequalities are checked without
+re-expanding the native computations. The analytic Type-I/II, standard
+linear-sieve, Mellin--Perron transfer, and the quoted Buchstab-function lower
+bound remain conventional external inputs, as stated in the paper.
+
+The focused project additionally checks finite audit lemmas for the six
+analytic-review gates: affine `nu`-interior identities, half-integer strict
+threshold separation, an abstract divisor-tuple representation bound,
+one-sided common/containing cell geometry and program branch gates, and the
+algebraic normalization of `alpha/gamma`, the lower-sieve `t+1` threshold,
+`Phi(p/q)`, and `U_LS`. These lemmas make the transfer ledger easier to audit;
+they do not prove Grimmelt--Merikoski Corollaries 7.1/7.2, Perron localization
+for the actual sifted sums, or the standard dimension-one sieve functions.
 
 ## Reproduce the exact certificate
 

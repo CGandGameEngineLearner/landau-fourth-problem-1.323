@@ -70,9 +70,11 @@ for infinitely many positive integers $n$.  The internal block exponent is
 $1.3231$ and the exact final normalized bound is
 $8997005488261/9000000000000<1$.  Lean 4 verifies the finite Buchstab sign
 ledger, the recursive integer switching certificate, the primitive
-outward-rounding rules, and the exact rational endpoint budget.  The displayed
-endpoint budget still treats the cited analytic estimates and their finite
-Mellin--Perron transfer as external inputs.  This is a quantitative weak form of
+outward-rounding rules, the convex ten-panel rational midpoint certificate
+for the elementary $F_6$ bound, the exact rational endpoint budget, and the
+final dyadic-to-pointwise real-power inequality.  The displayed endpoint
+budget still treats the cited analytic estimates, the Buchstab lower bound,
+and their finite Mellin--Perron transfer as external inputs.  This is a quantitative weak form of
 Landau's fourth problem: it produces a prime divisor exceeding $n^{1.323}$
 and hence a complementary cofactor smaller than $n^{0.677+o(1)}$, but it does
 not overcome the sieve parity barrier.
@@ -131,7 +133,11 @@ Section~\ref{sec:switching}.  The source transfer in
 Section~\ref{sec:transfer} records the cited external inputs and their
 normalization.  These conventional analytic inputs are not formalized in
 Lean.  Lean verifies the finite Buchstab signs, integer certificate,
-outward-rounding rules, and exact rational endpoint budget; it should not be
+outward-rounding rules, affine interior-margin identities, half-integer
+separation and abstract representation bounds, proof-adverse cell geometry,
+model-normalization algebra, the elementary $F_6$ midpoint/convexity
+certificate, the exact rational endpoint budget, and the final real-power
+conversion; it should not be
 read as having verified the full analytic theorem or solved Landau's fourth
 problem.
 \end{remark}
@@ -816,9 +822,9 @@ CERTIFIED=YES
 The last comparison is the integer inequality
 $32303187971>32000000000$.
 
-The module \texttt{HarmanRecursiveCertificate.lean} is a third,
-kernel-checked implementation of the complete fixed-point algorithm.  Lean
-evaluates the canonical grid by \texttt{native\_decide} in four 192-cell
+The module \texttt{HarmanRecursiveCertificate.lean} is a third Lean
+implementation of the complete fixed-point algorithm.  Lean evaluates the
+canonical grid by \texttt{native\_decide} in four 192-cell
 blocks and one zero block.  The respective unscaled saving sums are
 \[
  154113574025565,\quad151615832402575,\quad
@@ -826,9 +832,11 @@ blocks and one zero block.  The respective unscaled saving sums are
 \]
 Their sum is $465165906793678$; downward division by $12N=14400$ is
 $32303187971$.  Small projection modules connect every expensive block
-computation to its exact natural-number value, after which
-\texttt{HarmanRecursiveCertificateCanonical.lean} proves the final sum and
-strict target inequality without re-expanding the computations.
+computation to its exact natural-number value.  Thus the large block
+equalities use Lean's native evaluator; after those equalities are available,
+\texttt{HarmanRecursiveCertificateCanonical.lean} checks the final natural-number
+sum, division, rational normalization, and strict endpoint inequalities by
+kernel elaboration without re-expanding the blocks.
 
 As an implementation-level cross-check, the accompanying Python audit
 program independently
@@ -841,7 +849,8 @@ canonical cell records agree byte for byte; both dumps have SHA-256
 \noindent\hspace*{1em}\texttt{6e1901ca1dc8b2c32ae6bcc3759a42ea}\par
 \noindent\hspace*{1em}\texttt{9a3dab8932870eeb3f6e2d42f0ac3175}.\par\smallskip
 Thus the Lean, fixed-width, and arbitrary-precision implementations all
-prove the displayed lower bound independently.
+recompute and certify the displayed lower bound independently, with the Lean
+block computations using \texttt{native\_decide} as just stated.
 \end{proof}
 
 \begin{remark}
@@ -984,20 +993,43 @@ rational-envelope module proves the elementary lower envelope used in the
 finite certificate.  The recursive-certificate module and its four block
 modules independently recompute the exact outward-rounded certificate; the
 value and canonical modules aggregate the block totals while keeping peak
-elaboration memory bounded.  The endpoint module checks only the exact
-rational comparisons, including
-$1323/1000<13231/10000$ and the strict normalized budget.  The focused project
-builds with Lean 4 and Mathlib v4.22.0.
+elaboration memory bounded.  The $F_6$ module proves positivity of the
+displayed second derivative, convexity, the ten-panel midpoint integral lower
+bound, and the exact rational comparison with $149403/2500000$; applying this
+width certificate to $F_6$ still uses the quoted Buchstab lower bound.  The
+endpoint module checks the exact rational comparisons, including
+$1323/1000<13231/10000$ and the strict normalized budget.  The real-power
+module proves the final implication $x>2^{13230}$ and $0\le n\le2x$
+imply $n^{1323/1000}<x^{13231/10000}$.  The focused project builds with
+Lean 4 and Mathlib v4.22.0.
 
-The formal development treats the published analytic estimates and their
-Type II/Perron application in Lemma \ref{lem:A3-transfer}, together with the
-standard upper and lower linear-sieve theorem, as analytic inputs.
-The finite Buchstab decomposition, the complete integer computation, its
-primitive outward-rounding rules, and the exact rational endpoint arithmetic
-are checked in Lean.  The previously used ten-panel $F_6$ midpoint,
-convexity/Jensen argument, and real-power dyadic conversion are not part of
-the focused Lean project.  No floating-point or proprietary computer-algebra
-calculation is an input to the finite certificate.
+Four small audit modules address finite parts of the six analytic-review
+gates.  The interior module checks the shifted $\nu$-parameter definitions,
+strict interval inclusions, exponent-ledger identities, and cutoff ordering.
+The finite-transfer module checks the half-integer separation for integer
+strict comparisons and proves an abstract coefficient bound for finite
+representations encoded by fixed tuples of divisors.  It does not construct
+the actual Rosser/prefix encoding.  The proof-adverse geometry module checks
+the common and containing grid endpoints and inclusions, the exact Type~II
+and recursive Boolean gates, and the containing tail-child mesh.  The model
+normalization module checks the $\alpha/\gamma$ ratio, the $t+1$ lower-sieve
+threshold, the rational $\Phi(p/q)$ weight, and both branches of
+$U_{\rm LS}$.  These are algebraic, combinatorial, and finite-grid statements;
+they do not prove any of the six analytic transfer gates as a whole.
+
+The formal development treats Grimmelt--Merikoski Corollaries 7.1 and 7.2,
+their application to the actual localized coefficients in Lemma
+\ref{lem:A3-transfer}, the truncated Perron/Mellin transfer for the real
+sifted sums, and the standard upper and lower dimension-one linear-sieve
+theorem as analytic inputs.
+The finite Buchstab decomposition, the integer computation, its primitive
+outward-rounding rules, the elementary $F_6$ convex midpoint certificate,
+the exact rational endpoint arithmetic, and the real-power dyadic conversion
+are checked in Lean.  The expensive $1200\times300\times160$ block equalities
+are discharged by \texttt{native\_decide}; the canonical sum, division, and
+endpoint comparisons are then checked without native recomputation.  No
+floating-point or proprietary computer-algebra calculation is an input to
+the finite certificate.
 
 \par\medskip
 \begin{remark}[AI-assisted proof development]
@@ -1008,7 +1040,8 @@ exact-integer audit scripts, and the manuscript exposition. The author
 reviewed the final mathematical statements and takes responsibility for the
 submitted content. GPT-5.6 Sol is an AI-assisted development tool, not an
 author or an independent verifier. The Lean project checks only the finite
-combinatorial, integer, rounding, and rational endpoint components; the cited
+combinatorial, integer, rounding, elementary $F_6$, rational endpoint, and
+real-power conversion components; the cited
 analytic Type-I/II, linear-sieve, and Mellin--Perron transfers remain external
 inputs.
 \end{remark}

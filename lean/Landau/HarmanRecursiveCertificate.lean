@@ -4,7 +4,7 @@ import Landau.HarmanRecursiveEndpoint
 namespace Landau
 
 /-!
-# Kernel-checked recursive Harman certificate
+# Lean integer implementation of the recursive Harman certificate
 
 This module independently recomputes the integer algorithm in
 `scripts/certify_harman_recursive_tail.cpp` and
@@ -16,7 +16,10 @@ Type-II contribution it includes
   recursively improved child upper bound.
 
 Only natural-number arithmetic is used. The primitive outward-rounding
-lemmas are provided by `HarmanIntegerRounding`.
+lemmas are provided by `HarmanIntegerRounding`.  The canonical `1200`-cell
+equalities are evaluated in the separate block modules with `native_decide`;
+the later canonical module checks their exact aggregation.  This code does
+not prove that the integer algorithm is the limiting analytic integral.
 -/
 
 structure WeightedInterval where
@@ -268,7 +271,7 @@ def recursiveCertificateData (n b tailSteps : Nat) : RecursiveCertificateData :=
 
 /-- Certificate data on the consecutive alpha indices
 `start, ..., start+count-1`.  The canonical computation is split into four
-such blocks so each kernel reduction remains cacheable and memory-bounded. -/
+such blocks so each native evaluation remains cacheable and memory-bounded. -/
 def recursiveCertificateDataRange
     (n b tailSteps start count : Nat) : RecursiveCertificateData :=
   (List.range count).foldl (fun data j =>
@@ -288,15 +291,5 @@ def addRecursiveCertificateData
 
 def recursiveCertificateSaving (n b tailSteps : Nat) : Nat :=
   (recursiveCertificateData n b tailSteps).savingSum / (12 * n)
-
-set_option maxRecDepth 100000 in
-set_option maxHeartbeats 0 in
-theorem recursive_certificate_small_data :
-    recursiveCertificateData 60 20 15 =
-      { savingSum := 6391666702852
-        tailSum := 6261702215591
-        a3Sum := 25729812106832
-        positive := 17 } := by
-  native_decide
 
 end Landau
