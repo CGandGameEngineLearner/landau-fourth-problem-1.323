@@ -62,20 +62,21 @@ arbitrary-precision Python, proves that this switching saves at least
 $0.032303187971$ on the normalized sieve scale.
 Together with the original
 published upper bounds and an independent elementary lower bound for the
-subtracted one-prime term, this gives
+subtracted one-prime term, the same arithmetic yields
 \[
   \Pplus(n^2+1)>n^{1.323}
 \]
-for infinitely many positive integers $n$.  The internal block exponent is
+for infinitely many positive integers $n$, once the cited Grimmelt--Merikoski
+Type~I/II estimates, the standard dimension-one linear sieve, and the finite
+Mellin--Perron transfer are granted.  The internal block exponent is
 $1.3231$ and the exact final normalized bound is
 $8997005488261/9000000000000<1$.  Lean 4 verifies the finite Buchstab sign
 ledger, the recursive integer switching certificate, the primitive
 outward-rounding rules, the convex ten-panel rational midpoint certificate
 for the elementary $F_6$ bound, the exact rational endpoint budget, and the
-final dyadic-to-pointwise real-power inequality.  The displayed endpoint
-budget still treats the cited analytic estimates, the Buchstab lower bound,
-and their finite Mellin--Perron transfer as external inputs; Lean does not
-verify the localization or prefix-uniform sieve transfer.  This is a quantitative weak form of
+final dyadic-to-pointwise real-power inequality.  It does not verify the
+localization or prefix-uniform sieve transfer, nor the full analytic theorem.
+This is a quantitative weak form of
 Landau's fourth problem: it produces a prime divisor exceeding $n^{1.323}$
 and hence a complementary cofactor smaller than $n^{0.677+o(1)}$, but it does
 not overcome the sieve parity barrier.
