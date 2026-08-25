@@ -324,16 +324,81 @@ The replacement of $V$ by $V-1/2$ only excludes the equality case.  It
 does not change the underlying representations or their divisor bounds.
 The truncation estimate in the displayed Perron formula remains an analytic
 input and is not part of the Lean audit.
-The factors $U^{-s}$ and $(V-1/2)^s$ belong to opposite coefficients.
-On this line their absolute values are $O_C(1)$, and the integral kernel
-has $L^1$ norm $O(\log T)$.  Moreover
+
+For a cross-condition $U(\boldsymbol m)<V(\boldsymbol n)$, attach
+$U^{-s}$ to the $M$-coefficient and $(V-1/2)^s$ to the $N$-coefficient.
+If the smaller variable belongs to the $N$ side, attach $U^{-s}$ there and
+$(V-1/2)^s$ to $M$; the designation of the squarefree Type-II family is not
+changed.  A product cutoff has the same form:
+if $A_MA_N\le Q$, with $A_M$ and $A_N$ formed from variables on the two
+sides, write it as
+\[
+ A_M<\left\lfloor Q/A_N\right\rfloor+1.
+\]
+Thus $U=A_M$ is assigned to the $M$ side and
+$V=\lfloor Q/A_N\rfloor+1$ to the $N$ side; the complementary inequality is
+handled by subtracting this class.  This also covers any exact priority
+cutoff not already fixed by the exponent cell.
+If $U$ or $V$ depends on a particular prime-factor representation rather
+than only on the collected integer, attach the phase before collecting that
+coefficient.  The number of prime slots is fixed and the vertical factors
+are uniformly bounded, so summing those representations preserves a fixed
+divisor bound.
+
+Here is the specialization used by the recursive branches.
+\begin{itemize}
+\item For the $A_3$ Type-II branch, choose the first eligible subset $I$ and
+put $N=\prod_{i\in I}q_i$ and
+$M=(\prod_{i\notin I}q_i)ds$.  Every ordering comparison split across the
+two families uses the smaller prime as $U$ and the larger as $V$; hence the
+corresponding $U^{-s}$ and $(V-1/2)^s$ are placed on the coefficient that
+contains that prime.  If $q_3\in N$, the roughness condition is
+$U=P^+(d)<V=q_3$ for $d>1$, with $U^{-s}$ on the $M$ side and
+$(q_3-1/2)^s$ on the $N$ side; $d=1$ is automatic.  If $q_3\notin N$, the
+condition is internal to $M$.  Earlier-subset priority
+conditions are fixed on cells away from their boundaries; if retained
+exactly, their product cutoffs use the preceding $A_MA_N\le Q$ rule.
+
+\item The $A_3$ lower-sieve branch is a Type-I prefix problem, not an
+application of the present Type-II localization lemma.  All three primes
+belong to the prefix $u=q_1q_2q_3$; their ordering is internal, and the
+variable roughness cutoff $q_3$ is encoded in the prefix-dependent Rosser
+weight of Proposition~\ref{prop:prefix-sieve}.
+
+\item The one-prime tail base has prefix $u=q_1$ and the fixed cutoff
+$x^{\gamma_\nu}$.  Its cell order $\tau_\nu<\beta_1<a$ is fixed before the
+Fundamental Proposition is applied, so it introduces no cross-condition
+between two coefficient families.
+
+\item For the direct pair Type-II upper bound, put $N=q_1q_2$ and place the
+sifted cofactor and any Mobius variable on $M$.  The ordering $q_2<q_1$ is
+internal to $N$.  The only variable roughness comparison is
+$P^+(d)<q_2$ for $d>1$: take $U=P^+(d)$ on $M$ and $V=q_2$ on $N$;
+again $d=1$ is automatic.
+
+\item The universal pair bound $U_{\rm LS}$ is again Type I: the prefix is
+$u=q_1q_2$, and the least prefix prime $q_2$ is the cutoff in the
+prefix-dependent Rosser weight.  No Type-II Perron separation is used in
+this branch.
+
+\item In the recursive-base option, the base has prefix $u=q_1q_2$ and the
+fixed cutoff $x^{\gamma_\nu}$; it has no new cross-condition.  Its subtracted
+three-prime children reuse, branch for branch, the $A_3$ Type-II or lower-sieve
+assignments above.  The priority decision between the direct and recursive
+upper candidates is fixed by the proof-adverse exponent box and is not a
+Perron condition.
+\end{itemize}
+
+For each priority class the number $J$ of genuine cross-comparisons is fixed,
+independent of $x$.  On $\Re s=c$, the real powers $U^{-c}$ and
+$(V-1/2)^c$ are $O_C(1)$, while the imaginary powers have modulus one.  Each
+Perron kernel has $L^1$ mass $O(\log T)$.  Moreover
 $|V-1/2-U|\ge1/2$ and $U,V\le x^C$, so
-$|\log((V-1/2)/U)|\gg_C x^{-C}$.  The number of tuples before applying the
-arithmetic estimate is at most $x^{O(1)}$ in the fixed decomposition;
-choosing $T=x^{A'}$ with
-$A'$ sufficiently large therefore makes the aggregate Perron error
-$O_A(x^{-A})$.  Iterating a fixed number of comparisons costs only a fixed
-power of $\log x$.
+$|\log((V-1/2)/U)|\gg_C x^{-C}$.  If the unreduced finite decomposition has
+at most $x^B$ tuples, choose $T=x^{A'}$ with $A'>A+B+C$.  Summing the
+pointwise truncation errors is then $O_A(x^{-A})$.  Iterating at most $J$
+comparisons gives total kernel mass $O((\log x)^J)$, which is absorbed by
+the fixed power saving of Corollary~7.2 after decreasing its exponent.
 
 For a smooth compactly supported $W$, Mellin inversion separates
 $W(MN/P)$; rapid decay of its Mellin transform gives the same arbitrary
@@ -342,18 +407,23 @@ $\log(MN)=\log M+\log N$, with the logarithms handled by partial
 summation.  All vertical factors have size $O_C(1)$, so the coefficients
 remain uniformly divisor bounded.  The fixed polylogarithmic kernel mass
 is absorbed after decreasing the power-saving exponent.  This proves the
-lemma.  This argument is the
-quantitative version of the cross-condition removals in
-\cite[Sections 2.3 and 3.4]{Merikoski2020}.
+lemma.  Merikoski's use of Perron in the proof of Fundamental Proposition~II
+and his Mellin removal of the smooth product weights provide the qualitative
+templates \cite[Sections 2.3 and 3.4]{Merikoski2020}.  The explicit truncated
+formula, its aggregate error, and every branch assignment above remain
+analytic steps not checked in Lean.
 \end{proof}
 
 \begin{proposition}[Prefix-uniform linear sieve]\label{prop:prefix-sieve}
-Let a fixed ordered prefix consist of at most three primes, all at least
-$z=x^\zeta$, and let its product have exponent $s_0$.  The cutoff $z$ may
-also be the least prefix prime after dyadic localization.  The Type~I estimate
-in Proposition~\ref{prop:transfer}, summed over any dyadically localized
-family of such prefixes with divisor-bounded weights, permits the standard
-dimension-one upper and lower linear sieve with remainder level
+Let a dyadically localized ordered prefix
+$\boldsymbol q=(q_1,\ldots,q_j)$ consist of at most three primes.  Put
+$u=q_1\cdots q_j$ and suppose that the localized cell gives the uniform
+upper bound $u\le x^{s_0}$, with $1/2-s_0-\nu>0$.  All prefix primes are at least the sieve cutoff
+$z=z(\boldsymbol q)$, with $z(\boldsymbol q)\asymp x^\zeta$; in the variable
+cutoff branches, $z(\boldsymbol q)=q_j$ is the least prefix prime.  The
+Type~I estimate in Proposition~\ref{prop:transfer}, summed over any fixed
+finite collection of such cells with divisor-bounded prefix weights, permits
+the standard dimension-one upper and lower linear sieve with remainder level
 \[
  D=x^{1/2-s_0-\nu}.
 \]
@@ -365,49 +435,85 @@ $O(x^{1-\delta})$ for some $\delta=\delta(\nu)>0$.
 \end{proposition}
 
 \begin{proof}
-For a localized ordered prefix $\boldsymbol q=(q_1,\ldots,q_j)$, $j\le3$,
-write $u=q_1\cdots q_j$.  Insert the upper or lower Rosser weights
-$\lambda_{d,\boldsymbol q}^{\pm}$ supported on $d\le D$ and on products of
-primes below the cutoff $z=z(\boldsymbol q)$.  When the cutoff is the least
-prefix prime, $z=q_j$; hence $(u,d)=1$.  Since $u$ has exponent $s_0$,
+For each prefix separately, insert the upper or lower dimension-one Rosser
+weights $\lambda_{d,\boldsymbol q}^{\pm}$ from
+\cite[Chapter 12]{FriedlanderIwaniec2010}.  They are supported on $d\le D$
+and on products of primes below $z(\boldsymbol q)$, and satisfy
+$|\lambda_{d,\boldsymbol q}^{\pm}|\le1$.  In a variable-cutoff branch every
+prime factor of $d$ is strictly below $q_j$, whereas every prime factor of
+$u$ is at least $q_j$; hence $(u,d)=1$.  By the proof-adverse choice of the
+upper cell endpoint $s_0$,
 \[
  ud\le x^{s_0}x^{1/2-s_0-\nu}=x^{1/2-\nu},
 \]
-which is strictly inside the level in Corollary~7.1 of
-\cite{GrimmeltMerikoski2025}.
+so Corollary~7.1 of \cite{GrimmeltMerikoski2025} applies with $a=h=1$,
+Type~I margin $\eta=\nu$, and its auxiliary $\varepsilon$ chosen sufficiently
+small compared with $\nu$.  In particular, its right-hand side retains a
+fixed power saving after any fixed power of $\log x$.
 
-Let $r(e)$ denote the modulus-$e$ discrepancy appearing in that corollary.
-After summing the localized prefixes and collecting equal total moduli
-$e=ud$, the remainder has the form
+Let $r(e)$ denote the parenthesized modulus-$e$ discrepancy in Corollary~7.1
+after the present smooth $P$-block and $a=h=1$ have been inserted.  The
+corollary gives an absolute discrepancy sum
+$\sum_{e\le x^{1/2-\nu}}|r(e)|$ with a power-saving bound.  After summing one
+localized prefix cell and collecting equal total moduli $e=ud$, the linear
+sieve remainder is
 \[
  \sum_{e\le x^{1/2-\nu}}\Lambda_e r(e),\qquad
  \Lambda_e=
  \sum_{\substack{\boldsymbol q,d:\,q_1\cdots q_jd=e}}
  c(\boldsymbol q)\lambda_{d,\boldsymbol q}^{\pm}.
 \]
-For fixed $e$, the ordered prefix has at most three prime slots and $d=e/u$
-is then determined.  Thus the number of representations is bounded by a
-fixed divisor function.  The localized prefix coefficient
-$c(\boldsymbol q)$ is divisor bounded, and
-$|\lambda_{d,\boldsymbol q}^{\pm}|\le1$, so
-$|\Lambda_e|\ll\tau_K(e)$ for one fixed $K$.  Corollary~7.1 bounds the sum
-of the absolute discrepancies $|r(e)|$ through this level.  Since
-$\tau_K(e)\ll_\varepsilon e^\varepsilon$, the fixed divisor factor and the
-finitely many dyadic localizations are absorbed by its power saving.  This
-argument does not require the different prefixes to share one Rosser weight:
-the possibly prefix-dependent weights have already been collected into
-$\Lambda_e$ before the absolute discrepancy sum is used.
+For fixed $e$, each of the at most three ordered prefix primes is a divisor
+of $e$, and once the prefix is fixed, $d=e/u$ is determined.  Thus the number
+of representations is at most a fixed divisor function.  If
+$|c(\boldsymbol q)|\ll\tau_{K_0}(u)$ on the localized family, then
+$|\lambda_{d,\boldsymbol q}^{\pm}|\le1$ gives
+\[
+ |\Lambda_e|\ll (\log x)^{B}\tau_K(e)
+\]
+for fixed $B,K$ depending only on the decomposition, not on $x$.  The factor
+$(\log x)^B$ includes the fixed number of ordered slots and the finitely many
+smooth dyadic partitions.  Since $\tau_K(e)\ll_{K,\epsilon}e^\epsilon$, choose
+$\epsilon$ smaller than the fixed saving left in Corollary~7.1.  The triangle
+inequality then bounds the collected remainder by the absolute Type~I
+discrepancy sum with a still positive power saving.
 
-On the model side, $(u,d)=1$ separates the common prefix Euler factor from
-the sieve variable.  The standard dimension-one fundamental lemma, used as
-an external input, then gives $e^{-\gamma_E}F(s)$ or
-$e^{-\gamma_E}f(s)$ with $s=(1/2-s_0-\nu)/\zeta$.  In the $A_3$ lower
-branch the prefix is $(q_1,q_2,q_3)$, $z=q_3$, and the lower weight gives the
-$\Phi(s_3)$ contribution.  In the two-prime child upper branch the prefix is
-$(q_1,q_2)$, $z=q_2$, and the upper weight gives the $U_{\rm LS}$ option.
-The conversion of these model prime sums to the displayed Buchstab
-integrals uses \cite[Lemma 7]{Merikoski2020}.  Neither the fundamental lemma
-nor this application of Corollary~7.1 is formalized in Lean.
+This is also why prefix-dependent Rosser weights are allowed.  Corollary~7.1
+is not being applied to a single weight shared by all prefixes.  Instead all
+representations with the same $e$ are first collected into $\Lambda_e$; its
+absolute value is bounded as above, and only then is the corollary's sum of
+$|r(e)|$ used.  Summing the fixed finite family of exponent cells, or
+$O((\log x)^3)$ ordinary dyadic prime ranges before passing to fixed exponent
+cells, changes only the displayed polylogarithmic factor.
+
+The model term is treated prefix by prefix, before the remainders are
+collected.  The coprimality $(u,d)=1$ separates the prefix Euler factor from
+the sieve variable.  The standard dimension-one fundamental lemma in
+\cite[Chapter 12]{FriedlanderIwaniec2010}, used here as an external input
+uniformly for $z(\boldsymbol q)\asymp x^\zeta$, gives
+$e^{-\gamma_E}F(s)$ or $e^{-\gamma_E}f(s)$ with
+$s=(1/2-s_0-\nu)/\zeta$ in the limiting exponent notation.  Indeed, if
+$z(\boldsymbol q)\in[Z,2Z]$ with $Z=x^\zeta$, then the exact sieve parameter
+is
+\[
+ \frac{\log D}{\log z(\boldsymbol q)}
+ =\frac{1/2-s_0-\nu}{\zeta}+O(1/\log x).
+\]
+The required uniform fundamental lemma and the passage from this exact
+parameter to the limiting multiplier are part of the cited external
+linear-sieve input; cells meeting a transition point are treated in the
+one-sided direction used by the certificate.  For the $A_3$ lower-sieve branch the prefix is
+$(q_1,q_2,q_3)$, $z=q_3$, and the lower weight is replaced by its rational
+minorant $\Phi(s_3)$.  For the universal two-prime child upper branch the
+prefix is $(q_1,q_2)$, $z=q_2$, and the upper weight gives the
+$U_{\rm LS}$ option.  Merikoski's Lemma~7 then converts the remaining model
+prime sums to the displayed Buchstab integrals.
+
+The absolute remainder estimate above comes from Corollary~7.1 of Grimmelt
+and Merikoski.  The uniform fundamental lemma for the
+prefix-dependent cutoff and the conversion of its model main term are
+separate standard analytic inputs; neither they nor their branchwise
+application are formalized in Lean.
 \end{proof}
 
 The decomposition preceding the old linear-sieve term is
@@ -552,6 +658,12 @@ only the outer exponent boxes; every retained box lies in the unconditional
 interior supplied by Proposition \ref{prop:transfer}.  Summing the four
 disjoint priority classes proves the lemma.
 \end{proof}
+
+All conversions of model almost-prime sums below use exactly
+\cite[Lemma 7]{Merikoski2020}: its rough-number input is equation~(2.4), its
+measure is $d\beta_1\cdots d\beta_k/(\beta_1\cdots\beta_{k-1}\beta_k^2)$,
+and the numerical Buchstab bounds used here are precisely equation~(2.5).
+No stronger model-integral statement is assumed.
 
 Let $\omega$ be the Buchstab function and set
 \[
