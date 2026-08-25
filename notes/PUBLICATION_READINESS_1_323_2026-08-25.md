@@ -51,7 +51,7 @@ external inputs.
 - Code license: `LICENSE` (MIT); paper/prose license: `LICENSE-PAPER.md`
   (CC BY 4.0).
 
-## Internally closed gates
+## Internally closed finite checks
 
 1. The recursive Buchstab signs and base-minus-children inequalities are
    checked abstractly in Lean.
@@ -63,11 +63,12 @@ external inputs.
    comparison `1323/1000 < 13231/10000` and the finite implication
    `x>2^13230, 0<=n<=2x => n^1.323<x^1.3231`. The preceding analytic block
    estimate remains external.
-5. The manuscript states the Grimmelt--Merikoski Type-I/II ranges with their
-   squarefree-support and divisor-bounded coefficient hypotheses.
-6. The manuscript now contains a quantitative finite cross-condition
-   localization lemma and a prefix-uniform dimension-one linear-sieve
-   proposition.
+5. Lean checks the one-sided common/containing box geometry and the algebraic
+   normalization of `alpha/gamma`, `t+1`, `Phi`, and `U_LS`; the analytic use
+   of these facts remains in gates 4--5 below.
+6. Lean checks the affine `nu` ledger, an integer half-threshold fact, and an
+   abstract divisor-tuple count.  These do not close source transfer, Perron
+   localization, or the prefix-uniform linear sieve in gates 1--3 below.
 7. An exhaustive integer branch audit visits all `34,215,168` ordered
    three-prime boxes and `19,635,200` tail child boxes, confirms that every
    analytic branch occurs, and verifies the proof-adverse Buchstab-argument

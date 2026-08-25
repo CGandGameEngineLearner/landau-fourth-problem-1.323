@@ -74,7 +74,8 @@ outward-rounding rules, the convex ten-panel rational midpoint certificate
 for the elementary $F_6$ bound, the exact rational endpoint budget, and the
 final dyadic-to-pointwise real-power inequality.  The displayed endpoint
 budget still treats the cited analytic estimates, the Buchstab lower bound,
-and their finite Mellin--Perron transfer as external inputs.  This is a quantitative weak form of
+and their finite Mellin--Perron transfer as external inputs; Lean does not
+verify the localization or prefix-uniform sieve transfer.  This is a quantitative weak form of
 Landau's fourth problem: it produces a prime divisor exceeding $n^{1.323}$
 and hence a complementary cofactor smaller than $n^{0.677+o(1)}$, but it does
 not overcome the sieve parity barrier.
@@ -133,11 +134,12 @@ Section~\ref{sec:switching}.  The source transfer in
 Section~\ref{sec:transfer} records the cited external inputs and their
 normalization.  These conventional analytic inputs are not formalized in
 Lean.  Lean verifies the finite Buchstab signs, integer certificate,
-outward-rounding rules, affine interior-margin identities, half-integer
-separation and abstract representation bounds, proof-adverse cell geometry,
-model-normalization algebra, the elementary $F_6$ midpoint/convexity
-certificate, the exact rational endpoint budget, and the final real-power
-conversion; it should not be
+outward-rounding rules, proof-adverse cell geometry, model-normalization
+algebra, the elementary $F_6$ midpoint/convexity certificate, the exact
+rational endpoint budget, and the final real-power conversion.  Small audit
+lemmas additionally check only affine interior margins, the integer
+half-threshold, and an abstract representation-count bound; they do not prove
+the Perron or prefix-sieve transfer.  The formalization should not be
 read as having verified the full analytic theorem or solved Landau's fourth
 problem.
 \end{remark}
@@ -317,6 +319,10 @@ $U<V-1/2$.  Perron's formula with $c=1/\log x$ and height $T$ gives
    +O\!\left(\min\left\{1,
        \frac{1}{T\,|\log((V-1/2)/U)|}\right\}\right).
 \]
+The replacement of $V$ by $V-1/2$ only excludes the equality case.  It
+does not change the underlying representations or their divisor bounds.
+The truncation estimate in the displayed Perron formula remains an analytic
+input and is not part of the Lean audit.
 The factors $U^{-s}$ and $(V-1/2)^s$ belong to opposite coefficients.
 On this line their absolute values are $O_C(1)$, and the integral kernel
 has $L^1$ norm $O(\log T)$.  Moreover
@@ -358,25 +364,49 @@ $O(x^{1-\delta})$ for some $\delta=\delta(\nu)>0$.
 \end{proposition}
 
 \begin{proof}
-Insert the upper or lower Rosser weights $\lambda_d^\pm$, supported on
-$d\le D$ and composed of primes below $z$.  If the prefix product is $u$,
-then $ud\le x^{1/2-\nu}$ and $(u,d)=1$.  On collecting equal total moduli
-$e=ud$, the number of representations is bounded by a fixed divisor
-function (the prefix has at most three prime factors), while
-$|\lambda_d^\pm|\le1$.  Corollary~7.1 of
-\cite{GrimmeltMerikoski2025} bounds the sum of the absolute discrepancies
-over these total moduli.  Multiplication by the fixed divisor bound and the
-$O((\log x)^{O(1)})$ dyadic localizations costs $x^{o(1)}$, which is
-absorbed by its power saving.  The model sequence is multiplicative on the
-coprime prefix and Rosser variables.  If $z$ is the least prefix prime, the
-Rosser weight may depend on the particular prefix representation; after
-collecting $e=ud$, its absolute contribution is still bounded by the same
-fixed divisor function because $|\lambda_d^\pm|\le1$.  Thus the absolute
-Type~I discrepancy sum supplies exactly the required uniformity, without a
-fixed weight shared by all prefixes.  The usual fundamental lemma of the
-dimension-one linear sieve then gives the asserted $F$ and $f$ factors.  The
-conversion of the remaining prime sums to Buchstab integrals is the same as
-\cite[Lemma 7]{Merikoski2020}.
+For a localized ordered prefix $\boldsymbol q=(q_1,\ldots,q_j)$, $j\le3$,
+write $u=q_1\cdots q_j$.  Insert the upper or lower Rosser weights
+$\lambda_{d,\boldsymbol q}^{\pm}$ supported on $d\le D$ and on products of
+primes below the cutoff $z=z(\boldsymbol q)$.  When the cutoff is the least
+prefix prime, $z=q_j$; hence $(u,d)=1$.  Since $u$ has exponent $s_0$,
+\[
+ ud\le x^{s_0}x^{1/2-s_0-\nu}=x^{1/2-\nu},
+\]
+which is strictly inside the level in Corollary~7.1 of
+\cite{GrimmeltMerikoski2025}.
+
+Let $r(e)$ denote the modulus-$e$ discrepancy appearing in that corollary.
+After summing the localized prefixes and collecting equal total moduli
+$e=ud$, the remainder has the form
+\[
+ \sum_{e\le x^{1/2-\nu}}\Lambda_e r(e),\qquad
+ \Lambda_e=
+ \sum_{\substack{\boldsymbol q,d:\,q_1\cdots q_jd=e}}
+ c(\boldsymbol q)\lambda_{d,\boldsymbol q}^{\pm}.
+\]
+For fixed $e$, the ordered prefix has at most three prime slots and $d=e/u$
+is then determined.  Thus the number of representations is bounded by a
+fixed divisor function.  The localized prefix coefficient
+$c(\boldsymbol q)$ is divisor bounded, and
+$|\lambda_{d,\boldsymbol q}^{\pm}|\le1$, so
+$|\Lambda_e|\ll\tau_K(e)$ for one fixed $K$.  Corollary~7.1 bounds the sum
+of the absolute discrepancies $|r(e)|$ through this level.  Since
+$\tau_K(e)\ll_\varepsilon e^\varepsilon$, the fixed divisor factor and the
+finitely many dyadic localizations are absorbed by its power saving.  This
+argument does not require the different prefixes to share one Rosser weight:
+the possibly prefix-dependent weights have already been collected into
+$\Lambda_e$ before the absolute discrepancy sum is used.
+
+On the model side, $(u,d)=1$ separates the common prefix Euler factor from
+the sieve variable.  The standard dimension-one fundamental lemma, used as
+an external input, then gives $e^{-\gamma_E}F(s)$ or
+$e^{-\gamma_E}f(s)$ with $s=(1/2-s_0-\nu)/\zeta$.  In the $A_3$ lower
+branch the prefix is $(q_1,q_2,q_3)$, $z=q_3$, and the lower weight gives the
+$\Phi(s_3)$ contribution.  In the two-prime child upper branch the prefix is
+$(q_1,q_2)$, $z=q_2$, and the upper weight gives the $U_{\rm LS}$ option.
+The conversion of these model prime sums to the displayed Buchstab
+integrals uses \cite[Lemma 7]{Merikoski2020}.  Neither the fundamental lemma
+nor this application of Corollary~7.1 is formalized in Lean.
 \end{proof}
 
 The decomposition preceding the old linear-sieve term is
@@ -555,14 +585,14 @@ envelope
  \end{cases}
 \end{equation}
 For $2\le s\le4$ the identity
-$e^{-\gamma_{!E}}f(s)=2\log(s-1)/s$ and
+$e^{-\gamma_E}f(s)=2\log(s-1)/s$ and
 $\log(1+t)\ge2t/(2+t)$ give
 \begin{equation}\label{eq:Phi-lower}
- \Phi(s)\le e^{-\gamma_{!E}}f(s).
+ \Phi(s)\le e^{-\gamma_E}f(s).
 \end{equation}
 At $s=4$ the rational value is $1/2$, and the standard monotonicity of $f$
 gives the continuation in \eqref{eq:Phi}.  Similarly,
-$e^{-\gamma_{!E}}F(s)=2/s$ for $1\le s\le3$ and is at most $2/3$ for
+$e^{-\gamma_E}F(s)=2/s$ for $1\le s\le3$ and is at most $2/3$ for
 $s\ge3$.
 
 For an ordered triple put

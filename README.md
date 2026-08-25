@@ -66,14 +66,14 @@ re-expanding the native computations. The analytic Type-I/II, standard
 linear-sieve, Mellin--Perron transfer, and the quoted Buchstab-function lower
 bound remain conventional external inputs, as stated in the paper.
 
-The focused project additionally checks finite audit lemmas for the six
-analytic-review gates: affine `nu`-interior identities, half-integer strict
-threshold separation, an abstract divisor-tuple representation bound,
-one-sided common/containing cell geometry and program branch gates, and the
-algebraic normalization of `alpha/gamma`, the lower-sieve `t+1` threshold,
-`Phi(p/q)`, and `U_LS`. These lemmas make the transfer ledger easier to audit;
-they do not prove Grimmelt--Merikoski Corollaries 7.1/7.2, Perron localization
-for the actual sifted sums, or the standard dimension-one sieve functions.
+For audit bookkeeping, the focused project also checks affine `nu`-margin
+identities, one-sided common/containing cell geometry, program branch gates,
+and the algebraic normalization of `alpha/gamma`, the lower-sieve `t+1`
+threshold, `Phi(p/q)`, and `U_LS`.  Its gate-2/3 additions are only an integer
+half-threshold fact and an abstract divisor-tuple count; they do not construct
+the Perron localization or the prefix-dependent Rosser coefficients.  None of
+these lemmas proves Grimmelt--Merikoski Corollaries 7.1/7.2, their application
+to the actual sifted sums, or the standard dimension-one sieve functions.
 
 ## Reproduce the exact certificate
 
