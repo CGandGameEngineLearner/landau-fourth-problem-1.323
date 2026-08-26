@@ -48,7 +48,7 @@ external inputs.
   `notes/SOURCE_LOCK_1_323_2026-08-25.md`.
 - Submission metadata and cover-letter template:
   `paper/SUBMISSION_PACKAGE_1_323.md`.
-- Code license: `LICENSE` (MIT); paper/prose license: `LICENSE-PAPER.md`
+- Code license: `LICENSE` (GPL-2.0); paper/prose license: `LICENSE-PAPER.md`
   (CC BY 4.0).
 
 ## Internally closed finite checks

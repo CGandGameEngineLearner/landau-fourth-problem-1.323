@@ -5,8 +5,11 @@ This repository contains the manuscript and Lean/checker code for the
 
 Public GitHub mirror: <https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323>
 
-Verification code is MIT-licensed; the manuscript and project prose are
-CC BY 4.0. See `LICENSE` and `LICENSE-PAPER.md`.
+Copyright (C) 2026 JinWen Li.
+
+Verification code is licensed under the GNU General Public License
+Version 2 (`LICENSE`; SPDX `GPL-2.0-only`). The manuscript and project
+prose are CC BY 4.0 (`LICENSE-PAPER.md`).
 
 The main claim studied by the paper is
 

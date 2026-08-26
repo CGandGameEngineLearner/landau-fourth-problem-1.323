@@ -114,7 +114,7 @@ snapshot by an immutable archive and insert:
 - Repository URL: `https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323`
 - Release tag/commit: `[TAG OR COMMIT]`
 - Archive DOI: `[ZENODO OR OTHER DOI]`
-- Code license: `[LICENSE]`
+- Code license: `GPL-2.0-only`
 - SHA-256: `[FINAL PUBLIC ARCHIVE SHA-256]`
 
 ## Cover letter draft
