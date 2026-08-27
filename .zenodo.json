@@ -1,0 +1,31 @@
+{
+  "title": "A recursive Buchstab switching improvement for the greatest prime factor of n^2+1",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "GPL-2.0-only",
+  "version": "1.0.0",
+  "language": "eng",
+  "creators": [
+    {
+      "name": "Li, JinWen",
+      "affiliation": "SouthWest Petroleum University"
+    }
+  ],
+  "keywords": [
+    "Landau's fourth problem",
+    "greatest prime factor",
+    "Harman sieve",
+    "Buchstab identity",
+    "Lean",
+    "computer-assisted proof",
+    "quadratic polynomial"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323",
+      "relation": "isIdenticalTo",
+      "scheme": "url"
+    }
+  ],
+  "description": "<p>Source archive for the manuscript and verification code of a greatest-prime-factor weak form of Landau's fourth problem. The claimed theorem is <em>P<sup>+</sup>(n<sup>2</sup>+1) &gt; n<sup>1.323</sup></em> for infinitely many positive integers <em>n</em>, once the Grimmelt&ndash;Merikoski Type I/II estimates, the standard dimension-one linear sieve, and the finite Mellin&ndash;Perron transfer in the paper are granted.</p><p>The archive contains the TeX manuscript and rendered PDF, a Lean 4 project locked to toolchain v4.22.0 / Mathlib v4.22.0, a fixed-width C++ certificate, an arbitrary-precision Python audit, an exhaustive branch-coverage audit, and the analytic-transfer and source-version ledgers. The canonical grid is <code>1200 &times; 300 &times; 160</code>; both numerical implementations print <code>saving_lower=0.032303187971</code> and <code>CERTIFIED=YES</code>.</p><p>Verification code is licensed under GPL-2.0-only (<code>LICENSE</code>). The manuscript and project prose are CC BY 4.0 (<code>LICENSE-PAPER.md</code>). This deposit does not redistribute third-party PDFs recorded in the source-version ledger.</p>"
+}

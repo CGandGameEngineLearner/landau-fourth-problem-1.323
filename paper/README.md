@@ -41,6 +41,6 @@ The minimal arXiv source archive is generated from the repository root with
 `scripts/package_arxiv_source.sh`.
 
 The current author metadata is JinWen Li, SouthWest Petroleum University,
-`lifesize1@163.com`. Before public circulation, add acknowledgements,
-funding/competing-interest declarations, a data/code availability statement,
-and a permanent repository release identifier.
+`lifesize1@163.com`. The public GitHub tree is the Zenodo payload; after
+release `v1.0.0` mints a DOI, insert that DOI in the supplementary-material
+remark and tag `v1.0.1`.

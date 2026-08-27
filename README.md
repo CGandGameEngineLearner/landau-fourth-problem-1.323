@@ -143,8 +143,43 @@ external PDFs are recorded in
 lists the six analytic checks that should receive independent review.
 
 The author metadata in the current release is JinWen Li, SouthWest Petroleum
-University, `lifesize1@163.com`. Before final public release, add a permanent
-archive DOI and update the data/code availability statement.
+University, `lifesize1@163.com`.
+
+## Cite this archive
+
+Please cite the GitHub snapshot until a Zenodo DOI is issued. After the
+first Zenodo upload, replace the URL below by the version DOI and add it to
+`CITATION.cff`.
+
+```text
+Li, J. (2026). A recursive Buchstab switching improvement for the
+greatest prime factor of n^2+1 (Version 1.0.0).
+https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323
+```
+
+GitHub also reads `CITATION.cff`. Verification code is GPL-2.0-only; the
+manuscript and notes are CC BY 4.0.
+
+## Deposit on Zenodo
+
+This tree is the intended public archive. It does not contain local Cursor
+tooling or unpublished notes.
+
+1. Sign in at <https://zenodo.org> with the GitHub account that owns
+   `CGandGameEngineLearner/landau-fourth-problem-1.323`.
+2. Open **GitHub** in the Zenodo drop-down, enable this repository, and
+   save. Zenodo will then archive every new GitHub Release.
+3. On GitHub, create a release tagged `v1.0.0` from the commit that
+   contains `CITATION.cff` and `.zenodo.json`. The release title can be
+   `1.323 certificate archive`.
+4. Wait for the Zenodo page and DOI of the form `10.5281/zenodo.XXXXXXX`.
+5. Record that DOI in `CITATION.cff`, this README, and the paper's
+   supplementary-material remark, then tag `v1.0.1` so the archived text
+   cites itself.
+
+A manual upload is the GitHub source zip of the same tag, not a working
+copy that still has unpublished files. Metadata come from `.zenodo.json`.
+The Lean build directory `.lake/` is gitignored and must not be uploaded.
 
 ## AI-assisted development disclosure
 

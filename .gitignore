@@ -18,3 +18,7 @@ __pycache__/
 *.py[cod]
 tmp/
 NUL
+
+# Local tooling and unpublished notes; keep them out of GitHub/Zenodo
+.dragonli/
+notes/zhihu_*.md

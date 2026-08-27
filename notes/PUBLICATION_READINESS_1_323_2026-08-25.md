@@ -153,8 +153,10 @@ Before public circulation or submission:
 
 - verify the author line `JinWen Li`, affiliation, and email;
 - add acknowledgements and funding disclosures;
-- create a permanent repository release containing the exact source and
-  certificate files;
-- record its DOI or immutable archive identifier in the paper;
-- state the source-code license and the Lean/Mathlib toolchain versions;
+- create GitHub release `v1.0.0` so Zenodo archives this exact tree
+  (`CITATION.cff`, `.zenodo.json`);
+- record the Zenodo version DOI in the paper, README, and `CITATION.cff`,
+  then tag `v1.0.1`;
+- state the source-code license (`GPL-2.0-only`) and the Lean/Mathlib
+  toolchain versions (`leanprover/lean4:v4.22.0`, Mathlib `v4.22.0`);
 - obtain an independent analytic review of the six gates above.

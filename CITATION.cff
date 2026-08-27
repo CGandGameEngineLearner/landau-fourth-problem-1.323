@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: If you use this manuscript or verification code, please cite it as below.
+type: software
+title: "A recursive Buchstab switching improvement for the greatest prime factor of n^2+1"
+abstract: >-
+  Verification code and manuscript for a greatest-prime-factor weak form of
+  Landau's fourth problem. The claimed theorem is P+(n^2+1) > n^1.323 for
+  infinitely many positive integers n, subject to the Grimmelt--Merikoski
+  Type I/II estimates, the standard dimension-one linear sieve, and the
+  finite Mellin--Perron transfer recorded in the paper. An outward-rounded
+  integer certificate, recomputed in Lean 4, C++, and Python, proves a
+  recursive Buchstab-tail saving of at least 0.032303187971.
+authors:
+  - family-names: Li
+    given-names: JinWen
+    email: lifesize1@163.com
+    affiliation: "SouthWest Petroleum University"
+license:
+  - GPL-2.0-only
+  - CC-BY-4.0
+repository-code: "https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323"
+keywords:
+  - Landau's fourth problem
+  - greatest prime factor
+  - Harman sieve
+  - Buchstab identity
+  - Lean
+  - computer-assisted proof
+  - quadratic polynomial
+version: "1.0.0"
+date-released: "2026-08-27"
+# After the first Zenodo upload, add:
+# identifiers:
+#   - type: doi
+#     value: 10.5281/zenodo.XXXXXXXX

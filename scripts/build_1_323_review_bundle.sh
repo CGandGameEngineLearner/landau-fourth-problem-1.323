@@ -10,11 +10,15 @@ bundle_files=(
   README.md
   LICENSE
   LICENSE-PAPER.md
+  CITATION.cff
+  .zenodo.json
   ARXIV_SUBMISSION_GUIDE.md
   .gitignore
   lean
   paper
-  notes
+  notes/HARMAN_RECURSIVE_1_323_ANALYTIC_TRANSFER_AUDIT_2026-08-25.md
+  notes/PUBLICATION_READINESS_1_323_2026-08-25.md
+  notes/SOURCE_LOCK_1_323_2026-08-25.md
   scripts/audit_harman_recursive_branch_coverage.py
   scripts/audit_harman_recursive_tail.py
   scripts/certify_harman_recursive_tail.cpp
@@ -30,6 +34,7 @@ for bundle_file in "${bundle_files[@]}"; do
   fi
 done
 
-tar -czf "$archive_path" -C "$project_root" "${bundle_files[@]}"
+tar --exclude='lean/.lake' --exclude='lean/build' \
+  -czf "$archive_path" -C "$project_root" "${bundle_files[@]}"
 sha256sum "$archive_path" | awk '{print $1 "  landau-1.323-review-bundle.tar.gz"}' > "$checksum_path"
 cat "$checksum_path"
