@@ -36,9 +36,10 @@ explicitly acknowledged.
   of the recursive `1.323` certificate; unrelated Gaussian/Atkin--Lehner
   research modules are intentionally excluded.
 - `scripts/`: exact C++, arbitrary-precision Python, and branch-coverage
-  audits.
+  audits, plus arXiv and Zenodo packaging scripts.
 - `notes/`: analytic-transfer audit, source-version hashes, and publication
   readiness ledger.
+- `CITATION.cff`, `.zenodo.json`: citation and Zenodo deposit metadata.
 
 ## Reproduce the Lean formalization
 
@@ -135,6 +136,11 @@ To create the minimal arXiv source upload, run
 `output/landau_lpf_1_323_arxiv_source.tar.gz`, a tarball containing only the
 main `.tex` file; arXiv's source processor will generate the PDF itself.
 
+To create the Zenodo/GitHub-style source zip from a clean commit, run
+`scripts/package_zenodo_source.sh`. It writes
+`output/landau-fourth-problem-1.323-v1.0.0.zip` from `git archive` and must
+not be committed.
+
 ## External inputs and review boundary
 
 The exact source versions, theorem locations, and SHA-256 hashes of the
@@ -162,24 +168,36 @@ manuscript and notes are CC BY 4.0.
 
 ## Deposit on Zenodo
 
-This tree is the intended public archive. It does not contain local Cursor
-tooling or unpublished notes.
+The Git-tracked tree is the public archive. Local Cursor tooling, Lean build
+products, third-party PDFs under `tmp/`, unpublished `notes/zhihu_*.md`
+files, and generated zip/tar archives are gitignored and must not be
+uploaded.
+
+Preferred path (GitHub integration):
 
 1. Sign in at <https://zenodo.org> with the GitHub account that owns
    `CGandGameEngineLearner/landau-fourth-problem-1.323`.
 2. Open **GitHub** in the Zenodo drop-down, enable this repository, and
    save. Zenodo will then archive every new GitHub Release.
-3. On GitHub, create a release tagged `v1.0.0` from the commit that
-   contains `CITATION.cff` and `.zenodo.json`. The release title can be
-   `1.323 certificate archive`.
+3. Commit the public tree, tag `v1.0.0`, and create a GitHub Release from
+   that tag. The release title can be `1.323 certificate archive`.
 4. Wait for the Zenodo page and DOI of the form `10.5281/zenodo.XXXXXXX`.
 5. Record that DOI in `CITATION.cff`, this README, and the paper's
    supplementary-material remark, then tag `v1.0.1` so the archived text
    cites itself.
 
-A manual upload is the GitHub source zip of the same tag, not a working
-copy that still has unpublished files. Metadata come from `.zenodo.json`.
-The Lean build directory `.lake/` is gitignored and must not be uploaded.
+Manual upload, if GitHub integration is unavailable: from a clean checkout
+of the same tag run `scripts/package_zenodo_source.sh`, or the equivalent
+
+```text
+git archive --format=zip --prefix=landau-fourth-problem-1.323-v1.0.0/ \
+  -o output/landau-fourth-problem-1.323-v1.0.0.zip HEAD
+```
+
+Upload that zip. Do not zip a dirty working copy. Paste the metadata from
+`.zenodo.json`; the record license ID must be the Zenodo vocabulary value
+`gpl-2.0-only`. The manuscript remains CC BY 4.0 as stated in
+`LICENSE-PAPER.md`.
 
 ## AI-assisted development disclosure
 

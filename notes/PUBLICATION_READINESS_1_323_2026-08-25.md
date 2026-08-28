@@ -42,6 +42,7 @@ external inputs.
 - Lean aggregation:
   `Landau/HarmanRecursiveCertificateCanonical.lean`.
 - Review-bundle builder: `scripts/build_1_323_review_bundle.sh`.
+- Zenodo source packager: `scripts/package_zenodo_source.sh`.
 - Generated review snapshot:
   `output/landau-1.323-review-bundle.tar.gz` with adjacent SHA-256 file.
 - Locked external-source ledger:
@@ -153,8 +154,8 @@ Before public circulation or submission:
 
 - verify the author line `JinWen Li`, affiliation, and email;
 - add acknowledgements and funding disclosures;
-- create GitHub release `v1.0.0` so Zenodo archives this exact tree
-  (`CITATION.cff`, `.zenodo.json`);
+- create GitHub release `v1.0.0` from a clean commit so Zenodo archives
+  this exact tree (`CITATION.cff`, `.zenodo.json`, license ID `gpl-2.0-only`);
 - record the Zenodo version DOI in the paper, README, and `CITATION.cff`,
   then tag `v1.0.1`;
 - state the source-code license (`GPL-2.0-only`) and the Lean/Mathlib

@@ -4,14 +4,15 @@ lean/build/
 
 # TeX build products
 build/
-output/*.tar.gz
-output/*.sha256
-output/*arxiv_source.tar.gz
-output/*arxiv_source.sha256
 paper/*.aux
 paper/*.log
 paper/*.out
 paper/*.synctex.gz
+
+# Generated archives and checksums; keep only the rendered PDF in Git
+output/*.tar.gz
+output/*.zip
+output/*.sha256
 
 # Python and local temporary data
 __pycache__/

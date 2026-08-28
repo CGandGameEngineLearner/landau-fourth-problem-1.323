@@ -113,8 +113,9 @@ snapshot by an immutable archive and insert:
 
 - Repository URL: `https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323`
 - Release tag: `v1.0.0` (first Zenodo snapshot; use `v1.0.1` after the DOI is inserted)
+- Zenodo source zip: `scripts/package_zenodo_source.sh` or the GitHub source zip of tag `v1.0.0`
 - Archive DOI: `[ZENODO VERSION DOI, e.g. 10.5281/zenodo.XXXXXXX]`
-- Code license: `GPL-2.0-only`
+- Code license: `GPL-2.0-only` (Zenodo vocabulary ID `gpl-2.0-only`)
 - Paper/prose license: `CC BY 4.0`
 - SHA-256: `[ZENODO OR GITHUB SOURCE-ZIP SHA-256]`
 

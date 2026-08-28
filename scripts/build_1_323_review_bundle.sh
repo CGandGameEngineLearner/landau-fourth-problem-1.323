@@ -24,6 +24,7 @@ bundle_files=(
   scripts/certify_harman_recursive_tail.cpp
   scripts/build_1_323_review_bundle.sh
   scripts/package_arxiv_source.sh
+  scripts/package_zenodo_source.sh
   output/landau_lpf_1_323.pdf
 )
 
