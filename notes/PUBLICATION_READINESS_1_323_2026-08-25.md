@@ -154,7 +154,7 @@ Before public circulation or submission:
 
 - verify the author line `JinWen Li`, affiliation, and email;
 - add acknowledgements and funding disclosures;
-- create GitHub release `v1.0.0` from a clean commit so Zenodo archives
+- create GitHub release `v1.1.0` from a clean commit so Zenodo archives
   this exact tree (`CITATION.cff`, `.zenodo.json`, license ID `gpl-2.0-only`);
 - record the Zenodo version DOI in the paper, README, and `CITATION.cff`,
   then tag `v1.0.1`;

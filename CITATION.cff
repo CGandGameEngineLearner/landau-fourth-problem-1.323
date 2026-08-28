@@ -27,7 +27,7 @@ keywords:
   - Lean
   - computer-assisted proof
   - quadratic polynomial
-version: "1.0.0"
+version: "1.1.0"
 date-released: "2026-08-28"
 # After the first Zenodo upload, add:
 # identifiers:

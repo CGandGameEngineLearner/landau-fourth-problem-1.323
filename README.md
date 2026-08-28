@@ -138,7 +138,7 @@ main `.tex` file; arXiv's source processor will generate the PDF itself.
 
 To create the Zenodo/GitHub-style source zip from a clean commit, run
 `scripts/package_zenodo_source.sh`. It writes
-`output/landau-fourth-problem-1.323-v1.0.0.zip` from `git archive` and must
+`output/landau-fourth-problem-1.323-v1.1.0.zip` from `git archive` and must
 not be committed.
 
 ## External inputs and review boundary
@@ -159,7 +159,7 @@ first Zenodo upload, replace the URL below by the version DOI and add it to
 
 ```text
 Li, J. (2026). A recursive Buchstab switching improvement for the
-greatest prime factor of n^2+1 (Version 1.0.0).
+greatest prime factor of n^2+1 (Version 1.1.0).
 https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323
 ```
 
@@ -179,7 +179,7 @@ Preferred path (GitHub integration):
    `CGandGameEngineLearner/landau-fourth-problem-1.323`.
 2. Open **GitHub** in the Zenodo drop-down, enable this repository, and
    save. Zenodo will then archive every new GitHub Release.
-3. Commit the public tree, tag `v1.0.0`, and create a GitHub Release from
+3. Commit the public tree, tag `v1.1.0`, and create a GitHub Release from
    that tag. The release title can be `1.323 certificate archive`.
 4. Wait for the Zenodo page and DOI of the form `10.5281/zenodo.XXXXXXX`.
 5. Record that DOI in `CITATION.cff`, this README, and the paper's
@@ -190,8 +190,8 @@ Manual upload, if GitHub integration is unavailable: from a clean checkout
 of the same tag run `scripts/package_zenodo_source.sh`, or the equivalent
 
 ```text
-git archive --format=zip --prefix=landau-fourth-problem-1.323-v1.0.0/ \
-  -o output/landau-fourth-problem-1.323-v1.0.0.zip HEAD
+git archive --format=zip --prefix=landau-fourth-problem-1.323-v1.1.0/ \
+  -o output/landau-fourth-problem-1.323-v1.1.0.zip HEAD
 ```
 
 Upload that zip. Do not zip a dirty working copy. Paste the metadata from
