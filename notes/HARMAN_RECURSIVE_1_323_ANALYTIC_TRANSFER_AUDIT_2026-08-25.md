@@ -186,6 +186,10 @@ maximum.  Omitting `2<s<2.01` gives zero and is harmless.
 
 ### Gate-3 closure now written in the manuscript
 
+The main text now gives a compact proof roadmap, while the complete
+per-prefix sequence, Rosser formula, collected remainder, endpoint check,
+and `s<1` upper-sieve treatment are retained in Appendix A of the manuscript.
+
 For each localized prefix `q=(q1,...,qj)`, `j<=3`, the manuscript now
 defines the nonnegative cofactor sequence, its actual divisibility sums,
 and the complete model sums

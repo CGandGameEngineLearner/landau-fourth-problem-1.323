@@ -435,303 +435,34 @@ $O(x^{1-\delta})$ for some $\delta=\delta(\nu)>0$.
 \end{proposition}
 
 \begin{proof}
-\par\smallskip\noindent\textit{The sequence for one prefix.}\quad
-Fix one smooth dyadic cell and a prefix
-$\boldsymbol q=(q_1,\ldots,q_j)$, $j\le3$, with product $u$.  The nonnegative
-sequence to be sifted is
+For each localized prefix, insert the upper or lower Rosser weights at
+level \(D=x^{1/2-s_0-\nu}\).  The per-prefix inequalities are the
+dimension-one formulae (12.12)--(12.14) of
+\cite[Chapter 12, p. 236]{FriedlanderIwaniec2010}.  Summing these
+inequalities first and then collecting \(e=ud\) gives a coefficient
+\(\Lambda_e^\pm\) depending only on the total modulus.  The detailed
+argument in Appendix~\ref{app:prefix-sieve} proves
 \[
- a_{\boldsymbol q}(m)
- :=|\Acal_{um}|\,\psi_P(um)\log(um)\,w_{\boldsymbol q}(m),
+ |\Lambda_e^\pm|\ll(\log x)^B\tau_K(e),\qquad
+ ud\le x^{1/2-\nu},
 \]
-where $w_{\boldsymbol q}$ denotes the fixed smooth cofactor localization;
-removing it by Mellin inversion gives the same formula with a fixed
-polylogarithmic loss.  For squarefree $d\mid P(z(\boldsymbol q))$, put
-\[
- |\Acal_{\boldsymbol q,d}|:=\sum_{d\mid m}a_{\boldsymbol q}(m).
-\]
-The corresponding model divisibility sum is
-\[
- |\Bcal_{\boldsymbol q,d}|:=
- X_b\sum_{d\mid m}\frac{\rho(um)}{um}
-       \psi_P(um)\log(um)\,w_{\boldsymbol q}(m),
-\]
-and define the unsifted localized model mass by
-\[
- X_{\boldsymbol q}:=|\Bcal_{\boldsymbol q,1}|.
-\]
-Write
-\begin{equation}\label{eq:prefix-density}
- r_{\boldsymbol q}(d):=
- |\Acal_{\boldsymbol q,d}|-|\Bcal_{\boldsymbol q,d}|.
-\end{equation}
-This is exactly the actual-minus-model discrepancy to which the Type-I input
-is applied; we do not replace it by a pointwise assertion
-$g(d)=\rho(d)/d$.  Every prime factor of $d$ is strictly below the
-least prefix prime $q_j$, while every prime factor of $u$ is at least $q_j$;
-hence $(u,d)=1$.
+so the absolute discrepancy sum in
+\cite[Corollary 7.1, p. 22]{GrimmeltMerikoski2025}, with \(a=h=1\),
+leaves a fixed power saving after all prefix cells are summed.
 
-After the smooth product and logarithm have been separated as in
-\cite[Sections 2.3 and 3.4]{Merikoski2020}, evaluate the weighted model sum
-over $d$ by the same Euler-product calculation as
-\cite[Lemma 8]{Merikoski2020} and
-\cite[Theorem 11.12]{FriedlanderIwaniec2010}.  This calculation furnishes a
-dimension-one local density $g(p)$ and a localized model mass
-$X_{\boldsymbol q}$.  Since $p<z$ implies $p\nmid u$, none of these local
-factors is changed by the prefix, and
-\[
- V_{\boldsymbol q}(z)
- :=\prod_{\substack{p<z(\boldsymbol q)\\p\nmid u}}(1-g(p))
- =\prod_{p<z(\boldsymbol q)}(1-g(p)).
-\]
-This is the same $V(z)$ and common Euler normalization as in Merikoski's
-Lemma~8.  Only $X_{\boldsymbol q}$ depends on the localized prefix.  The
-dimension-one hypothesis on the Euler product is unchanged for primes below
-the cutoff.
-
-For this individual prefix, insert the upper or lower Rosser weights
-$\lambda_{d,\boldsymbol q}^{\pm}$ of level $D$.  The weights are supported
-on squarefree $d\mid P(z(\boldsymbol q))$, $d<D$, and satisfy
-$|\lambda_{d,\boldsymbol q}^{\pm}|\le1$.  Their defining inequalities give
-\[
- S(\Acal(P)_u,z)\le
- \sum_{\substack{d\mid P(z)\\d<D}}
- \lambda_{d,\boldsymbol q}^{+}|\Acal_{\boldsymbol q,d}|,
- \qquad
- S(\Acal(P)_u,z)\ge
- \sum_{\substack{d\mid P(z)\\d<D}}
- \lambda_{d,\boldsymbol q}^{-}|\Acal_{\boldsymbol q,d}|.
-\]
-Apply the model Euler-product evaluation to the corresponding sums with
-$|\Bcal_{\boldsymbol q,d}|$, and use
-\eqref{eq:prefix-density} for the difference.  Equations (12.12)--(12.14) on
-p.~236 of \cite[Chapter 12]{FriedlanderIwaniec2010} then give, with
-$s_{\boldsymbol q}=\log D/\log z(\boldsymbol q)$,
-\begin{align}
- S(\Acal(P)_u,z(\boldsymbol q))
- &\le X_{\boldsymbol q}V_{\boldsymbol q}(z)
-   \left(F(s_{\boldsymbol q})
-      +O((\log D)^{-1/6})\right)
-   +|R_{\boldsymbol q}^{+}|,\label{eq:prefix-upper-sieve}\\
- S(\Acal(P)_u,z(\boldsymbol q))
- &\ge X_{\boldsymbol q}V_{\boldsymbol q}(z)
-   \left(f(s_{\boldsymbol q})
-      -O((\log D)^{-1/6})\right)
-   -|R_{\boldsymbol q}^{-}|,\label{eq:prefix-lower-sieve}
-\end{align}
-where
-\[
- R_{\boldsymbol q}^{\pm}
- :=\sum_{\substack{d\mid P(z(\boldsymbol q))\\d<D}}
-       \lambda_{d,\boldsymbol q}^{\pm}r_{\boldsymbol q}(d),\qquad
- |R_{\boldsymbol q}^{\pm}|
- \le\sum_{\substack{d\mid P(z(\boldsymbol q))\\d<D}}
-       |r_{\boldsymbol q}(d)|.
-\]
-The functions $F,f$ are the dimension-one linear-sieve functions in
-\cite[Chapter 12, (12.1)--(12.2), p. 235]{FriedlanderIwaniec2010}; in
-particular \eqref{eq:prefix-upper-sieve} is used directly for
-$s_{\boldsymbol q}\ge1$, and \eqref{eq:prefix-lower-sieve} for
-$s_{\boldsymbol q}\ge2$.  When $s<2$ the lower bound used here is the trivial
-bound zero, recorded by the convention $f(s)=0$.  These displayed inequalities are the
-precise use of the Iwaniec--Rosser sieve in this paper.
-
-\par\smallskip\noindent\textit{Summing the prefixes and the Type-I remainder.}\quad
-Now multiply \eqref{eq:prefix-upper-sieve} or
-\eqref{eq:prefix-lower-sieve} by the nonnegative localized prefix weight
-$c(\boldsymbol q)$ and sum over the ordered prefixes in the cell.  By the
-proof-adverse choice of its upper endpoint,
-\[
- u\le x^{s_0},\qquad D=x^{1/2-s_0-\nu},\qquad
- ud\le x^{1/2-\nu}.
-\]
-After collecting equal total moduli $e=ud$, the aggregate remainder is
-\begin{equation}\label{eq:collected-prefix-remainder}
- \mathcal R^{\pm}
- =\sum_{e\le x^{1/2-\nu}}\Lambda_e^{\pm}r(e)
-   +O_A(x^{-A}),\qquad
- \Lambda_e^{\pm}:=
- \sum_{\substack{\boldsymbol q,d:\,ud=e}}
- c(\boldsymbol q)\lambda_{d,\boldsymbol q}^{\pm},
-\end{equation}
-where $r(e)$ is the modulus-$e$ discrepancy in
-\cite[Corollary 7.1, p. 22]{GrimmeltMerikoski2025} with $a=h=1$; the
-$O_A(x^{-A})$ term is the fixed Mellin/partial-summation separation.
-This formula is asserted only after every prefix-dependent cofactor cutoff,
-smooth product weight, and ordering condition has been separated as in
-Lemma~\ref{lem:localization}.  The resulting vertical parameters are absorbed
-into $c(\boldsymbol q)$, uniformly in their integration ranges.  Without this
-separation, $r_{\boldsymbol q}(d)$ need not be a function of $e=ud$ alone and
-Corollary~7.1 could not be applied in the displayed form.
-
-For fixed $e$, each of the at most three ordered prefix primes is a divisor
-of $e$, and $d=e/u$ is then determined.  Thus, if
-$|c(\boldsymbol q)|\ll\tau_{K_0}(u)$, the fixed number of
-ordered representations and $|\lambda_{d,\boldsymbol q}^{\pm}|\le1$ give
-\begin{equation}\label{eq:Lambda-divisor-bound}
- |\Lambda_e^{\pm}|\ll(\log x)^B\tau_K(e)
-\end{equation}
-with fixed $B,K$, independent of $x$.  This is the essential point for the
-variable cutoff: the weights $\lambda_{d,\boldsymbol q}^{\pm}$ may depend on
-$\boldsymbol q$, because Corollary~7.1 is applied only after they have been
-collected into $\Lambda_e^{\pm}$.
-
-Write $\theta=7/64$ and choose the auxiliary $\varepsilon_{\rm GM}$ in
-Corollary~7.1 so that
-\[
- \delta_0:=(1-2\theta)\nu-\varepsilon_{\rm GM}/4>0.
-\]
-That corollary gives
-\[
- \sum_{e\le x^{1/2-\nu}}|r(e)|\ll x^{1-\delta_0}.
-\]
-For any $\kappa>0$, $\tau_K(e)\ll_{K,\kappa}e^\kappa$, and here
-$e\le x^{1/2-\nu}<x^{1/2}$.  Choosing $\kappa<2\delta_0$ in
-\eqref{eq:Lambda-divisor-bound}, and then absorbing $(\log x)^B$ and the
-$O((\log x)^3)$ ordinary dyadic prefix ranges, yields
-\begin{equation}\label{eq:prefix-remainder-power-saving}
- |\mathcal R^{\pm}|
- \ll (\log x)^B x^{\kappa/2}
-       \sum_{e\le x^{1/2-\nu}}|r(e)|
- \ll x^{1-\delta}
-\end{equation}
-for some fixed $\delta=\delta(\nu)>0$.  Thus the remainder is small only
-after the whole multiple prefix sum is formed; no per-prefix power saving is
-claimed.  The summed model main term on a fixed smooth $P$-block is of order
-$x$ times the corresponding fixed model integral, so
-\eqref{eq:prefix-remainder-power-saving} is absorbed as $x\to\infty$.
-On every retained cell $D$ is a fixed positive power of $x$; hence the
-$(\log D)^{-1/6}$ terms in
-\eqref{eq:prefix-upper-sieve}--\eqref{eq:prefix-lower-sieve} are uniform
-$o(1)$ multiples of the summed model main term.
-
-\par\smallskip\noindent\textit{The three-prime lower-sieve branch.}\quad
-Here $u=q_1q_2q_3$, $z(\boldsymbol q)=q_3$, and
-$s_0$ is the upper endpoint for $\beta_1+\beta_2+\beta_3$.  For fixed
-interior margin $\nu$, the pointwise parameter and the proof-adverse cell
-parameter are respectively
-\[
-\begin{aligned}
- s_{3,\nu}
- &=\frac{1/2-\beta_1-\beta_2-\beta_3-\nu}{\beta_3},\\
- \widehat s_{3,\nu}
- &=\frac{1/2-s_0-\nu}{\beta_3}+O(1/\log x)
- \le s_{3,\nu}+O(1/\log x).
-\end{aligned}
-\]
-Summing \eqref{eq:prefix-lower-sieve} gives
-\[
- \sum_{q_1,q_2,q_3}c(\boldsymbol q)
- S(\Acal(P)_{q_1q_2q_3},q_3)
- \ge
- \sum_{q_1,q_2,q_3}c(\boldsymbol q)X_{\boldsymbol q}V_{\boldsymbol q}(q_3)
- \{f(\widehat s_{3,\nu})+o(1)\}-O(x^{1-\delta}).
-\]
-After removal of the common Euler factor, replace
-$e^{-\gamma_E}f(\widehat s_{3,\nu})$ by the rational minorant
-$\Phi(\widehat s_{3,\nu})$.  The use of the cell upper endpoint makes this
-a lower, not an upper, weight.  If $\widehat s_{3,\nu}\le2$, then $f=0$ and
-the lower bound used by the certificate is zero.  In fact its first positive threshold is
-$2.01$, so a degenerate cell cannot receive a positive lower-sieve weight.
-
-There is also no loss of Type-I level at the endpoint $\alpha=7/6$.  Since
-\[
- \tau_\nu=\frac{3/2-\alpha-3\nu}{2},
- \]
-the worst three-prime cell satisfies $s_0<3\tau_\nu$; at
-$\alpha=7/6$ one has
-\[
- 3\tau_\nu=\frac12-\frac92\nu,\qquad
- \frac12-s_0-\nu>\frac72\nu.
-\]
-For $\alpha>7/6$ the available margin is larger.  Thus $D$ remains a
-positive power of $x$ in the three-prime branch.  The displayed limiting
-weight $\Phi(s_3)$ in \eqref{eq:A3lower} is obtained only after first taking
-$x\to\infty$ at fixed $\nu$ and then letting $\nu\to0^+$; cells crossing
-$s=2,3,4$ are taken in the one-sided direction and their boundary loss tends
-to zero.
-
-\par\smallskip\noindent\textit{The two-prime child upper sieve.}\quad
-Here $u=q_1q_2$, $z(\boldsymbol q)=q_2$, and
-$s_0$ is the upper endpoint for $\beta_1+\beta_2$.  On every retained box
-the proof-adverse mesh has a positive gap $1/2-s_0$; since the mesh is finite,
-choose one $\nu$ smaller than the minimum of these positive gaps.  Then
-\[
-\begin{aligned}
- s_{2,\nu}
- &=\frac{1/2-\beta_1-\beta_2-\nu}{\beta_2},\\
- \widehat s_{2,\nu}
- &=\frac{1/2-s_0-\nu}{\beta_2}+O(1/\log x)
- \le s_{2,\nu}+O(1/\log x),
-\end{aligned}
-\]
-and $\widehat s_{2,\nu}>0$ for large $x$.
-On boxes with $\widehat s_{2,\nu}\ge1$, summing
-\eqref{eq:prefix-upper-sieve} gives
-\[
- \sum_{q_1,q_2}c(\boldsymbol q)
- S(\Acal(P)_{q_1q_2},q_2)
- \le
- \sum_{q_1,q_2}c(\boldsymbol q)X_{\boldsymbol q}V_{\boldsymbol q}(q_2)
- \{F(\widehat s_{2,\nu})+o(1)\}+O(x^{1-\delta}).
-\]
-For $1\le\widehat s_{2,\nu}\le3$, equations (12.1)--(12.2) give
-$e^{-\gamma_E}F(\widehat s_{2,\nu})=2/\widehat s_{2,\nu}$; after the
-$d\beta_2/\beta_2$ measure this is
-$2/(1/2-s_0-\nu)$, which is at least the pointwise
-$2/(1/2-\beta_1-\beta_2-\nu)$.  For
-$\widehat s_{2,\nu}\ge3$, monotonicity gives the second upper coefficient
-$2/(3\beta_2)$.
-
-It remains to cover $0<\widehat s_{2,\nu}<1$, where the Chapter~12 formula
-cannot be applied directly at $z=q_2$.  Fix $\omega>0$ and put
-$z_*:=D^{1-\omega}$.  For large $x$, $z_*<D<q_2$, and positivity gives
-\[
- S(\Acal(P)_{q_1q_2},q_2)
- \le S(\Acal(P)_{q_1q_2},z_*).
-\]
-The new sieve parameter is $s_*=1/(1-\omega)>1$, so
-\eqref{eq:prefix-upper-sieve} applies at $z_*$.  Letting first
-$x\to\infty$ and then $\omega\to0^+$ gives, after Euler normalization, the
-same coefficient $2/(1/2-s_0-\nu)$.  Thus all positive-level boxes are
-covered by the proof-adverse fixed-margin envelope
-\[
- U_{{\rm LS},\nu}(\beta_1,\beta_2)
- :=\max\left\{\frac2{1/2-\beta_1-\beta_2-\nu},
-                 \frac2{3\beta_2}\right\}.
-\]
-Here decreasing the sieve parameter by using the upper endpoint $s_0$ can
-only enlarge the upper linear-sieve function; the containing beta endpoints
-used by the certificate enlarge the displayed envelope once more.
-If a box has no positive level after inserting the fixed margin, that box is
-not assigned a nontrivial sieve estimate; the certificate uses the containing
-upper branch or discards the associated tail saving.  Letting $\nu\to0^+$
-after the uniform estimate gives exactly the displayed $U_{\rm LS}$ in
-\eqref{eq:Tlower}.  The transition at $s=3$ is handled by taking the larger
-of the two upper expressions, which is the one-sided choice used by the
-integer certificate.
-
-\par\smallskip\noindent\textit{Model integrals and scope.}\quad
-For $z(\boldsymbol q)\in[Z,2Z]$, $Z=x^\zeta$, the exact parameter satisfies
-\[
- \frac{\log D}{\log z(\boldsymbol q)}
- =\frac{1/2-s_0-\nu}{\zeta}+O(1/\log x).
-\]
-The model term is treated prefix by prefix before the remainders are
-collected.  Merikoski's Lemma~7, with its hypotheses on smooth localization,
-ordered well-behaved prime regions, and fixed positive margins, converts the
-summed model terms into \eqref{eq:A3lower} and the $U_{\rm LS}$ contribution
-inside \eqref{eq:Tlower}.
-
-The proposition therefore uses two distinct external results: Chapter~12 of
-\cite{FriedlanderIwaniec2010} for the per-prefix main terms
-\eqref{eq:prefix-upper-sieve}--\eqref{eq:prefix-lower-sieve}, and
-Grimmelt--Merikoski Corollary~7.1 for the collected absolute remainder
-\eqref{eq:prefix-remainder-power-saving}.  Neither the prefix-dependent
-Rosser weights, this application of Corollary~7.1, nor the passage to the
-model integrals is formalized in Lean.
+The same appendix treats the two uses separately.  For the \(A_3\)
+lower branch it proves that the three-prime level does not degenerate at
+\(\alpha=7/6\), and that \(s\le2\) contributes zero.  For the two-prime
+upper branch it obtains \(U_{\rm LS}\); when \(0<s<1\), the cutoff is
+lowered to \(z_*=D^{1-\omega}\) before the Chapter~12 upper sieve is
+applied.  Merikoski's Lemma~7 then converts the summed model terms to
+\eqref{eq:A3lower} and \eqref{eq:Tlower}.  This proves the proposition
+subject to the external analytic inputs stated in
+Remark~\ref{rem:prefix-sieve-limit}.
 \end{proof}
 
 \begin{remark}[Limitation of the prefix-sieve transfer]
+\label{rem:prefix-sieve-limit}
 Proposition~\ref{prop:prefix-sieve} is an analytic input to the candidate
 theorem, not a Lean theorem.  Its decisive step is that Corollary~7.1 may be
 applied after the prefix-dependent Rosser weights have been collected into
@@ -1459,6 +1190,309 @@ but it neither forces $m=1$ nor overcomes the parity barrier.  It is a new
 greatest-prime-factor weak form of Landau's fourth problem, not a proof of
 the prime-values conjecture.
 \end{remark}
+
+\appendix
+\section{Detailed prefix-uniform linear-sieve argument}
+\label{app:prefix-sieve}
+
+This appendix gives the full bookkeeping behind
+Proposition~\ref{prop:prefix-sieve}.  It is separated from the main
+argument for readability; its analytic inputs and limitations are unchanged.
+
+\par\smallskip\noindent\textit{The sequence for one prefix.}\par\noindent
+Fix one smooth dyadic cell and a prefix
+$\boldsymbol q=(q_1,\ldots,q_j)$, $j\le3$, with product $u$.  The nonnegative
+sequence to be sifted is
+\[
+ a_{\boldsymbol q}(m)
+ :=|\Acal_{um}|\,\psi_P(um)\log(um)\,w_{\boldsymbol q}(m),
+\]
+where $w_{\boldsymbol q}$ denotes the fixed smooth cofactor localization;
+removing it by Mellin inversion gives the same formula with a fixed
+polylogarithmic loss.  For squarefree $d\mid P(z(\boldsymbol q))$, put
+\[
+ |\Acal_{\boldsymbol q,d}|:=\sum_{d\mid m}a_{\boldsymbol q}(m).
+\]
+The corresponding model divisibility sum is
+\[
+ |\Bcal_{\boldsymbol q,d}|:=
+ X_b\sum_{d\mid m}\frac{\rho(um)}{um}
+       \psi_P(um)\log(um)\,w_{\boldsymbol q}(m),
+\]
+and define the unsifted localized model mass by
+\[
+ X_{\boldsymbol q}:=|\Bcal_{\boldsymbol q,1}|.
+\]
+Write
+\begin{equation}\label{eq:prefix-density}
+ r_{\boldsymbol q}(d):=
+ |\Acal_{\boldsymbol q,d}|-|\Bcal_{\boldsymbol q,d}|.
+\end{equation}
+This is exactly the actual-minus-model discrepancy to which the Type-I input
+is applied; we do not replace it by a pointwise assertion
+$g(d)=\rho(d)/d$.  Every prime factor of $d$ is strictly below the
+least prefix prime $q_j$, while every prime factor of $u$ is at least $q_j$;
+hence $(u,d)=1$.
+
+After the smooth product and logarithm have been separated as in
+\cite[Sections 2.3 and 3.4]{Merikoski2020}, evaluate the weighted model sum
+over $d$ by the same Euler-product calculation as
+\cite[Lemma 8]{Merikoski2020} and
+\cite[Theorem 11.12]{FriedlanderIwaniec2010}.  This calculation furnishes a
+dimension-one local density $g(p)$ and a localized model mass
+$X_{\boldsymbol q}$.  Since $p<z$ implies $p\nmid u$, none of these local
+factors is changed by the prefix, and
+\[
+ V_{\boldsymbol q}(z)
+ :=\prod_{\substack{p<z(\boldsymbol q)\\p\nmid u}}(1-g(p))
+ =\prod_{p<z(\boldsymbol q)}(1-g(p)).
+\]
+This is the same $V(z)$ and common Euler normalization as in Merikoski's
+Lemma~8.  Only $X_{\boldsymbol q}$ depends on the localized prefix.  The
+dimension-one hypothesis on the Euler product is unchanged for primes below
+the cutoff.
+
+For this individual prefix, insert the upper or lower Rosser weights
+$\lambda_{d,\boldsymbol q}^{\pm}$ of level $D$.  The weights are supported
+on squarefree $d\mid P(z(\boldsymbol q))$, $d<D$, and satisfy
+$|\lambda_{d,\boldsymbol q}^{\pm}|\le1$.  Their defining inequalities give
+\[
+ S(\Acal(P)_u,z)\le
+ \sum_{\substack{d\mid P(z)\\d<D}}
+ \lambda_{d,\boldsymbol q}^{+}|\Acal_{\boldsymbol q,d}|,
+ \qquad
+ S(\Acal(P)_u,z)\ge
+ \sum_{\substack{d\mid P(z)\\d<D}}
+ \lambda_{d,\boldsymbol q}^{-}|\Acal_{\boldsymbol q,d}|.
+\]
+Apply the model Euler-product evaluation to the corresponding sums with
+$|\Bcal_{\boldsymbol q,d}|$, and use
+\eqref{eq:prefix-density} for the difference.  Equations (12.12)--(12.14) on
+p.~236 of \cite[Chapter 12]{FriedlanderIwaniec2010} then give, with
+$s_{\boldsymbol q}=\log D/\log z(\boldsymbol q)$,
+\begin{align}
+ S(\Acal(P)_u,z(\boldsymbol q))
+ &\le X_{\boldsymbol q}V_{\boldsymbol q}(z)
+   \left(F(s_{\boldsymbol q})
+      +O((\log D)^{-1/6})\right)
+   +|R_{\boldsymbol q}^{+}|,\label{eq:prefix-upper-sieve}\\
+ S(\Acal(P)_u,z(\boldsymbol q))
+ &\ge X_{\boldsymbol q}V_{\boldsymbol q}(z)
+   \left(f(s_{\boldsymbol q})
+      -O((\log D)^{-1/6})\right)
+   -|R_{\boldsymbol q}^{-}|,\label{eq:prefix-lower-sieve}
+\end{align}
+where
+\[
+ R_{\boldsymbol q}^{\pm}
+ :=\sum_{\substack{d\mid P(z(\boldsymbol q))\\d<D}}
+       \lambda_{d,\boldsymbol q}^{\pm}r_{\boldsymbol q}(d),\qquad
+ |R_{\boldsymbol q}^{\pm}|
+ \le\sum_{\substack{d\mid P(z(\boldsymbol q))\\d<D}}
+       |r_{\boldsymbol q}(d)|.
+\]
+The functions $F,f$ are the dimension-one linear-sieve functions in
+\cite[Chapter 12, (12.1)--(12.2), p. 235]{FriedlanderIwaniec2010}; in
+particular \eqref{eq:prefix-upper-sieve} is used directly for
+$s_{\boldsymbol q}\ge1$, and \eqref{eq:prefix-lower-sieve} for
+$s_{\boldsymbol q}\ge2$.  When $s<2$ the lower bound used here is the trivial
+bound zero, recorded by the convention $f(s)=0$.  These displayed inequalities are the
+precise use of the Iwaniec--Rosser sieve in this paper.
+
+\par\smallskip\noindent\textit{Summing the prefixes and the Type-I remainder.}\par\noindent
+Now multiply \eqref{eq:prefix-upper-sieve} or
+\eqref{eq:prefix-lower-sieve} by the nonnegative localized prefix weight
+$c(\boldsymbol q)$ and sum over the ordered prefixes in the cell.  By the
+proof-adverse choice of its upper endpoint,
+\[
+ u\le x^{s_0},\qquad D=x^{1/2-s_0-\nu},\qquad
+ ud\le x^{1/2-\nu}.
+\]
+After collecting equal total moduli $e=ud$, the aggregate remainder is
+\begin{equation}\label{eq:collected-prefix-remainder}
+ \mathcal R^{\pm}
+ =\sum_{e\le x^{1/2-\nu}}\Lambda_e^{\pm}r(e)
+   +O_A(x^{-A}),\qquad
+ \Lambda_e^{\pm}:=
+ \sum_{\substack{\boldsymbol q,d:\,ud=e}}
+ c(\boldsymbol q)\lambda_{d,\boldsymbol q}^{\pm},
+\end{equation}
+where $r(e)$ is the modulus-$e$ discrepancy in
+\cite[Corollary 7.1, p. 22]{GrimmeltMerikoski2025} with $a=h=1$; the
+$O_A(x^{-A})$ term is the fixed Mellin/partial-summation separation.
+This formula is asserted only after every prefix-dependent cofactor cutoff,
+smooth product weight, and ordering condition has been separated as in
+Lemma~\ref{lem:localization}.  The resulting vertical parameters are absorbed
+into $c(\boldsymbol q)$, uniformly in their integration ranges.  Without this
+separation, $r_{\boldsymbol q}(d)$ need not be a function of $e=ud$ alone and
+Corollary~7.1 could not be applied in the displayed form.
+
+For fixed $e$, each of the at most three ordered prefix primes is a divisor
+of $e$, and $d=e/u$ is then determined.  Thus, if
+$|c(\boldsymbol q)|\ll\tau_{K_0}(u)$, the fixed number of
+ordered representations and $|\lambda_{d,\boldsymbol q}^{\pm}|\le1$ give
+\begin{equation}\label{eq:Lambda-divisor-bound}
+ |\Lambda_e^{\pm}|\ll(\log x)^B\tau_K(e)
+\end{equation}
+with fixed $B,K$, independent of $x$.  This is the essential point for the
+variable cutoff: the weights $\lambda_{d,\boldsymbol q}^{\pm}$ may depend on
+$\boldsymbol q$, because Corollary~7.1 is applied only after they have been
+collected into $\Lambda_e^{\pm}$.
+
+Write $\theta=7/64$ and choose the auxiliary $\varepsilon_{\rm GM}$ in
+Corollary~7.1 so that
+\[
+ \delta_0:=(1-2\theta)\nu-\varepsilon_{\rm GM}/4>0.
+\]
+That corollary gives
+\[
+ \sum_{e\le x^{1/2-\nu}}|r(e)|\ll x^{1-\delta_0}.
+\]
+For any $\kappa>0$, $\tau_K(e)\ll_{K,\kappa}e^\kappa$, and here
+$e\le x^{1/2-\nu}<x^{1/2}$.  Choosing $\kappa<2\delta_0$ in
+\eqref{eq:Lambda-divisor-bound}, and then absorbing $(\log x)^B$ and the
+$O((\log x)^3)$ ordinary dyadic prefix ranges, yields
+\begin{equation}\label{eq:prefix-remainder-power-saving}
+ |\mathcal R^{\pm}|
+ \ll (\log x)^B x^{\kappa/2}
+       \sum_{e\le x^{1/2-\nu}}|r(e)|
+ \ll x^{1-\delta}
+\end{equation}
+for some fixed $\delta=\delta(\nu)>0$.  Thus the remainder is small only
+after the whole multiple prefix sum is formed; no per-prefix power saving is
+claimed.  The summed model main term on a fixed smooth $P$-block is of order
+$x$ times the corresponding fixed model integral, so
+\eqref{eq:prefix-remainder-power-saving} is absorbed as $x\to\infty$.
+On every retained cell $D$ is a fixed positive power of $x$; hence the
+$(\log D)^{-1/6}$ terms in
+\eqref{eq:prefix-upper-sieve}--\eqref{eq:prefix-lower-sieve} are uniform
+$o(1)$ multiples of the summed model main term.
+
+\par\smallskip\noindent\textit{The three-prime lower-sieve branch.}\par\noindent
+Here $u=q_1q_2q_3$, $z(\boldsymbol q)=q_3$, and
+$s_0$ is the upper endpoint for $\beta_1+\beta_2+\beta_3$.  For fixed
+interior margin $\nu$, the pointwise parameter and the proof-adverse cell
+parameter are respectively
+\[
+\begin{aligned}
+ s_{3,\nu}
+ &=\frac{1/2-\beta_1-\beta_2-\beta_3-\nu}{\beta_3},\\
+ \widehat s_{3,\nu}
+ &=\frac{1/2-s_0-\nu}{\beta_3}+O(1/\log x)
+ \le s_{3,\nu}+O(1/\log x).
+\end{aligned}
+\]
+Summing \eqref{eq:prefix-lower-sieve} gives
+\[
+ \sum_{q_1,q_2,q_3}c(\boldsymbol q)
+ S(\Acal(P)_{q_1q_2q_3},q_3)
+ \ge
+ \sum_{q_1,q_2,q_3}c(\boldsymbol q)X_{\boldsymbol q}V_{\boldsymbol q}(q_3)
+ \{f(\widehat s_{3,\nu})+o(1)\}-O(x^{1-\delta}).
+\]
+After removal of the common Euler factor, replace
+$e^{-\gamma_E}f(\widehat s_{3,\nu})$ by the rational minorant
+$\Phi(\widehat s_{3,\nu})$.  The use of the cell upper endpoint makes this
+a lower, not an upper, weight.  If $\widehat s_{3,\nu}\le2$, then $f=0$ and
+the lower bound used by the certificate is zero.  In fact its first positive threshold is
+$2.01$, so a degenerate cell cannot receive a positive lower-sieve weight.
+
+There is also no loss of Type-I level at the endpoint $\alpha=7/6$.  Since
+\[
+ \tau_\nu=\frac{3/2-\alpha-3\nu}{2},
+ \]
+the worst three-prime cell satisfies $s_0<3\tau_\nu$; at
+$\alpha=7/6$ one has
+\[
+ 3\tau_\nu=\frac12-\frac92\nu,\qquad
+ \frac12-s_0-\nu>\frac72\nu.
+\]
+For $\alpha>7/6$ the available margin is larger.  Thus $D$ remains a
+positive power of $x$ in the three-prime branch.  The displayed limiting
+weight $\Phi(s_3)$ in \eqref{eq:A3lower} is obtained only after first taking
+$x\to\infty$ at fixed $\nu$ and then letting $\nu\to0^+$; cells crossing
+$s=2,3,4$ are taken in the one-sided direction and their boundary loss tends
+to zero.
+
+\par\smallskip\noindent\textit{The two-prime child upper sieve.}\par\noindent
+Here $u=q_1q_2$, $z(\boldsymbol q)=q_2$, and
+$s_0$ is the upper endpoint for $\beta_1+\beta_2$.  On every retained box
+the proof-adverse mesh has a positive gap $1/2-s_0$; since the mesh is finite,
+choose one $\nu$ smaller than the minimum of these positive gaps.  Then
+\[
+\begin{aligned}
+ s_{2,\nu}
+ &=\frac{1/2-\beta_1-\beta_2-\nu}{\beta_2},\\
+ \widehat s_{2,\nu}
+ &=\frac{1/2-s_0-\nu}{\beta_2}+O(1/\log x)
+ \le s_{2,\nu}+O(1/\log x),
+\end{aligned}
+\]
+and $\widehat s_{2,\nu}>0$ for large $x$.
+On boxes with $\widehat s_{2,\nu}\ge1$, summing
+\eqref{eq:prefix-upper-sieve} gives
+\[
+ \sum_{q_1,q_2}c(\boldsymbol q)
+ S(\Acal(P)_{q_1q_2},q_2)
+ \le
+ \sum_{q_1,q_2}c(\boldsymbol q)X_{\boldsymbol q}V_{\boldsymbol q}(q_2)
+ \{F(\widehat s_{2,\nu})+o(1)\}+O(x^{1-\delta}).
+\]
+For $1\le\widehat s_{2,\nu}\le3$, equations (12.1)--(12.2) give
+$e^{-\gamma_E}F(\widehat s_{2,\nu})=2/\widehat s_{2,\nu}$; after the
+$d\beta_2/\beta_2$ measure this is
+$2/(1/2-s_0-\nu)$, which is at least the pointwise
+$2/(1/2-\beta_1-\beta_2-\nu)$.  For
+$\widehat s_{2,\nu}\ge3$, monotonicity gives the second upper coefficient
+$2/(3\beta_2)$.
+
+It remains to cover $0<\widehat s_{2,\nu}<1$, where the Chapter~12 formula
+cannot be applied directly at $z=q_2$.  Fix $\omega>0$ and put
+$z_*:=D^{1-\omega}$.  For large $x$, $z_*<D<q_2$, and positivity gives
+\[
+ S(\Acal(P)_{q_1q_2},q_2)
+ \le S(\Acal(P)_{q_1q_2},z_*).
+\]
+The new sieve parameter is $s_*=1/(1-\omega)>1$, so
+\eqref{eq:prefix-upper-sieve} applies at $z_*$.  Letting first
+$x\to\infty$ and then $\omega\to0^+$ gives, after Euler normalization, the
+same coefficient $2/(1/2-s_0-\nu)$.  Thus all positive-level boxes are
+covered by the proof-adverse fixed-margin envelope
+\[
+ U_{{\rm LS},\nu}(\beta_1,\beta_2)
+ :=\max\left\{\frac2{1/2-\beta_1-\beta_2-\nu},
+                 \frac2{3\beta_2}\right\}.
+\]
+Here decreasing the sieve parameter by using the upper endpoint $s_0$ can
+only enlarge the upper linear-sieve function; the containing beta endpoints
+used by the certificate enlarge the displayed envelope once more.
+If a box has no positive level after inserting the fixed margin, that box is
+not assigned a nontrivial sieve estimate; the certificate uses the containing
+upper branch or discards the associated tail saving.  Letting $\nu\to0^+$
+after the uniform estimate gives exactly the displayed $U_{\rm LS}$ in
+\eqref{eq:Tlower}.  The transition at $s=3$ is handled by taking the larger
+of the two upper expressions, which is the one-sided choice used by the
+integer certificate.
+
+\par\smallskip\noindent\textit{Model integrals and scope.}\par\noindent
+For $z(\boldsymbol q)\in[Z,2Z]$, $Z=x^\zeta$, the exact parameter satisfies
+\[
+ \frac{\log D}{\log z(\boldsymbol q)}
+ =\frac{1/2-s_0-\nu}{\zeta}+O(1/\log x).
+\]
+The model term is treated prefix by prefix before the remainders are
+collected.  Merikoski's Lemma~7, with its hypotheses on smooth localization,
+ordered well-behaved prime regions, and fixed positive margins, converts the
+summed model terms into \eqref{eq:A3lower} and the $U_{\rm LS}$ contribution
+inside \eqref{eq:Tlower}.
+
+The proposition therefore uses two distinct external results: Chapter~12 of
+\cite{FriedlanderIwaniec2010} for the per-prefix main terms
+\eqref{eq:prefix-upper-sieve}--\eqref{eq:prefix-lower-sieve}, and
+Grimmelt--Merikoski Corollary~7.1 for the collected absolute remainder
+\eqref{eq:prefix-remainder-power-saving}.  Neither the prefix-dependent
+Rosser weights, this application of Corollary~7.1, nor the passage to the
+model integrals is formalized in Lean.
 
 \begin{thebibliography}{99}
 
