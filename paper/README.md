@@ -42,6 +42,5 @@ The minimal arXiv source archive is generated from the repository root with
 
 The current author metadata is JinWen Li, SouthWest Petroleum University,
 `lifesize1@163.com`. The public GitHub tree is the Zenodo payload. Package it with
-`scripts/package_zenodo_source.sh` or a GitHub Release tagged `v1.1.0`. After
-that release mints a DOI, insert the DOI in the supplementary-material
-remark and tag `v1.0.1`.
+`scripts/package_zenodo_source.sh` or a GitHub Release tagged `v1.1.0`. The
+Zenodo version DOI is `10.5281/zenodo.22140875`.

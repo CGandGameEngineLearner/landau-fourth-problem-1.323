@@ -29,7 +29,11 @@ keywords:
   - quadratic polynomial
 version: "1.1.0"
 date-released: "2026-08-28"
-# After the first Zenodo upload, add:
-# identifiers:
-#   - type: doi
-#     value: 10.5281/zenodo.XXXXXXXX
+doi: 10.5281/zenodo.22140875
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22140875
+    description: This version
+  - type: doi
+    value: 10.5281/zenodo.22140874
+    description: All versions
