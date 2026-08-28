@@ -184,13 +184,102 @@ For each threshold `t`, the interval where the true sieve parameter is at
 least `t` receives weight `4(t-2)/t^2`; overlapping intervals take the
 maximum.  Omitting `2<s<2.01` gives zero and is harmless.
 
-To apply the linear sieve uniformly after summing over prefix primes,
-combine the Rosser weights with the at most three prime indicators.  The
-number of representations is bounded by one fixed divisor function and
-the total modulus is below `x^(1/2-nu)`.  Hence Corollary 7.1 applies to the
-combined divisor-bounded coefficient.  Prime ordering and cell boundaries
-are removed by the same fixed Mellin/Perron localization used for the
-Type-II terms.
+### Gate-3 closure now written in the manuscript
+
+For each localized prefix `q=(q1,...,qj)`, `j<=3`, the manuscript now
+defines the nonnegative cofactor sequence, its actual divisibility sums,
+and the complete model sums
+
+```text
+r_q(d) = A_{q,d} - B_{q,d},
+B_{q,d} = X_b sum_{d|m} rho(um)/(um) * smooth weights,
+X_q = B_{q,1}.
+```
+
+Because every prime factor of a Rosser modulus `d` is below the least prefix
+prime `qj`, while every prime factor of `u=q1...qj` is at least `qj`, one has
+`(u,d)=1`.  The prefix Euler factor therefore separates from the sieve
+density.  Merikoski's Lemma 8 and the Chapter-11/12 Euler-product
+calculation then provide a multiplicative dimension-one density `g` with
+
+```text
+B_{q,d} = g(d) X_q + negligible model-smoothing error,
+V_q(z) = product_{p<z} (1-g(p)).
+```
+
+The manuscript deliberately does not identify this density pointwise with
+`rho(d)/d`; that shortcut is not the single-sequence calculation used by
+Merikoski.
+
+The precise per-prefix upper and lower formulae are cited as Opera de Cribro,
+Chapter 12, equations (12.12)--(12.14), p. 236:
+
+```text
+S(A_u,z) <= X_q V_q(z)(F(log D/log z)+O((log D)^(-1/6))) + R_q^+,
+S(A_u,z) >= X_q V_q(z)(f(log D/log z)+O((log D)^(-1/6))) - R_q^-.
+```
+
+Here `f(s)=0` for `s<=2`.  The Rosser weights may depend on the prefix because
+the proof first collects
+
+```text
+Lambda_e^pm = sum_{q,d: ud=e} c(q) lambda_{d,q}^pm.
+```
+
+For fixed `e`, the at-most-three ordered prefix primes are divisors of `e`
+and `d=e/u` is determined.  Thus
+
+```text
+|Lambda_e^pm| << (log x)^B tau_K(e)
+```
+
+for fixed `B,K`.  With `u<=x^s0` and
+`D=x^(1/2-s0-nu)`, every total modulus satisfies `ud<=x^(1/2-nu)`.
+Grimmelt--Merikoski Corollary 7.1, with `a=h=1` and `eta=nu`, gives an
+absolute discrepancy sum through this level.  Choosing its auxiliary
+epsilon and the divisor-bound exponent sufficiently small leaves a fixed
+power saving after the `O((log x)^3)` dyadic prefix ranges are summed.
+
+For the three-prime lower branch, at `alpha=7/6` one has
+
+```text
+3*tau_nu = 1/2 - 9*nu/2,
+1/2 - s0 - nu > 7*nu/2,
+```
+
+so the Type-I level does not degenerate at the endpoint.  Cells with exact
+lower-sieve parameter at most `2` receive zero; the certificate's first
+positive rational threshold is `2.01`.  On a finite cell the sieve level uses
+the upper endpoint `s0`, so its parameter is no larger than the pointwise
+`(1/2-beta1-beta2-beta3-nu)/beta3`; this is the lower-bound direction.  The two-prime upper branch is treated
+separately with prefix `(q1,q2)`, cutoff `q2`, and the fixed-margin envelope
+
+```text
+max(2/(1/2-beta1-beta2-nu), 2/(3*beta2)).
+```
+
+The direct Chapter-12 upper formula is used at cutoff `q2` only when its
+parameter is at least `1`.  If `0<s<1`, the proof lowers the cutoff to
+`z_*=D^(1-omega)<D<q2`, uses positivity
+`S(A_u,q2)<=S(A_u,z_*)`, applies the upper sieve with parameter
+`1/(1-omega)>1`, and then lets `omega` tend to zero.  This supplies the same
+first coefficient `2/(1/2-s0-nu)` without extending the cited linear-sieve
+theorem outside its range.
+
+Only after taking `x` to infinity at fixed `nu` is `nu` sent to zero, giving
+the displayed limiting `Phi(s3)` and `U_LS` integrands.  In the upper branch,
+using the cell upper endpoint decreases the exact sieve parameter and hence
+enlarges the upper linear-sieve function.
+
+### What remains external
+
+This closes the manuscript-level bookkeeping, not the analytic gate by
+formal verification.  A referee must still check that the dimension-one
+fundamental lemma is uniform when the cutoff is the least prefix prime, that
+the model-density decomposition above matches every localized branch, and
+that Corollary 7.1 accepts the collected `Lambda_e^pm` with the stated fixed
+divisor bound.  If any one of these fails, both the `A3` lower-sieve branch
+and the universal two-prime `U_LS` branch must be removed.
 
 ## 5. Lower bound for the three-prime term
 
@@ -215,9 +304,11 @@ A3_lower(alpha)
 The Type-II part is justified exactly as in the old three-prime transfer:
 choose the first eligible subset, place its squarefree product on the `N`
 side, and separate ordering and priority conditions by a finite smooth
-partition.  The lower-sieve part instead uses Corollary 7.1 as described in
+partition.  The lower-sieve part instead uses the per-prefix Chapter-12
+lower formula and the collected Corollary-7.1 remainder described in
 Section 4.  Since both are lower bounds for the same nonnegative child, the
-maximum is again a valid lower bound.
+maximum is again a valid lower bound after the aggregate remainder has been
+absorbed.
 
 For every Type-II child in the retained range the Buchstab argument is
 larger than `2.47`.  Indeed `beta_j<a` and ordering imply
