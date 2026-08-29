@@ -560,7 +560,9 @@ $\beta_1+\beta_2\le\xi_\nu$ 时取“基项上界减三素数下界”，最后�
 取最小值仍合法。引理~\ref{lem:localization-zh} 保持这些方向并吸收有限局部化。
 \end{proof}
 
-规范格子的穷尽分支审计访问 $34\,215\,168$ 个有序 $A_3$ 盒和
+\begin{remark}[穷尽分支覆盖]\label{rem:branch-coverage-zh}
+补充的分支覆盖审计仅使用整数比较检查完整规范格子。它访问
+$34\,215\,168$ 个有序 $A_3$ 盒和
 $19\,635\,200$ 个尾项二素数盒，所有分支均出现。四类最小 Buchstab 参数为
 \[
  5.206977117,\qquad 9.007506255,\qquad
@@ -568,6 +570,9 @@ $19\,635\,200$ 个尾项二素数盒，所有分支均出现。四类最小 Buch
 \]
 分别对应 $A_3$ Type II 下界、$R_1$ 基项、直接二素数 Type II 上界与递归
 基项上界，均满足所需的 $2.47$ 或 $4$ 阈值。
+审计最后输出
+\texttt{BRANCH\_LEDGER\_CERTIFIED=YES}。
+\end{remark}
 
 令 $L=\log(\tau/\gamma)$。完整递归上包络为
 \begin{equation}\label{eq:H-zh}
