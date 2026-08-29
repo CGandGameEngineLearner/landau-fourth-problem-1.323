@@ -143,7 +143,7 @@ main `.tex` file; arXiv's source processor will generate the PDF itself.
 
 To create the Zenodo/GitHub-style source zip from a clean commit, run
 `scripts/package_zenodo_source.sh`. It writes
-`output/landau-fourth-problem-1.323-v1.2.0.zip` from `git archive` and must
+`output/landau-fourth-problem-1.323-v1.2.1.zip` from `git archive` and must
 not be committed.
 
 ## External inputs and review boundary
@@ -162,12 +162,12 @@ University, `lifesize1@163.com`.
 
 ```text
 Li, J. (2026). A recursive Buchstab switching improvement for the
-greatest prime factor of n^2+1 (Version 1.2.0).
+greatest prime factor of n^2+1 (Version 1.2.1).
 https://doi.org/10.5281/zenodo.22140874
 ```
 
 The concept DOI `10.5281/zenodo.22140874` always resolves to the latest
-version. The version-specific DOI for `v1.2.0` will be recorded after Zenodo
+version. The version-specific DOI for `v1.2.1` will be recorded after Zenodo
 archives the GitHub Release. GitHub also reads `CITATION.cff`. Verification
 code is GPL-2.0-only; the manuscript and notes are CC BY 4.0.
 
@@ -194,8 +194,8 @@ Manual upload, if GitHub integration is unavailable: from a clean checkout
 of the same tag run `scripts/package_zenodo_source.sh`, or the equivalent
 
 ```text
-git archive --format=zip --prefix=landau-fourth-problem-1.323-v1.2.0/ \
-  -o output/landau-fourth-problem-1.323-v1.2.0.zip HEAD
+git archive --format=zip --prefix=landau-fourth-problem-1.323-v1.2.1/ \
+  -o output/landau-fourth-problem-1.323-v1.2.1.zip HEAD
 ```
 
 Upload that zip. Do not zip a dirty working copy. Paste the metadata from

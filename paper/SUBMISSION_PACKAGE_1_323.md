@@ -97,8 +97,8 @@ reproduction instructions. Before public release, replace the local review
 snapshot by an immutable archive and insert:
 
 - Repository URL: `https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323`
-- Release tag: `v1.2.0`
-- Zenodo source zip: `scripts/package_zenodo_source.sh` or the GitHub source zip of tag `v1.2.0`
+- Release tag: `v1.2.1`
+- Zenodo source zip: `scripts/package_zenodo_source.sh` or the GitHub source zip of tag `v1.2.1`
 - Archive DOI: pending version DOI under concept `10.5281/zenodo.22140874`
 - Concept DOI: `10.5281/zenodo.22140874`
 - Code license: `GPL-2.0-only` (Zenodo vocabulary ID `gpl-2.0-only`)

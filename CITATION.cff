@@ -27,7 +27,7 @@ keywords:
   - Lean
   - computer-assisted proof
   - quadratic polynomial
-version: "1.2.0"
+version: "1.2.1"
 date-released: "2026-08-29"
 doi: 10.5281/zenodo.22140874
 identifiers:
