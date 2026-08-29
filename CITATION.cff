@@ -27,13 +27,10 @@ keywords:
   - Lean
   - computer-assisted proof
   - quadratic polynomial
-version: "1.1.0"
-date-released: "2026-08-28"
-doi: 10.5281/zenodo.22140875
+version: "1.2.0"
+date-released: "2026-08-29"
+doi: 10.5281/zenodo.22140874
 identifiers:
-  - type: doi
-    value: 10.5281/zenodo.22140875
-    description: This version
   - type: doi
     value: 10.5281/zenodo.22140874
     description: All versions

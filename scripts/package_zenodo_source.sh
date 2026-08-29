@@ -6,7 +6,7 @@ set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 project_root=$(cd "$script_dir/.." && pwd)
-version="${1:-1.1.0}"
+version="${1:-1.2.0}"
 prefix="landau-fourth-problem-1.323-v${version}"
 archive_path="$project_root/output/${prefix}.zip"
 checksum_path="$project_root/output/${prefix}.sha256"

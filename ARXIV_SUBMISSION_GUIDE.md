@@ -46,7 +46,7 @@ simplest option.
    - Author: `JinWen Li`
    - Affiliation: `SouthWest Petroleum University`
    - Email: `lifesize1@163.com`
-   - Comments: `15 pages; Lean 4 formalization and exact-integer verification code available on GitHub.`
+   - Comments: `19 pages; Lean 4 formalization and exact-integer verification code available on GitHub.`
 
 4. Paste the abstract from the TeX source. The source already contains the
    same title, author, affiliation, email, keywords, and abstract.
@@ -81,8 +81,8 @@ or unrelated files in the source package.
 Record the arXiv identifier in the GitHub README and, if desired, add it to
 the paper's references or metadata in a new Git commit. Keep the Lean/GitHub
 repository synchronized with the announced source version. Deposit the same
-commit on Zenodo via a GitHub Release, currently `v1.1.0` with DOI
-`10.5281/zenodo.22140875`, or with `scripts/package_zenodo_source.sh`. The
+commit on Zenodo via a GitHub Release, currently `v1.2.0` under concept DOI
+`10.5281/zenodo.22140874`, or with `scripts/package_zenodo_source.sh`. The
 verification repository is:
 
 <https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323>
