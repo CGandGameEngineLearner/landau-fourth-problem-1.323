@@ -46,7 +46,7 @@ simplest option.
    - Author: `JinWen Li`
    - Affiliation: `SouthWest Petroleum University`
    - Email: `lifesize1@163.com`
-   - Comments: `19 pages; Lean 4 formalization and exact-integer verification code available on GitHub.`
+   - Comments: `20 pages; verification code and exact-integer certificates available on GitHub.`
 
 4. Paste the abstract from the TeX source. The source already contains the
    same title, author, affiliation, email, keywords, and abstract.
@@ -58,6 +58,10 @@ The manuscript includes an explicit author disclosure that GPT-5.6 Sol was
 used as a reasoning and coding assistant during development of the core
 argument and verification materials. This is a transparency statement, not
 an attribution of authorship or independent mathematical verification.
+
+The Chinese companion source and PDF are maintained in the public repository
+for readers, but are intentionally omitted from the minimal arXiv source
+archive. The arXiv submission is the authoritative English manuscript.
 
 ## 3. Process and inspect the PDF
 

@@ -1,0 +1,1008 @@
+\documentclass[UTF8,10pt,a4paper]{ctexart}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  citecolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={关于 n 平方加 1 的最大素因子的递归 Buchstab 切换改进（中文译本）},
+  pdfsubject={Landau 第四问题的最大素因子弱形式},
+  pdfkeywords={Landau 第四问题, 最大素因子, Harman 筛, Buchstab 恒等式, 计算机辅助证明}
+}
+
+\newcommand{\Pplus}{P^{+}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\Bcal}{\mathcal{B}}
+\newcommand{\1}{\mathbf{1}}
+
+\newtheorem{theorem}{定理}[section]
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{说明}
+
+\title{关于 $n^2+1$ 的最大素因子的递归 Buchstab 切换改进\\
+\large 中文译本}
+\author{JinWen Li}
+\date{2026年8月25日}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\small
+本文件是英文论文的中文译本。数学公式、定理编号、证书数字和引用与英文版一致；
+如中英文措辞存在歧义，以英文版为准。
+\end{center}
+
+\begin{abstract}
+本文在 $7/6<\alpha<5/4$ 上递归展开 Buchstab 一素数尾项，并以
+Grimmelt--Merikoski Type I/II 估计和维数一线性筛处理其子项。所得切换在
+归一化筛尺度上节约至少 $0.032303187971$。在接受上述解析输入及有限
+Mellin--Perron 传递后，可得无穷多个 $n$ 满足
+$\Pplus(n^2+1)>n^{1.323}$。这是 Landau 第四问题的最大素因子弱形式，
+仍受奇偶障碍限制。
+\end{abstract}
+
+\section{引言}
+
+Landau 第四问题询问 $n^2+1$ 是否取无穷多个素数值。Iwaniec 证明了无穷多个
+$n$ 使 $n^2+1$ 为素数或两个素数之积 \cite{Iwaniec1978}；筛法无法区分这两种
+情况，这正是经典奇偶障碍。另一条定量路线是尽可能增大 $\Pplus(n^2+1)$。
+Merikoski 得到指数 $1.279$，并在 Selberg 特征值猜想下得到 $1.312$
+\cite{Merikoski2020}；Pascadi 无条件得到 $1.3$ \cite{Pascadi2026}；Grimmelt 与
+Merikoski 随后无条件恢复 $1.312$ \cite{GrimmeltMerikoski2025}。Li 宣布了
+$1.317$ \cite{Li2025}。
+
+若 $\Pplus(n^2+1)>n^\vartheta$，则补余因子满足
+$m<n^{2-\vartheta+o(1)}$。本文将该余因子指数降到 $0.677$，但仍不能迫使
+$m=1$。新步骤是在旧论证使用线性筛的区间递归使用 Buchstab 恒等式，保留新的
+Type II 三素数子项，对其余子项使用线性筛下界，并递归上估原先舍弃的一素数尾项
+的二素数后代。Li 的 $1.317$ 论证保持原筛分解，仅改变积分数值
+\cite[Lemmas 2.1 and 2.2]{Li2025}，因此本文的三素数项并不包含在该结果中。
+
+\begin{theorem}\label{thm:main-zh}
+存在无穷多个正整数 $n$，使得
+\[
+  \Pplus(n^2+1)>n^{1323/1000}=n^{1.323}.
+\]
+\end{theorem}
+
+\begin{remark}[证明状态边界]
+该候选定理依赖 Grimmelt--Merikoski Type I/II 估计、维数一线性筛和
+第~\ref{sec:switching-zh} 节的有限 Mellin--Perron 传递；这些解析输入未在
+Lean 中形式化。Lean 只核查有限代数、格子几何、整数证书、端点和实幂换算，
+既未验证主定理，也未解决 Landau 第四问题。
+\end{remark}
+
+\begin{remark}[与一个更大孤立主张的比较]
+Carella 的 arXiv 论文 \cite[Section 5, (5.3)--(5.4)]{Carella2025} 声称指数
+$3/2$，但其从 (5.3) 到 (5.4) 将
+\[
+ \sum_{d\mid m}\Lambda(d)=\log m
+ \quad\text{替换为}\quad
+ \sum_{p\mid m}\log p=\log\operatorname{rad}(m)
+\]
+同时保留下界方向。后者不大于前者，而且 $n^2+1$ 不一定平方自由，例如
+$7^2+1=2\cdot5^2$，故该步骤不能推出所声称的界。本文的比较基准是
+Grimmelt--Merikoski 定理与 Li 的 $1.317$ 计算。
+\end{remark}
+
+本文相对 $1.317$ 的增益为 $0.006$。计算机仅用于显式有限分片有理积分族；
+证书不使用浮点运算。本文保留 $7/6$ 以前所有正 Buchstab 缺陷项的原有较宽上界，
+不使用 Li 的 Mathematica 积分。
+
+\section{算术信息的传递}\label{sec:transfer-zh}
+
+沿用 \cite[Section 2]{Merikoski2020} 的记号。令 $b$ 为支撑于 $[x,2x]$
+的固定非负光滑函数，并定义
+\[
+  |\Acal_d|=\sum_{\ell^2+1\equiv0\pmod d}b(\ell),
+  \qquad X_b=\int_{\mathbb R}b(t)\,dt,
+\]
+以及
+\[
+  \rho(d)=\#\{\nu\pmod d:\nu^2+1\equiv0\pmod d\}.
+\]
+模型序列用 $X_b\rho(d)/d$ 代替 $|\Acal_d|$。对支撑于 $[P,4P]$ 的光滑
+模权 $\psi_P$，记
+\[
+  S(x,P)=\sum_p\psi_P(p)|\Acal_p|\log p.
+\]
+
+\begin{proposition}[Grimmelt--Merikoski 传递]\label{prop:transfer-zh}
+固定充分小的内点余量 $\eta>0$。\cite[Proposition 3]{Merikoski2020}
+所用的 Type I 估计在 $D\le x^{1/2-\eta}$ 内成立。若
+$MN=x^\alpha$ 且 $M\ge N$，则 \cite[Proposition 4(i)]{Merikoski2020}
+中的 Type II 估计在
+\begin{equation}\label{eq:typeII-zh}
+  x^{\alpha-1}<N<x^{(2-\alpha)/3}
+\end{equation}
+的任意闭内子区间上一致成立并具有幂次节约；系数除数有界，且 $N$ 侧系数
+支撑于平方自由整数。
+\end{proposition}
+
+\begin{proof}
+在 \cite[Corollaries 7.1 and 7.2]{GrimmeltMerikoski2025} 中取
+$a=h=1$。Corollary 7.1 给出 $x^{1/2-\eta}$ 的 Type I 层级，并控制
+$d\le D$ 上每个模 $d$ 偏差绝对值之和。因此可由三角不等式加入任意除数有界
+系数，损失 $x^{o(1)}$，由原有幂次节约吸收。Corollary 7.2 给出
+\[
+ x^{\alpha-1+2\eta}\le N
+ \le x^{(2-\alpha)/3-4\eta/3}.
+\]
+$\eta$ 可任意取小，故得到 \eqref{eq:typeII-zh} 的固定闭内区间。其系数条件
+正是命题所述。在本文区间内 $N\le x^{1/3}$，从而 $M=x^\alpha/N\ge N$。
+光滑权与 Mellin 分离沿用 \cite[Section 3.4]{Merikoski2020}。
+
+两推论的误差指数（略去 $x^{o(1)}$）分别为
+\[
+ 1-(1-2\theta)\eta+\varepsilon/4,
+ \qquad 1-(1-2\theta)\eta+\varepsilon/8.
+\]
+无条件情形 $\theta=7/64$。例如取 $\varepsilon=\eta$，分别得到
+$1-17\eta/32$ 与 $1-21\eta/32$，足以吸收下文对数损失。$a=h=1$
+时辅助实特征条件由 \cite[Theorem 1.1]{GrimmeltMerikoski2025} 后的
+零点自由区域讨论无条件满足。该文明确指出这些推论恢复了原先在 Selberg
+特征值猜想下使用的 Type I/II 区间。
+\end{proof}
+
+本文还使用 Selberg 参数取零时的 Merikoski 基本命题 II。以本文记号，它把
+\begin{equation}\label{eq:fundamentalII-zh}
+ \sum_{u\le x^{\xi-\eta}}\lambda_u
+ S(\Acal(P)_u,x^{\gamma-\eta})
+\end{equation}
+替换为模型值，其中 $\lambda_u$ 除数有界，且
+\begin{equation}\label{eq:parameters-zh}
+ \sigma=\frac{2-\alpha}{3},\qquad
+ \gamma=\sigma-\alpha+1=\frac{5-4\alpha}{3},\qquad
+ \xi=\frac32-\alpha.
+\end{equation}
+这由命题~\ref{prop:transfer-zh} 与 \cite[Proposition 6]{Merikoski2020}
+的证明得到。
+
+\section{递归切换}\label{sec:switching-zh}
+
+固定 $7/6<\alpha<5/4$，令
+\[
+ a=\alpha-1,\qquad \tau=\frac{\xi}{2}.
+\]
+则 $0<\gamma<\tau<a<\sigma$。为记录解析余量，取固定 $\nu>0$ 并令
+\begin{equation}\label{eq:margin-parameters-zh}
+\begin{aligned}
+ a_\nu&=a+3\nu,& \sigma_\nu&=\sigma-2\nu,\\
+ \gamma_\nu&=\gamma-4\nu,&
+ \xi_\nu&=\xi-3\nu,\qquad \tau_\nu=\xi_\nu/2.
+\end{aligned}
+\end{equation}
+可用 Type II 区间为 $[a+2\nu,\sigma-4\nu/3]$，故
+$[a_\nu,\sigma_\nu]$ 严格位于其内部。基本命题在
+$u\le x^{\xi_\nu}$、筛层级 $x^{\gamma_\nu}$ 上一致，因为
+\[
+ x^{a+2\nu}x^{\xi_\nu}=x^{1/2-\nu},
+ \qquad
+ x^{a+2\nu+\gamma_\nu}=x^{\sigma-2\nu}
+ <x^{\sigma-4\nu/3}.
+\]
+证书只保留 $\alpha<1.22$；此时充分小的固定 $\nu$ 保证
+$0<\gamma_\nu<\tau_\nu<a<\sigma$。所有解析估计先在固定 $\nu$ 下取得，
+最后才令 $\nu\to0^+$。
+
+\subsection{一致局部化与前缀筛}
+
+\begin{lemma}[有限交叉条件局部化]\label{lem:localization-zh}
+固定 $R,C,J\ge1$。考虑 $MN\asymp x^\alpha$ 的 dyadic 双线性和，两个系数
+均由 $\tau_R$ 控制，并附加至多 $J$ 个严格条件
+$U(\boldsymbol m)<V(\boldsymbol n)$，其中 $U,V$ 是分属两侧的正整数值函数，
+$U,V\le x^C$。还允许固定的 $MN/P$ 光滑函数和 $\log(MN)$ 因子。
+则该和可写成普通 Type II 和的有限重 Mellin--Perron 积分；系数仍为
+$O_{C,J}(\tau_R)$，核的总 $L^1$ 质量为
+$O((\log x)^{O_{C,J}(1)})$，提高截断高度后总误差为任意给定的
+$O_A(x^{-A})$。因此对除数有界系数一致的固定幂次节约在这些局部化下保持。
+\end{lemma}
+
+\begin{proof}
+因 $U,V$ 为整数，$U<V$ 等价于 $U<V-1/2$。取
+$c=1/\log x$、高度 $T$，Perron 公式给出
+\[
+ \1_{U<V}=\frac{1}{2\pi i}\int_{c-iT}^{c+iT}
+ \left(\frac{V-1/2}{U}\right)^s\frac{ds}{s}
+ +O\!\left(\min\left\{1,
+ \frac{1}{T|\log((V-1/2)/U)|}\right\}\right).
+\]
+半整数只排除相等情形，不改变表示数和除数界。$U^{-s}$ 与
+$(V-1/2)^s$ 分配到相反系数族；若较小变量在 $N$ 侧，则相应交换相位因子，
+但不改变平方自由 Type II 变量的指定。产品条件 $A_MA_N\le Q$ 可写成
+$A_M<\lfloor Q/A_N\rfloor+1$。
+
+在 $A_3$ Type II 分支，选定子集的素数积放在 $N$ 侧，其余素因子、Mobius
+变量与余因子放在 $M$ 侧；跨侧的素数次序逐一用上式分离。若 $q_3\in N$，
+粗糙性条件为 $P^+(d)<q_3$；若 $q_3\notin N$，该条件完全位于 $M$ 侧。
+直接二素数 Type II 分支取 $N=q_1q_2$，唯一新的跨侧粗糙性条件为
+$P^+(d)<q_2$。$A_3$ 下筛与 $U_{\rm LS}$ 分支是 Type I 前缀问题，变量切点
+由随前缀变化的 Rosser 权携带；一素数尾项基项和递归基项使用固定切点，
+不产生新的跨族条件。
+
+在 $\Re s=c$ 上实部因子为 $O_C(1)$，虚部因子模长为 $1$，每个核的
+$L^1$ 质量为 $O(\log T)$。又因
+$|V-1/2-U|\ge1/2$、$U,V\le x^C$，有
+$|\log((V-1/2)/U)|\gg_Cx^{-C}$。若原有限分解至多有 $x^B$ 个元组，
+取 $T=x^{A'}$ 且 $A'>A+B+C$，总截断误差为 $O_A(x^{-A})$；至多 $J$
+次比较只带来 $O((\log x)^J)$，由 Corollary 7.2 的既有幂次节约吸收。
+光滑产品权由 Mellin 变换分离，$\log(MN)=\log M+\log N$ 由分部求和处理。
+该机制以 \cite[Sections 2.3 and 3.4]{Merikoski2020} 为模板，但截断公式、
+总误差和逐分支变量分配仍是未由 Lean 检查的解析步骤。
+\end{proof}
+
+\begin{proposition}[前缀一致线性筛]\label{prop:prefix-sieve-zh}
+设 dyadic 局部化的有序前缀 $\boldsymbol q=(q_1,\ldots,q_j)$ 至多含三个素数，
+$u=q_1\cdots q_j\le x^{s_0}$，且 $1/2-s_0-\nu>0$。每个前缀素数均不小于
+筛切点 $z(\boldsymbol q)\asymp x^\zeta$；在可变切点分支，
+$z(\boldsymbol q)=q_j$ 为最小前缀素数。则命题~\ref{prop:transfer-zh} 的
+Type I 估计允许在层级
+\[
+ D=x^{1/2-s_0-\nu}
+\]
+使用标准维数一上、下线性筛。极限筛参数为
+$s=(1/2-s_0-\nu)/\zeta$，归一化主项乘子为
+$e^{-\gamma_E}F(s)$ 与 $e^{-\gamma_E}f(s)$；$s\le2$ 时下界取零。
+对全部前缀求和后的总余项为 $O(x^{1-\delta})$，其中
+$\delta=\delta(\nu)>0$。
+\end{proposition}
+
+\begin{proof}
+逐前缀插入层级 $D$ 的 Rosser 权，并保留余项符号。乘以非负前缀分片后先求和，
+再令 $k=um$、$e=ud$，在取绝对值以前得到
+\[
+ \sum_{\boldsymbol q}c(\boldsymbol q)R_{\boldsymbol q}^{\pm}
+ =\sum_e\Lambda_e^\pm r_P(e).
+\]
+这里 $r_P(e)$ 正是 Grimmelt--Merikoski Corollary 7.1 绝对值内部的光滑模
+$e$ 偏差，不依赖 $e$ 的前缀表示。附录~\ref{app:prefix-sieve-zh} 证明
+\[
+ |\Lambda_e^\pm|\ll(\log x)^B\tau_K(e),\qquad ud\le x^{1/2-\nu}.
+\]
+故 \cite[Corollary 7.1, p. 22]{GrimmeltMerikoski2025} 在 $a=h=1$ 时的
+绝对偏差和仍留下固定幂次节约。
+
+附录还一致计算模型和。Rosser 模的素因子小于最小前缀素数，故与 $u$ 互素；
+Merikoski 引理 8 与维数一基本引理给出同一 Euler 乘积。$A_3$ 下筛在
+$\alpha=7/6$ 处层级仍为正幂，$s\le2$ 时取零。二素数上筛产生
+$U_{\rm LS}$；若 $0<s<1$，先由正性把切点降至 $z_*=D^{1-\omega}$。
+最后在每个指数格冻结筛乘子，并用 Merikoski 引理 7 转为
+\eqref{eq:A3lower-zh} 与 \eqref{eq:Tlower-zh}。限制说明中保留的是引用的外部
+解析定理，而不是额外的抵消假设。
+\end{proof}
+
+\begin{remark}[前缀筛传递的限制]
+本命题是候选定理的解析输入，而非 Lean 定理。证明使用
+Grimmelt--Merikoski Corollary 7.1 的绝对 Type I 偏差和以及
+\emph{Opera de Cribro} 的维数一基本引理。附录核对前缀收集和最小前缀切点，
+但不重证这两个外部定理；仍需筛法专家确认其一致常数适用于所写的光滑 dyadic
+族。
+\end{remark}
+
+旧线性筛项之前的分解为
+\begin{equation}\label{eq:retain-F6-zh}
+ S(\Acal(P),2\sqrt P)
+ \le S(\Acal(P),x^a)
+ -\sum_{x^a<q<x^\sigma}S(\Acal(P)_q,q).
+\end{equation}
+负和保持不变，其模型贡献是后文的 $F_6$。只改进第一项。第一次 Buchstab
+分裂为
+\begin{equation}\label{eq:first-switch-zh}
+\begin{aligned}
+ S(\Acal(P),x^a)
+ &=S(\Acal(P),x^\gamma)
+ -\sum_{x^\gamma<q_1<x^\tau}S(\Acal(P)_{q_1},q_1)-R_1,\\
+ R_1&:=\sum_{x^\tau<q_1<x^a}S(\Acal(P)_{q_1},q_1).
+\end{aligned}
+\end{equation}
+再对保留和使用两次 Buchstab 恒等式，得
+\begin{equation}\label{eq:four-terms-zh}
+ S(\Acal(P),x^a)=A_0-A_1+A_2-A_3-R_1,
+\end{equation}
+其中
+\begin{align*}
+ A_0&=S(\Acal(P),x^\gamma),\\
+ A_1&=\sum_{x^\gamma<q_1<x^\tau}
+ S(\Acal(P)_{q_1},x^\gamma),\\
+ A_2&=\sum_{x^\gamma<q_2<q_1<x^\tau}
+ S(\Acal(P)_{q_1q_2},x^\gamma),\\
+ A_3&=\sum_{x^\gamma<q_3<q_2<q_1<x^\tau}
+ S(\Acal(P)_{q_1q_2q_3},q_3).
+\end{align*}
+因 $q_1\le x^\tau$、$q_1q_2\le x^{2\tau}=x^\xi$，前三项由
+\eqref{eq:fundamentalII-zh} 覆盖。
+
+对 $A_3$，仅保留下列四个和中至少一个落在
+$[a_\nu,\sigma_\nu]$ 的元组：
+\begin{equation}\label{eq:subset-sums-zh}
+ \beta_1+\beta_2,\quad \beta_1+\beta_3,\quad
+ \beta_2+\beta_3,\quad \beta_1+\beta_2+\beta_3.
+\end{equation}
+相应素数积平方自由，可作为 Type II 变量。固定足够细的指数网格，舍弃碰到
+Type II 端点或优先级边界的格子；因 $A_3$ 带负号而我们求其下界，这是正确
+的单侧方向，网格损失由支配收敛趋零。其余三素数子项用维数一线性筛下界，
+并在两种可用下界中取较大者。
+
+\begin{lemma}\label{lem:A3-transfer-zh}
+恢复固定内点余量后，$A_3$ 的保留部分在 $\Acal(P)$ 与 $\Bcal(P)$ 上具有
+相同渐近公式，每个光滑 $P$ 块上的误差具有幂次节约。
+\end{lemma}
+
+\begin{proof}
+按 \eqref{eq:subset-sums-zh} 的顺序，把每个好三元组分配给第一个位于固定
+内区间的子集。前面每个子集的“不属于”分为低于下端点或高于上端点，故只产生
+有限优先级类。光滑局部化三个素数。对被选子集 $I$，令
+$N=\prod_{i\in I}q_i$，其余素因子及筛余因子放入 $M$，则
+\[
+ MN\asymp x^\alpha,\qquad
+ x^{a_\nu}\le N\le x^{\sigma_\nu},\qquad M\ge N,
+\]
+且 $N$ 平方自由。展开粗糙性
+\[
+ \1_{(r,P(q_3))=1}
+ =\sum_{d\mid r,\,d\mid P(q_3)}\mu(d),\qquad r=ds.
+\]
+若 $t=|I|$，表示数满足
+\[
+ \#\{N=\textstyle\prod_{i\in I}q_i\}\le\tau_t(N),\qquad
+ \sum_{M=(\prod_{i\notin I}q_i)ds}|\mu(d)|
+ \le\tau_{5-t}(M).
+\]
+因此两侧系数均由固定除数函数控制。若 $q_3\in N$，唯一真正跨侧的粗糙性条件
+是 $P^+(d)<q_3$；用 $q_3-1/2$ 的截断 Perron 积分分离。若 $q_3\notin N$，
+该条件位于 $M$ 侧内部。素数次序、优先级和光滑产品条件由引理
+\ref{lem:localization-zh} 分离；所有核损失为对数幂，并由命题
+\ref{prop:transfer-zh} 的固定幂次节约吸收。该机制沿用
+\cite[Sections 2.3, 2.4.3, and 3.4]{Merikoski2020}，而新的内容只改变外部
+指数格子。对有限个互斥优先级类求和即得结论。
+\end{proof}
+
+以下模型积分使用 Merikoski 引理 7；其粗糙数输入是 (2.4)，测度为
+\[
+ \frac{d\beta_1\cdots d\beta_k}
+ {\beta_1\cdots\beta_{k-1}\beta_k^2},
+\]
+数值 Buchstab 界恰为 (2.5)。令
+\[
+ u_+=0.5617,\qquad u_-=0.5607.
+\]
+所用界为
+\begin{equation}\label{eq:omega-bounds-zh}
+ \omega(v)\le u_+\quad(v\ge4),\qquad
+ \omega(v)\ge u_-\quad(v\ge2.47).
+\end{equation}
+在 $\alpha<1.22$ 的保留区间，三素数子项满足
+\[
+ \frac{\alpha-\beta_1-\beta_2-\beta_3}{\beta_3}
+ >\frac{3-2\alpha}{\alpha-1}>2.54.
+\]
+一素数与二素数基本命题基项的参数分别至少为 $9$ 与 $7.5$；若
+$\beta_1+\beta_2\le\sigma$，有序 Type II 对的参数至少为 $6.4$，故
+\eqref{eq:omega-bounds-zh} 的每次使用都在允许范围。
+
+标准维数一线性筛函数 $F,f$ 取自
+\cite[Chapter 12]{FriedlanderIwaniec2010}。定义有理下包络
+\begin{equation}\label{eq:Phi-zh}
+ \Phi(s)=
+ \begin{cases}
+ 0,&s<2,\\
+ 4(s-2)/s^2,&2\le s\le4,\\
+ 1/2,&s\ge4.
+ \end{cases}
+\end{equation}
+对 $2\le s\le4$，
+$e^{-\gamma_E}f(s)=2\log(s-1)/s$，由
+$\log(1+t)\ge2t/(2+t)$ 得
+\[
+ \Phi(s)\le e^{-\gamma_E}f(s).
+\]
+$s=4$ 时值为 $1/2$，之后由 $f$ 的单调性延拓。类似地，
+$e^{-\gamma_E}F(s)=2/s$（$1\le s\le3$），而 $s\ge3$ 时不大于
+$2/3$。
+
+对有序三元组令
+\[
+ s_3=\frac{1/2-\beta_1-\beta_2-\beta_3}{\beta_3},
+ \qquad
+ W_3=\max\{u_-\1_{\rm good},\Phi(s_3)\},
+\]
+其中 $\1_{\rm good}$ 表示 \eqref{eq:subset-sums-zh} 中至少一个和位于
+$[a,\sigma]$。于是
+\begin{equation}\label{eq:A3lower-zh}
+ A_3^{\rm low}(\alpha)=\alpha
+ \int_{\gamma<\beta_3<\beta_2<\beta_1<\tau}
+ W_3\,\frac{d\beta_1\,d\beta_2\,d\beta_3}
+ {\beta_1\beta_2\beta_3^2}
+\end{equation}
+是 $A_3$ 的极限下模型。
+
+对 $\tau<\beta_1<a$，再用一次 Buchstab 恒等式：
+\[
+ S(\Acal(P)_{q_1},q_1)
+ =S(\Acal(P)_{q_1},x^\gamma)
+ -\sum_{x^\gamma<q_2<q_1}S(\Acal(P)_{q_1q_2},q_2).
+\]
+令 $\delta_2=1/2-\beta_1-\beta_2$，定义不利方向上筛包络
+\[
+ U_{\rm LS}(\beta_1,\beta_2)
+ =\max\left\{\frac2{\delta_2},\frac2{3\beta_2}\right\}.
+\]
+$U_2$ 取 $U_{\rm LS}$ 与以下可用上界的最小值：
+\[
+ \frac{u_+}{\beta_2}\quad
+ \text{若 }\beta_1+\beta_2\in[a,\sigma],
+\]
+以及
+\[
+ \frac{u_+}{\gamma}
+ -\int_\gamma^{\beta_2}
+ W_3(\beta_1,\beta_2,\beta_3)\frac{d\beta_3}{\beta_3^2}
+ \quad\text{若 }\beta_1+\beta_2\le\xi,
+\]
+第二个候选仅在非负时使用。于是
+\begin{equation}\label{eq:Tlower-zh}
+ T(\alpha)=\alpha\int_\tau^a
+ \left[\frac{u_-}{\gamma}
+ -\int_\gamma^{\beta_1}U_2(\beta_1,\beta_2)
+ \frac{d\beta_2}{\beta_2}\right]_+
+ \frac{d\beta_1}{\beta_1}
+\end{equation}
+是 $R_1$ 的下模型。
+
+\subsection{完整分支与输入账本}
+
+令
+\[
+ \mathfrak M(P):=X_b\int_0^\infty\psi_P(u)\,\frac{du}{u}.
+\]
+固定 $\nu>0$ 和指数网格，以 \eqref{eq:margin-parameters-zh} 的平移参数及
+证书的不利方向端点定义 $H_\nu(\alpha)$。
+
+\begin{proposition}[解析分支账本]\label{prop:branch-ledger-zh}
+在 $7/6<\alpha<1.22$ 上一致地，递归分解使用以下单侧估计：
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{|p{0.15\textwidth}|p{0.25\textwidth}|p{0.43\textwidth}|}
+\hline
+项 & 解析输入 & 方向与条件\\
+\hline
+$A_0$ & 基本命题 II & 上界，$u_+/\gamma$\\
+\hline
+$A_1$ & 基本命题 II & 公共一素数域下界，$u_-/\gamma$\\
+\hline
+$A_2$ & 基本命题 II & 包含二素数域上界，对称后为 $u_+/(2\gamma)$\\
+\hline
+$A_3$ & Corollary 7.2 & 完整子集积格落在 $[a_\nu,\sigma_\nu]$ 时取下界\\
+\hline
+$A_3$ & 命题~\ref{prop:prefix-sieve-zh} & 同一子项的下线性筛；取两下界较大者\\
+\hline
+$R_1$ 基项 & 基本命题 II & 因 $\beta_1<a<\xi$ 取下界\\
+\hline
+二素数子项 & 命题~\ref{prop:prefix-sieve-zh} & 通用上界 $U_{\rm LS}$\\
+\hline
+二素数子项 & Corollary 7.2 或再分裂 & Type II 对取直接上界；否则在
+$\beta_1+\beta_2\le\xi_\nu$ 时取“基项上界减三素数下界”，最后取最小值\\
+\hline
+\end{tabular}
+\end{center}
+因此
+\[
+ S(\Acal(P),x^a)
+ \le \bigl(H_\nu(\alpha)+o(1)\bigr)\mathfrak M(P).
+\]
+固定余量和网格宽度趋零时得到极限 $H(\alpha)$。
+\end{proposition}
+
+\begin{proof}
+符号 $A_0-A_1+A_2-A_3-R_1$ 决定上下界方向。$A_0,A_1,A_2$ 的前缀
+指数分别不超过 $0,\tau,2\tau=\xi$。$A_3$ 两行分别来自引理
+\ref{lem:A3-transfer-zh} 与命题~\ref{prop:prefix-sieve-zh}；同一非负子项的
+两个下界取最大值仍为下界。对 $R_1$，Buchstab 节点为“基项减子项”，故
+基项下界减子项上界给出节点下界。每个子项有 $U_{\rm LS}$；完整 Type II
+格上还有直接上界，或在允许再分裂时使用“基项上界减三素数下界”。合法上界
+取最小值仍合法。引理~\ref{lem:localization-zh} 保持这些方向并吸收有限局部化。
+\end{proof}
+
+规范格子的穷尽分支审计访问 $34\,215\,168$ 个有序 $A_3$ 盒和
+$19\,635\,200$ 个尾项二素数盒，所有分支均出现。四类最小 Buchstab 参数为
+\[
+ 5.206977117,\qquad 9.007506255,\qquad
+ 8.002880298,\qquad 7.508771632,
+\]
+分别对应 $A_3$ Type II 下界、$R_1$ 基项、直接二素数 Type II 上界与递归
+基项上界，均满足所需的 $2.47$ 或 $4$ 阈值。
+
+令 $L=\log(\tau/\gamma)$。完整递归上包络为
+\begin{equation}\label{eq:H-zh}
+ H(\alpha)=\frac{\alpha}{\gamma}
+ \left(u_+-u_-L+\frac{u_+}{2}L^2\right)
+ -A_3^{\rm low}(\alpha)-T(\alpha).
+\end{equation}
+原线性筛包络为 $4\alpha$，故新节约为
+\begin{equation}\label{eq:Delta-zh}
+ \Delta=\int_{7/6}^{5/4}
+ \max\{0,4\alpha-H(\alpha)\}\,d\alpha.
+\end{equation}
+
+\section{切换积分的整数证书}
+
+\begin{proposition}\label{prop:certificate-zh}
+\[
+ \Delta\ge\frac{32303187971}{10^{12}}
+ =0.032303187971>\frac4{125}.
+\]
+\end{proposition}
+
+\begin{proof}
+证书使用 $N=1200$ 个等宽 $\alpha$ 格、$B=300$ 个
+\eqref{eq:A3lower-zh} 格以及 $C=160$ 个尾项格。所有量以 $10^{-12}$ 的
+整数倍存储；乘法使用有符号 128 位中间值，下界向下取整、上界向上取整，
+并检查所有窄化转换。
+
+对 $\alpha$ 格 $[\alpha_i,\alpha_{i+1}]$，公共域为
+$[\gamma(\alpha_i),\tau(\alpha_{i+1})]$，包含域为
+$[\gamma(\alpha_{i+1}),\tau(\alpha_i)]$。前三项使用
+\begin{align*}
+ A_{0,i}^{+}&=u_+\frac{\alpha_{i+1}}{\gamma(\alpha_{i+1})},\\
+ A_{1,i}^{-}&=u_-\frac{\alpha_i}{\gamma(\alpha_i)}R^-_B,\\
+ A_{2,i}^{+}&=\frac{u_+}{2}
+ \frac{\alpha_{i+1}}{\gamma(\alpha_{i+1})}(R^+_B)^2,
+\end{align*}
+其中 $R^-_B$ 是公共域上 $\int d\beta/\beta$ 的右端点下和，
+$R^+_B$ 是包含域上的左端点上和。
+
+三素数项对每个有序 $(\beta_1,\beta_2)$ 盒构造有限个 $\beta_3$ 有理区间，
+包括完整 Type II 区间和 $2.01,2.1,\ldots,4$ 的 21 个下筛阈值；重叠处取
+最大下权。尾项对 $\tau<\beta_1<a$ 的每个节点以
+\[
+ \text{基项下界}-\text{二素数子项上界}
+\]
+给出下界，子项上界取 $U_{\rm LS}$、直接 Type II 上界和递归
+“基项上界减三素数下界”中的可用最小值。相同指数盒和 $\beta_2\ge\beta_1$
+区域被故意完整包含，只会使子项上界变大。
+
+逐格有
+\[
+ \max\{0,4\alpha-H(\alpha)\}
+ \ge \max\{0,4\alpha_i-
+ (A_{0,i}^{+}-A_{1,i}^{-}+A_{2,i}^{+}
+ -A_{3,i}^{-}-T_i^{-})\}.
+\]
+规范整数输出为
+\begin{verbatim}
+scale=1000000000000
+alpha_steps=1200 beta_steps=300 tail_beta_steps=160
+positive_alpha_cells=727
+tail_lower_integral=0.018330264130
+a3_lower_integral=0.044459636636
+saving_lower_units=32303187971
+saving_lower=0.032303187971
+target=0.032000000000
+CERTIFIED=YES
+\end{verbatim}
+
+Lean 用 \texttt{native\_decide} 分四个 192 格块和一个零块重算。未缩放的
+节约和依次为
+\[
+\begin{aligned}
+&154113574025565,\quad151615832402575,\quad117510700363272,\\
+&41925800002266,\quad0.
+\end{aligned}
+\]
+总和为 $465165906793678$，除以 $12N=14400$ 后向下取整得到
+$32303187971$。Canonical 模块在不重新展开块计算的情况下检查最终加法、
+除法与严格目标不等式。独立 Python 任意精度实现得到同样结果；两套逐格输出
+的 SHA-256 为
+\[
+\begin{aligned}
+&\texttt{6e1901ca1dc8b2c32ae6bcc3759a42ea}\\
+&\texttt{9a3dab8932870eeb3f6e2d42f0ac3175}.
+\end{aligned}
+\]
+因此三套实现独立重算同一有限整数下界；这不等同于 Lean 证明解析积分
+\eqref{eq:Delta-zh}。
+固定解析余量和格子优先级后，由支配收敛将极限模型恢复；最终端点余量为
+$2994511739/9000000000000>0$，可取足够小的固定 $\nu$ 使解析损失小于该余量。
+\end{proof}
+
+\section{旧被减项的独立下界}
+
+原分解保留
+\begin{equation}\label{eq:F6-zh}
+ F_6=\int_{7/6}^{5/4}\alpha
+ \int_{\alpha-1}^{\sigma}
+ \omega\left(\frac{\alpha-\beta}{\beta}\right)
+ \frac{d\beta}{\beta^2}\,d\alpha.
+\end{equation}
+
+\begin{lemma}\label{lem:F6-zh}
+\[
+ F_6>\frac{149403}{2500000}=0.0597612.
+\]
+\end{lemma}
+
+\begin{proof}
+令 $v=\alpha/\beta-1$。内积分变为
+\[
+ \int_{(4\alpha-2)/(2-\alpha)}^{1/(\alpha-1)}\omega(v)\,dv.
+\]
+当 $7/6\le\alpha\le5/4$ 时，该区间包含于 $[3.2,6]$，故
+\[
+ F_6\ge0.5607\int_{7/6}^{5/4}w(\alpha)\,d\alpha,\qquad
+ w(\alpha)=\frac1{\alpha-1}+4-\frac6{2-\alpha}.
+\]
+并且
+\[
+ w''(\alpha)=\frac2{(\alpha-1)^3}-\frac{12}{(2-\alpha)^3}>0,
+\]
+因为第一项至少为 $128$，第二项至多为 $768/27$。故复合中点和为下界。
+十个等宽面板给出精确有理计算
+\[
+ \frac{5607}{10000}\frac1{120}
+ \sum_{j=0}^{9}w\left(\frac76+\frac{2j+1}{240}\right)
+ =0.0597612998251544\ldots>0.0597612.
+\]
+\end{proof}
+
+\section{端点预算与定理证明}
+
+Merikoski 对其余项给出的严格上界为
+\[
+ F_1<0.0287,\quad F_2<0.08622,\quad F_3<0.03107,\quad
+ F_4<0.00011,\quad F_5=\frac{29}{72}.
+\]
+结合引理~\ref{lem:F6-zh} 与命题~\ref{prop:certificate-zh}，$5/4$ 以下的
+归一化贡献严格小于
+\begin{align}\label{eq:core-zh}
+ C&=\frac16+\frac{287}{10000}+\frac{8622}{100000}
+ +\frac{3107}{100000}+\frac{11}{100000}+\frac{29}{72}\notag\\
+ &\qquad-\frac{149403}{2500000}
+ -\frac{32303187971}{10^{12}}\notag\\
+ &=\frac{5611320508261}{9000000000000}.
+\end{align}
+$5/4$ 以上的标准维数一线性筛尾项为
+\begin{equation}\label{eq:tail-zh}
+ 4\int_{5/4}^{\varpi}\alpha\,d\alpha
+ =2\left(\varpi^2-\left(\frac54\right)^2\right).
+\end{equation}
+取内部块指数
+\[
+ \varpi_*=\frac{13231}{10000}=1.3231.
+\]
+则精确有理算术给出
+\begin{align}\label{eq:budget-zh}
+ C+2\left(\varpi_*^2-\left(\frac54\right)^2\right)
+ &=\frac{8997005488261}{9000000000000}<1,\\
+ 1-\frac{8997005488261}{9000000000000}
+ &=\frac{2994511739}{9000000000000}.
+\end{align}
+
+令 $P_x$ 为光滑指标块中 $n^2+1$ 的最大素因子。Merikoski 使用的
+Chebyshev--Hooley 恒等式为
+\[
+ \sum_{x<p\le P_x}|\Acal_p|\log p=X_b\log x+O(x).
+\]
+若 $P_x\le x^{\varpi_*}$，则对光滑模块求和并使用
+\eqref{eq:core-zh}、\eqref{eq:tail-zh} 及固定内点余量，可得严格小于
+$X_b\log x$ 的上界，与上式矛盾。因此每个充分大的 $[x,2x]$ 块中存在
+$n$ 使
+\[
+ \Pplus(n^2+1)>x^{1.3231}.
+\]
+最后令 $a=1323/1000$、$b=13231/10000$。因
+$b-a=1/10000$、$a/(b-a)=13230$，当 $x>2^{13230}$ 且 $n\le2x$ 时，
+\[
+ n^a\le(2x)^a=2^ax^a<x^{b-a}x^a=x^b.
+\]
+由此得到定理~\ref{thm:main-zh}。
+
+\section{形式化验证范围}
+
+精简 Lean 工程包含有限加权 Buchstab 恒等式、首次坏指标的不交迭代、符号
+$A_0-A_1+A_2-A_3$、递归节点上下界规则、尾项下界、向外取整规则以及
+$1200\times300\times160$ 整数证书。四个大块等值由
+\texttt{native\_decide} 计算；导入其小型自然数投影后，Canonical 求和、除法、
+端点有理算术、$F_6$ 凸性及有限几何方向由内核检查。C++ 与 Python 独立交叉
+检查块总值。
+
+$F_6$ 模块证明二阶导数为正、十面板中点积分下界及与
+$149403/2500000$ 的严格比较；应用到 $F_6$ 本身仍使用外置的 Buchstab 下界。
+实幂模块证明
+\[
+ x>2^{13230},\quad0\le n\le2x
+ \Longrightarrow n^{1323/1000}<x^{13231/10000}.
+\]
+小型审计模块只检查 $\nu$ 的仿射恒等式、半整数切点、抽象表示数界、不利方向
+格子几何以及 $\alpha/\gamma,t+1,\Phi,U_{\rm LS}$ 的代数归一化。它们不构造
+真实 Perron 局部化或随前缀变化的 Rosser 权，也不证明六个解析传递门。
+Grimmelt--Merikoski Corollaries 7.1/7.2、它们对真实局部化系数的应用、
+截断 Mellin--Perron 传递以及标准维数一线性筛定理均为外部解析输入。
+
+\begin{remark}[AI 辅助证明开发声明]
+作者声明：GPT-5.6 Sol 在核心递归 Buchstab 切换论证、证明方向与分支账本、
+Lean 证书实现、精确整数审计脚本和论文表述的开发中作为推理与编码助手使用。
+作者审查最终数学陈述并对提交内容负责。GPT-5.6 Sol 不是作者，也不是独立验证者。
+\end{remark}
+
+\begin{remark}[补充材料]
+公开验证仓库为
+\href{https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323}
+{GitHub 项目页面}，
+最新归档由 concept DOI
+\url{https://doi.org/10.5281/zenodo.22140874}
+解析。外部 PDF 仅记录来源与 SHA-256，不在仓库中重新分发。
+\end{remark}
+
+\begin{remark}[解析审查边界]
+有限交叉条件局部化和前缀一致线性筛在本文中给出解析证明，但未在 Lean 中
+形式化。它们与所引用的 Type I/II、线性筛定理仍需传统解析数论专家审查。
+\end{remark}
+
+\begin{remark}[与 Landau 第四问题的距离]
+定理只推出无穷多次分解
+\[
+ n^2+1=pm,\qquad p>n^{1.323},\qquad m<n^{0.677+o(1)}.
+\]
+它不迫使 $m=1$，也没有突破奇偶障碍；这是最大素因子弱形式，而不是素数值猜想
+的证明。
+\end{remark}
+
+\section{前缀一致线性筛的细节}\label{app:prefix-sieve-zh}
+
+\subsection{单个局部化前缀}
+固定一个指数格和有序前缀 $\boldsymbol q=(q_1,\ldots,q_j)$、$j\le3$，令
+$u=q_1\cdots q_j$。前缀分片置于筛余因子和之外，记其非负权为
+$c(\boldsymbol q)$；不需要依赖前缀的余因子切点。定义
+\[
+ a_u(m):=|\Acal_{um}|\psi_P(um)\log(um),\qquad
+ |\Acal_{u,d}|:=\sum_{d\mid m}a_u(m),
+\]
+模型和
+\[
+ |\Bcal_{u,d}|:=
+ X_b\sum_{d\mid m}\frac{\rho(um)}{um}
+ \psi_P(um)\log(um),\qquad X_u:=|\Bcal_{u,1}|,
+\]
+以及
+\[
+\begin{aligned}
+ \Delta(k)&:=\sum_{\ell^2+1\equiv0\pmod k}b(\ell)
+              -X_b\frac{\rho(k)}k,\\
+ r_u(d)&:=|\Acal_{u,d}|-|\Bcal_{u,d}|,\\
+ r_P(e)&:=\sum_{e\mid k}\psi_P(k)\log k\,\Delta(k).
+\end{aligned}
+\]
+若 $d\mid P(z(\boldsymbol q))$，则 $d$ 的素因子严格小于最小前缀素数，故
+$(u,d)=1$。令 $k=um$、$e=ud$ 即得精确恒等式
+\begin{equation}\label{eq:prefix-common-discrepancy-zh}
+ r_u(d)=r_P(ud).
+\end{equation}
+因此偏差不再依赖 $u$ 的有序前缀表示。
+
+模型计算也对前缀一致。$(m,u)>1$ 的项多含一个至少为
+$x^{\gamma_\nu}$ 的素因子，总贡献为 $O(x^{-\gamma_\nu+o(1)}X_u)$；其余项满足
+$\rho(um)=\rho(u)\rho(m)$。由分部求和、Merikoski 引理 8 和
+\emph{Opera de Cribro} 定理 11.12，得到与无前缀序列相同的维数一局部因子：
+\[
+ V_u(z)
+ =\prod_{\substack{p<z(\boldsymbol q)\\p\nmid u}}(1-g(p))
+ =\prod_{p<z(\boldsymbol q)}(1-g(p)).
+\]
+更明确地，对有序前缀格求和有
+\[
+ \sum_{\boldsymbol q}c(\boldsymbol q)
+ \sum_{i\le j}\sum_{q_i\mid m}
+ X_b\frac{\rho(um)}{um}\psi_P(um)\log(um)
+ \ll x^{-\gamma_\nu+o(1)}\mathfrak M(P).
+\]
+互素部分在固定格上的 Chapter 11 余项一致为 $o(\mathfrak M(P))$，故总模型计算
+误差为 $o(\mathfrak M(P))$。这正是 Merikoski 引理 8 的计算；新因子
+$\rho(u)/u$ 位于余因子筛之外。
+
+令 $\lambda_{d,\boldsymbol q}^\pm$ 为层级 $D$ 的 Rosser 权，支撑于
+平方自由 $d\mid P(z(\boldsymbol q))$、$d<D$，且绝对值不超过 $1$。
+Chapter 12 的 (12.12)--(12.14) 给出下列有符号余项公式；其中 $E_u\ge0$ 且
+$\sum_{\boldsymbol q}c(\boldsymbol q)E_u=o(\mathfrak M(P))$：
+\begin{align*}
+ S(\Acal(P)_u,z(\boldsymbol q))
+ &\le X_uV_u(z)
+ \{F(s_{\boldsymbol q})+O((\log D)^{-1/6})\}
+ +R_{\boldsymbol q}^{+}+E_u,\\
+ S(\Acal(P)_u,z(\boldsymbol q))
+ &\ge X_uV_u(z)
+ \{f(s_{\boldsymbol q})-O((\log D)^{-1/6})\}
+ +R_{\boldsymbol q}^{-}-E_u,
+\end{align*}
+其中 $s_{\boldsymbol q}=\log D/\log z(\boldsymbol q)$，且
+\[
+ R_{\boldsymbol q}^{\pm}
+ =\sum_{\substack{d\mid P(z(\boldsymbol q))\\d<D}}
+ \lambda_{d,\boldsymbol q}^{\pm}r_P(ud).
+\]
+前缀求和前不取绝对值。上筛直接用于 $s_{\boldsymbol q}\ge1$，下筛用于
+$s_{\boldsymbol q}\ge2$，低于 $2$ 时下界取零。
+
+\subsection{前缀求和}
+对 $u\le x^{s_0}$ 的格取
+\[
+ D=x^{1/2-s_0-\nu},\qquad ud\le x^{1/2-\nu}.
+\]
+令 $c(\boldsymbol q)\ge0$ 为有序前缀的光滑 dyadic/指数分片，其大小和分部求和
+损失均为 $O((\log x)^B)$。乘以上、下筛式后先求和，只在最后取绝对值。由
+\eqref{eq:prefix-common-discrepancy-zh} 并收集 $e=ud$，得到精确恒等式
+\[
+ \mathcal R^\pm
+ :=\sum_{\boldsymbol q}c(\boldsymbol q)R_{\boldsymbol q}^{\pm}
+ =\sum_{e\le x^{1/2-\nu}}\Lambda_e^\pm r_P(e),
+ \qquad
+ \Lambda_e^\pm
+ =\sum_{\substack{\boldsymbol q,d:\,ud=e\\
+                    d\mid P(z(\boldsymbol q)),\ d<D}}
+ c(\boldsymbol q)\lambda_{d,\boldsymbol q}^\pm.
+\]
+若另有光滑积切点，先用 Mellin 反演把它写成同一恒等式的多对数 $L^1$ 叠加；
+每一项只含共同的 $k/P$ 光滑函数，故不会在 $k$ 和内部留下依赖前缀的偏差。
+
+对固定 $e$，至多三个有序前缀素数均整除 $e$，而 $d=e/u$ 被确定。因此
+\[
+ |\Lambda_e^\pm|\ll(\log x)^B\tau_K(e)
+\]
+其中 $B,K$ 固定。令
+\[
+ \delta_0=(1-2\theta)\nu-\varepsilon_{\rm GM}/4>0.
+\]
+把 $[P,4P]$ 分成固定个光滑 dyadic 块，并用分部求和去掉 $\log k$。
+Corollary 7.1 在 $a=h=1$、$\eta=\nu$ 且 $P\le x^2$ 时逐字适用于上述
+$r_P(e)$，给出
+\[
+ \sum_{e\le x^{1/2-\nu}}|r_P(e)|
+ \ll x^{1-\delta_0}(\log x)^{B_0}.
+\]
+取 $\kappa<2\delta_0$ 于 $\tau_K(e)\ll e^\kappa$ 并吸收 dyadic 对数损失，得
+\[
+\begin{aligned}
+ |\mathcal R^\pm|
+ &\le\sum_{e\le x^{1/2-\nu}}|\Lambda_e^\pm|\,|r_P(e)|\\
+ &\ll(\log x)^Bx^{\kappa/2}
+       \sum_{e\le x^{1/2-\nu}}|r_P(e)|\\
+ &\ll(\log x)^{B+B_0}x^{1-\delta_0+\kappa/2}
+ \ll x^{1-\delta}.
+\end{aligned}
+\]
+其中 $\delta=\delta(\nu)>0$。因此只有整个多重前缀和具有所需幂次节约，
+不对每个单独前缀声称幂次节约。
+
+\subsection{两种筛分支}
+对 $A_3$ 下筛，$u=q_1q_2q_3$、$z=q_3$，并令
+\[
+\begin{aligned}
+s_{3,\nu}
+&=\frac{1/2-\beta_1-\beta_2-\beta_3-\nu}{\beta_3},\\
+\widehat s_{3,\nu}
+&=\frac{1/2-s_0-\nu}{\beta_3}+O(1/\log x)
+\le s_{3,\nu}+O(1/\log x).
+\end{aligned}
+\]
+格子上端点给出下筛方向。用 $\Phi(\widehat s_{3,\nu})$ 弱化
+$e^{-\gamma_E}f(\widehat s_{3,\nu})$；若
+$\widehat s_{3,\nu}\le2$ 则取零。在 $\alpha=7/6$ 端点，
+\[
+ 3\tau_\nu=\frac12-\frac92\nu,\qquad
+ \frac12-s_0-\nu>\frac72\nu,
+\]
+故 $D$ 仍为 $x$ 的正幂。
+
+对二素数上筛，$u=q_1q_2$、$z=q_2$，且
+\[
+ \widehat s_{2,\nu}
+ =\frac{1/2-s_0-\nu}{\beta_2}+O(1/\log x)>0.
+\]
+若 $1\le\widehat s_{2,\nu}\le3$，使用
+$e^{-\gamma_E}F(\widehat s_{2,\nu})=2/\widehat s_{2,\nu}$；若
+$\widehat s_{2,\nu}\ge3$，使用 $2/(3\beta_2)$。当
+$0<\widehat s_{2,\nu}<1$ 时，取
+$z_*=D^{1-\omega}<D<q_2$，由正性
+\[
+ S(\Acal(P)_{q_1q_2},q_2)
+ \le S(\Acal(P)_{q_1q_2},z_*),
+\]
+其筛参数为 $1/(1-\omega)>1$。固定 $\omega>0$ 时可应用上筛，而且
+\[
+ \frac{e^{-\gamma_E}F(1/(1-\omega))}{\log z_*}
+ =\frac2{\log D}.
+\]
+先令 $x\to\infty$，再令 $\omega\to0^+$，得到
+\[
+ U_{{\rm LS},\nu}(\beta_1,\beta_2)
+ =\max\left\{
+ \frac2{1/2-\beta_1-\beta_2-\nu},
+ \frac2{3\beta_2}\right\}.
+\]
+有限网格使用不利方向端点；无正层级的盒不贡献认证尾项节约。最后对
+$z(\boldsymbol q)\in[Z,2Z]$、$Z=x^\zeta$，
+\[
+ \frac{\log D}{\log z(\boldsymbol q)}
+ =\frac{1/2-s_0-\nu}{\zeta}+O(1/\log x).
+\]
+$F,f$ 在过渡点连续；证书对下筛取较小值、对上筛取较大值，因此在格上冻结筛
+乘子只产生 $o(\mathfrak M(P))$。Merikoski 引理 7 与素数定理给出 $A_3$ 格的
+模型主项
+\[
+ (1+o(1))\mathfrak M(P)\,\alpha
+ \int_{\text{该格}}e^{-\gamma_E}f(s_{3,\nu})
+ \frac{d\beta_1d\beta_2d\beta_3}
+      {\beta_1\beta_2\beta_3^2}.
+\]
+因 $\Phi(s)\le e^{-\gamma_E}f(s)$，对格求和得到
+\eqref{eq:A3lower-zh}。二素数上筛相对于
+$d\beta_1d\beta_2/(\beta_1\beta_2)$ 的系数为
+$e^{-\gamma_E}F(s_{2,\nu})/\beta_2$：当 $1\le s_{2,\nu}\le3$ 时等于
+$2/(1/2-\beta_1-\beta_2-\nu)$；当 $s_{2,\nu}\ge3$ 时不超过
+$2/(3\beta_2)$；当 $0<s_{2,\nu}<1$ 时由降切点得到第一个界。这恰为
+$U_{{\rm LS},\nu}$，求和后得到 \eqref{eq:Tlower-zh} 中对应项。
+这里使用的基本引理和 Type I 估计仍是引用的外部解析输入；前缀收集本身则是
+上面的精确恒等式。
+
+\begingroup
+\raggedright
+\begin{thebibliography}{99}
+
+\bibitem{Carella2025}
+N. A. Carella,
+\emph{Largest prime factors of polynomials},
+arXiv:2308.10075v7, 2025.
+
+\bibitem{GrimmeltMerikoski2025}
+L. Grimmelt and J. Merikoski,
+\emph{On the greatest prime factor and uniform equidistribution of quadratic polynomials},
+arXiv:2505.00493v2, 2025.
+
+\bibitem{FriedlanderIwaniec2010}
+J. Friedlander and H. Iwaniec,
+\emph{Opera de Cribro},
+American Mathematical Society Colloquium Publications, vol.~57,
+American Mathematical Society, Providence, 2010.
+
+\bibitem{Iwaniec1978}
+H. Iwaniec,
+\emph{Almost-primes represented by quadratic polynomials},
+Invent. Math. \textbf{47} (1978), 171--188.
+
+\bibitem{Li2025}
+R. Li,
+\emph{On the largest prime factor of quadratic polynomials},
+arXiv:2406.07575v2, 2025.
+
+\bibitem{Merikoski2020}
+J. Merikoski,
+\emph{On the largest prime factor of $n^2+1$},
+J. Eur. Math. Soc. \textbf{25} (2023), 1253--1284.
+
+\bibitem{Pascadi2026}
+A. Pascadi,
+\emph{Large sieve inequalities for exceptional Maass forms and the greatest prime factor of $n^2+1$},
+Forum Math. Pi \textbf{14} (2026), e8, 1--54.
+
+\end{thebibliography}
+\endgroup
+
+\bigskip
+\noindent 西南石油大学\\
+\texttt{lifesize1@163.com}
+
+\end{document}

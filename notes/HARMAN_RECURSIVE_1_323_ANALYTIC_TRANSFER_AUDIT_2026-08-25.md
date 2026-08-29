@@ -186,18 +186,22 @@ maximum.  Omitting `2<s<2.01` gives zero and is harmless.
 
 ### Gate-3 closure now written in the manuscript
 
-The main text now gives a compact proof roadmap, while the complete
-per-prefix sequence, Rosser formula, collected remainder, endpoint check,
-and `s<1` upper-sieve treatment are retained in Appendix A of the manuscript.
+The main text now gives a compact proof roadmap, while Appendix A records
+the per-prefix sequence, the signed Rosser formula, the exact change of
+variables `k=um`, `e=ud`, the collected remainder, the endpoint check, and
+the `s<1` upper-sieve treatment.  In particular, absolute values are taken
+only after the signed prefix remainders have been collected.
 
 For each localized prefix `q=(q1,...,qj)`, `j<=3`, the manuscript now
 defines the nonnegative cofactor sequence, its actual divisibility sums,
 and the complete model sums
 
 ```text
-r_q(d) = A_{q,d} - B_{q,d},
-B_{q,d} = X_b sum_{d|m} rho(um)/(um) * smooth weights,
-X_q = B_{q,1}.
+r_u(d) = A_{u,d} - B_{u,d},
+r_P(e) = sum_{e|k} (A_k-X_b rho(k)/k) psi_P(k) log k,
+r_u(d) = r_P(ud),
+B_{u,d} = X_b sum_{d|m} rho(um)/(um) * smooth weights,
+X_u = B_{u,1}.
 ```
 
 Because every prime factor of a Rosser modulus `d` is below the least prefix
@@ -207,8 +211,8 @@ density.  Merikoski's Lemma 8 and the Chapter-11/12 Euler-product
 calculation then provide a multiplicative dimension-one density `g` with
 
 ```text
-B_{q,d} = g(d) X_q + negligible model-smoothing error,
-V_q(z) = product_{p<z} (1-g(p)).
+B_{u,d} = g(d) X_u + negligible model-smoothing error,
+V_u(z) = product_{p<z} (1-g(p)).
 ```
 
 The manuscript deliberately does not identify this density pointwise with
@@ -219,8 +223,8 @@ The precise per-prefix upper and lower formulae are cited as Opera de Cribro,
 Chapter 12, equations (12.12)--(12.14), p. 236:
 
 ```text
-S(A_u,z) <= X_q V_q(z)(F(log D/log z)+O((log D)^(-1/6))) + R_q^+,
-S(A_u,z) >= X_q V_q(z)(f(log D/log z)+O((log D)^(-1/6))) - R_q^-.
+S(A_u,z) <= X_u V_u(z)(F(log D/log z)+O((log D)^(-1/6))) + R_q^+ + E_u,
+S(A_u,z) >= X_u V_u(z)(f(log D/log z)-O((log D)^(-1/6))) + R_q^- - E_u.
 ```
 
 Here `f(s)=0` for `s<=2`.  The Rosser weights may depend on the prefix because
@@ -277,13 +281,16 @@ enlarges the upper linear-sieve function.
 
 ### What remains external
 
-This closes the manuscript-level bookkeeping, not the analytic gate by
-formal verification.  A referee must still check that the dimension-one
-fundamental lemma is uniform when the cutoff is the least prefix prime, that
-the model-density decomposition above matches every localized branch, and
-that Corollary 7.1 accepts the collected `Lambda_e^pm` with the stated fixed
-divisor bound.  If any one of these fails, both the `A3` lower-sieve branch
-and the universal two-prime `U_LS` branch must be removed.
+This closes the manuscript-level signed-remainder bookkeeping, not the
+analytic gate by formal verification.  A referee must still check the
+uniform constants in the dimension-one fundamental lemma when the cutoff is
+the least prefix prime, the aggregate model-density evaluation for every
+localized branch, and the application of Corollary 7.1 to the common smooth
+discrepancy `r_P(e)`.  The manuscript now displays the exact identity
+`r_u(d)=r_P(ud)` and the collected divisor-bounded `Lambda_e^pm`; the cited
+analytic estimates themselves remain external.  If their uniformity fails,
+both the `A3` lower-sieve branch and the universal two-prime `U_LS` branch
+must be removed.
 
 ## 5. Lower bound for the three-prime term
 

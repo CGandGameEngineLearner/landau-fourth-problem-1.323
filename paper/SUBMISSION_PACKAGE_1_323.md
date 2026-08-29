@@ -51,40 +51,25 @@ remain external inputs.
 
 ## Abstract
 
-Let `P+(m)` denote the greatest prime factor of `m`. Grimmelt and Merikoski
-recently proved unconditionally the Type I and Type II ranges that had
-previously yielded, under Selberg's eigenvalue conjecture, the exponent
-`1.312` for `P+(n^2+1)`. Li subsequently announced the exponent `1.317` by
-sharpening the numerical Buchstab integrations. We use the same
-unconditional arithmetic input but recursively expose the one-prime tail in
-the linear-sieve range `7/6<alpha<5/4`. The resulting three-prime children
-are bounded using either the available Type II estimate or a lower
-dimension-one linear sieve. An outward-rounded integer certificate,
-independently recomputed in Lean, fixed-width C++, and arbitrary-precision
-Python, proves that this switching saves at least `0.032303187971` on the
-normalized sieve scale. Together with the original published upper bounds
-and an independent elementary lower bound for the subtracted one-prime term,
-this gives `P+(n^2+1)>n^1.323` for infinitely many positive integers `n`.
-The internal block exponent is `1.3231` and the exact final normalized bound
-is `8997005488261/9000000000000<1`. Lean 4 verifies the finite Buchstab sign
-ledger, integer switching certificate, primitive outward-rounding rules, and
-exact rational endpoint budget. The analytic dyadic-to-pointwise passage is
-not part of the focused Lean project. This is a quantitative
-weak form of Landau's fourth problem: it produces a prime divisor exceeding
-`n^1.323` and hence a complementary cofactor smaller than
-`n^(0.677+o(1))`, but it does not overcome the sieve parity barrier.
+We recursively expose the one-prime Buchstab tail on
+`7/6<alpha<5/4`, treating its children with the Grimmelt--Merikoski
+Type-I/II estimates and the dimension-one linear sieve. The resulting
+switching saves at least `0.032303187971` on the normalized sieve scale.
+Granting these analytic inputs and the finite Mellin--Perron transfer,
+infinitely many `n` satisfy `P+(n^2+1)>n^1.323`. This is a
+greatest-prime-factor weak form of Landau's fourth problem; the parity
+barrier remains.
 
 ## Significance statement
 
 Landau's fourth problem asks whether `n^2+1` is prime infinitely often.
 Iwaniec's theorem reaches primes or semiprimes, but the sieve parity barrier
-does not distinguish the two. The present work advances a complementary
-quantitative frontier: infinitely often one prime divisor exceeds
+does not distinguish the two. Granting the analytic transfers stated in the
+paper, the candidate result gives infinitely often a prime divisor exceeding
 `n^1.323`, leaving a cofactor below `n^(0.677+o(1))`. The improvement from
-`1.317` comes from a new recursive use of Buchstab's identity in a range
-previously treated only by the linear sieve. Every numerical inequality is
-certified by three exact-integer implementations, one checked by the Lean
-kernel.
+`1.317` comes from a recursive Buchstab step in a range previously treated
+only by the linear sieve. The finite numerical inequalities are checked by
+three exact-integer implementations.
 
 ## Novelty summary for editors and referees
 
@@ -130,9 +115,11 @@ article.
 Landau's fourth problem asks whether `n^2+1` is prime infinitely often. A
 standard quantitative approach is to maximize the greatest prime factor of
 these values. Building on the unconditional Type-I/II ranges of Grimmelt and
-Merikoski, and on Li's announced exponent `1.317`, the manuscript proves the
-new exponent `1.323`. Equivalently, infinitely often `n^2+1` has a prime
-factor exceeding `n^1.323`, leaving a complementary cofactor below
+Merikoski, and on Li's announced exponent `1.317`, the manuscript presents a
+candidate proof of the exponent `1.323`, conditional on the explicitly
+identified linear-sieve and finite Mellin--Perron transfers. Equivalently,
+the candidate conclusion is that infinitely often `n^2+1` has a prime factor
+exceeding `n^1.323`, leaving a complementary cofactor below
 `n^(0.677+o(1))`.
 
 The new ingredient is a recursive Buchstab switching in the range formerly
