@@ -30,9 +30,10 @@ threshold `V-1/2` in truncated Perron inversion, so strict prime-ordering and
 polylogarithmic kernel loss.  `Prefix-uniform linear sieve` collects each
 Rosser modulus together with the at-most-three-prime prefix and invokes the
 absolute Type-I discrepancy sum at total level `x^(1/2-nu)`.  These additions
-close the expository gap identified in the first internal review; an external
-expert must still check that their stated uniformity matches every recursive
-branch.
+now include the contour-tail proof, the common prefix discrepancy, and the
+uniform Euler-product calculation.  They close the previously identified
+manuscript gap; an external expert should still referee the displayed
+analytic estimates and the cited source theorems.
 
 An exhaustive canonical-grid audit now checks this matching at the box
 level.  It visits `34,215,168` ordered `A3` boxes and `19,635,200` tail
@@ -274,23 +275,22 @@ parameter is at least `1`.  If `0<s<1`, the proof lowers the cutoff to
 first coefficient `2/(1/2-s0-nu)` without extending the cited linear-sieve
 theorem outside its range.
 
-Only after taking `x` to infinity at fixed `nu` is `nu` sent to zero, giving
-the displayed limiting `Phi(s3)` and `U_LS` integrands.  In the upper branch,
-using the cell upper endpoint decreases the exact sieve parameter and hence
-enlarges the upper linear-sieve function.
+The manuscript fixes `nu=10^-20`; it no longer sends `nu` to zero.  Its
+explicit majorant and moving-hyperplane calculation gives
+`|Delta_nu-Delta| <= 10^11 nu = 10^-9`, below half the endpoint margin.  In
+the upper branch, using the cell upper endpoint decreases the exact sieve
+parameter and hence enlarges the upper linear-sieve function.
 
 ### What remains external
 
-This closes the manuscript-level signed-remainder bookkeeping, not the
-analytic gate by formal verification.  A referee must still check the
-uniform constants in the dimension-one fundamental lemma when the cutoff is
-the least prefix prime, the aggregate model-density evaluation for every
-localized branch, and the application of Corollary 7.1 to the common smooth
-discrepancy `r_P(e)`.  The manuscript now displays the exact identity
-`r_u(d)=r_P(ud)` and the collected divisor-bounded `Lambda_e^pm`; the cited
-analytic estimates themselves remain external.  If their uniformity fails,
-both the `A3` lower-sieve branch and the universal two-prime `U_LS` branch
-must be removed.
+The source theorems remain external: the dimension-one fundamental lemma and
+Grimmelt--Merikoski Corollary 7.1 are cited, not reproved.  The manuscript
+now verifies their relevant hypotheses: normalized smooth seminorms, the
+same local density below the least prefix prime, the exact identity
+`r_u(d)=r_P(ud)`, the divisor-bounded collected `Lambda_e^pm`, and the
+absolute discrepancy estimate.  These analytic arguments are not Lean
+theorems and still require ordinary referee checking, but no extra
+prefix-uniformity assumption is left unstated.
 
 ## 5. Lower bound for the three-prime term
 

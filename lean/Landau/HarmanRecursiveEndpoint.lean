@@ -66,4 +66,20 @@ theorem recursive_target_short_of_four_thirds :
   norm_num [recursiveSwitchingSavingTarget,
     switchingSavingNeededForFourThirds]
 
+/-- Displayed positive margin at block exponent `1.3231`.  This is the
+rational leftover after the certified core and tail; it is not a bound on
+the analytic `ν`/mesh loss. -/
+def recursiveSwitchingCertifiedMargin : ℚ := 2994511739 / 9000000000000
+
+/-- Half of the displayed endpoint margin, the quantity the paper asks the
+`ν`/mesh loss not to exceed. -/
+def recursiveSwitchingHalfMargin : ℚ := 2994511739 / 18000000000000
+
+/-- Gate 6 (margin split): the paper's “half the margin” is the exact
+rational `2994511739/18000000000000`.  This does not bound `H_ν-H`. -/
+theorem recursive_switching_half_margin_split :
+    2 * recursiveSwitchingHalfMargin = recursiveSwitchingCertifiedMargin ∧
+    0 < recursiveSwitchingHalfMargin := by
+  norm_num [recursiveSwitchingHalfMargin, recursiveSwitchingCertifiedMargin]
+
 end Landau

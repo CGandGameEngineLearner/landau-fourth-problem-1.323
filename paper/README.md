@@ -2,12 +2,12 @@
 
 The research manuscript is `landau_lpf_1_323.tex`.  It presents the recursive Buchstab-tail switching
 argument and three independent exact-integer implementations for the
-candidate theorem exponent `1.323`, proved via the internal strict block
-exponent `1.3231`.  Its exact final normalized bound is
+exponent `1.323` under the paper's recorded analytic inputs, proved via
+the internal strict block exponent `1.3231`.  Its exact final normalized bound is
 `8997005488261/9000000000000 < 1`.
 
-The manuscript is positioned as a complete candidate proof, exact endpoint
-audit, and formal-verification note.  It now includes explicit finite
+The manuscript is positioned as a theorem under those inputs, an exact
+endpoint audit, and a formal-verification note.  It now includes explicit finite
 Mellin--Perron localization and prefix-uniform linear-sieve propositions,
 rather than leaving the new recursive cross-conditions under a generic
 "standard localization" reference.  An exhaustive integer audit now maps

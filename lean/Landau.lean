@@ -7,6 +7,8 @@ import Landau.HarmanProofAdverseGeometry
 import Landau.HarmanModelNormalization
 import Landau.HarmanTypeIIInterior
 import Landau.HarmanFiniteTransferCombinatorics
+import Landau.HarmanExplicitNu
+import Landau.HarmanPerronFiniteBudget
 
 /-!
 # Landau `1.323` verification project

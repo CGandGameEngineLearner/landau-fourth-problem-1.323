@@ -216,4 +216,16 @@ theorem pair_byBeta_rounds_up {b : Nat} (hb : 0 < b) :
   convert ceilScaled_spec (2 * scale) (3 * b) h3b using 1
   field_simp
 
+/-- Gate 5 (`s<1` cutoff algebra): if the normalized upper factor is the
+rational function `2/s` and the lowered cutoff satisfies
+`log z_*=(1-ω) log D` with `s=1/(1-ω)`, the main-term coefficient is
+`2/log D`.  This is the paper's displayed identity; it does not prove that
+`e^{-γ_E}F(s)=2/s` or that positivity licenses the cutoff reduction. -/
+theorem lowered_cutoff_normalized_upper
+    {omega logD : ℝ} (hω : omega ≠ 1) (hlog : logD ≠ 0) :
+    (2 / (1 / (1 - omega))) / ((1 - omega) * logD) = 2 / logD := by
+  have h1 : 1 - omega ≠ 0 := sub_ne_zero.mpr (Ne.symm hω)
+  field_simp [h1, hlog]
+  ring
+
 end Landau

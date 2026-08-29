@@ -39,7 +39,7 @@
 \author{JinWen Li}
 \address{SouthWest Petroleum University}
 \email{lifesize1@163.com}
-\date{25 August 2026}
+\date{29 August 2026}
 
 \subjclass[2020]{11N32, 11N35, 11N75}
 \keywords{greatest prime factor, quadratic polynomial, Harman sieve, Buchstab identity, Landau's fourth problem, computer-assisted proof, Lean}
@@ -97,20 +97,22 @@ the one-prime Type II term.  The three-prime term below is therefore absent
 from the previously announced $1.317$ argument.
 
 \begin{theorem}\label{thm:main}
-There are infinitely many positive integers $n$ such that
+Assume the analytic inputs in Sections~\ref{sec:transfer}
+and~\ref{sec:switching}.  Specifically, assume the Type~I/II estimates of
+Grimmelt and Merikoski, the dimension-one linear sieve, and the finite
+Mellin--Perron transfer.  Then there are
+infinitely many positive integers $n$ such that
 \[
   \Pplus(n^2+1)>n^{1323/1000}=n^{1.323}.
 \]
 \end{theorem}
 
 \begin{remark}[Proof-status boundary]
-This candidate theorem depends on the cited Grimmelt--Merikoski Type~I/II
-estimates, the dimension-one linear sieve, and the finite Mellin--Perron
-transfer in Section~\ref{sec:switching}; these analytic inputs are not
+The hypotheses are the analytic inputs named in the theorem; they are not
 formalized in Lean.  Lean checks only finite algebra, proof-adverse cell
 geometry, the integer certificate, endpoint arithmetic, and the real-power
-conversion.  It neither verifies the main theorem nor solves Landau's fourth
-problem.
+conversion.  It neither verifies those analytic inputs nor solves Landau's
+fourth problem.
 \end{remark}
 
 \begin{remark}[Comparison with an isolated larger claim]
@@ -167,22 +169,40 @@ squarefree integers.
 \end{proposition}
 
 \begin{proof}
-Take the fixed shift $a=h=1$ in
-\cite[Corollaries 7.1 and 7.2]{GrimmeltMerikoski2025}.  Corollary 7.1 gives
-the Type I level $x^{1/2-\eta}$.  More precisely, it bounds the sum over
-$d\le D$ of the absolute value of each modulus-$d$ discrepancy.  Therefore
-the triangle inequality permits arbitrary divisor-bounded coefficients
-$\lambda_d$, at a cost $x^{o(1)}$ absorbed by the displayed power saving.
-Corollary 7.2 gives
+Take $a=h=1$ in Grimmelt--Merikoski.  The paragraph immediately following
+their Theorem~1.1 on PDF p.~2 says that, when $ah\le x^\varepsilon$, its
+auxiliary prime-density hypothesis follows unconditionally from the
+classical zero-free region (a possible exceptional zero only decreases the
+relevant sum).  Thus no character hypothesis remains for the present fixed
+shift.
+
+Corollary~7.1 on PDF p.~22 is stated for $D\le x^{1/2-\eta}$ and gives the
+sum over $d\le D$ of the absolute value of the complete smooth modulus-$d$
+discrepancy.  Its test functions are normalized on $[1,2]$ and $[-1,1]$,
+with constants controlled by finitely many derivative seminorms.  Every
+dyadic piece used here is obtained by rescaling one fixed smooth partition,
+so those seminorms, and hence the implied constant, are uniform in the
+piece.  The $O((\log x)^L)$ pieces and Mellin kernels below cost only a
+power of $\log x$.
+
+Corollary~7.2 on PDF pp.~22--23 is stated for divisor-bounded coefficients,
+with the $N$ coefficient squarefree-supported, and gives
 \[
   x^{\alpha-1+2\eta}\le N
   \le x^{(2-\alpha)/3-4\eta/3}.
 \]
-Since $\eta$ is arbitrary, this supplies every fixed closed interior range
-in \eqref{eq:typeII}.  Its coefficient hypotheses are exactly those stated
-above.  Also $N\le x^{1/3}$, so $M=x^\alpha/N\ge N$ in the ranges used here.
-The smooth-weight and Mellin separations are those already used in
-\cite[Section 3.4]{Merikoski2020}.
+In every application below, $N$ is the product of a selected subset of at
+most three distinct prefix primes.  Hence it is squarefree and has at most
+$\tau_3(N)$ ordered representations.  The complementary primes, the
+Möbius variable, and the residual cofactor give an $M$ coefficient bounded
+by $\tau_5(M)$.  The localization factors have bounded real part and unit
+modulus on vertical lines, so these same fixed divisor bounds survive the
+finite Mellin--Perron separation.  Thus the localized sums satisfy the
+coefficient hypotheses of Corollary~7.2 term by term.  Also $N\le x^{1/3}$,
+so $M=x^\alpha/N\ge N$ in all ranges used here.  Since $\eta$ is fixed and
+positive, the displayed shifted interval is a closed interior subrange of
+\eqref{eq:typeII}; conversely every fixed closed interior subrange is
+obtained by taking $\eta$ small enough.
 
 More explicitly, the error exponents in Corollaries 7.1 and 7.2 are,
 up to an $x^{o(1)}$ factor,
@@ -191,15 +211,13 @@ up to an $x^{o(1)}$ factor,
   \qquad
   1-(1-2\theta)\eta+\varepsilon/8.
 \]
-Unconditionally $\theta=7/64$.  For example, after fixing the sieve margin,
-choosing $\varepsilon=\eta$ gives respectively
+Unconditionally $\theta=7/64$.  After fixing the sieve margin, choosing the
+auxiliary $\varepsilon=\eta$ gives respectively
 $1-17\eta/32$ and $1-21\eta/32$; the logarithmic losses below are therefore
-absorbed by a fixed power saving.  For $a=h=1$, the auxiliary character condition in
-\cite[Theorem 1.1]{GrimmeltMerikoski2025} is unconditional by the zero-free
-region discussion following that theorem.  The authors explicitly state
-that their corollaries recover precisely the Type I and Type II ranges used
-under Selberg's eigenvalue conjecture and invoke the calculation in the
-proof of \cite[Theorem 2]{Merikoski2020}.
+absorbed by a fixed power saving.  The paragraph after Corollary~7.2 on
+PDF p.~23 explicitly says that these are the Type I/II ranges used in the
+proof of \cite[Theorem 2]{Merikoski2020}.  This checks all hypotheses needed
+from the two corollaries; their proofs remain the cited external results.
 \end{proof}
 
 We also use Merikoski's Fundamental Proposition II with Selberg parameter
@@ -248,11 +266,13 @@ while the first Type~II prefix in its complementary part is smaller than
    <x^{\sigma-4\nu/3}.
 \]
 Thus the two published corollaries give exactly this margin version, not
-merely the limiting endpoint.  On the compact range $\alpha<1.22$ used
-by the certificate, all inequalities
-$0<\gamma_\nu<\tau_\nu<a<\sigma$ hold once $\nu$ is sufficiently small.
-We use these shifted parameters in the analytic sums and let
-$\nu\to0^+$ only after obtaining the uniform estimates.
+merely the limiting endpoint.  We use the fixed value
+$\nu=\nu_0=10^{-20}$ from Lemma~\ref{lem:explicit-margin}.  On the compact
+range $\alpha<1.22$ used by the certificate,
+$4\nu_0<1/25\le\gamma$ and $5\nu_0<1/25\le\sigma-a$, so
+$0<\gamma_{\nu_0}<\tau_{\nu_0}<a<\sigma$.  All analytic estimates are taken
+with this fixed positive margin; no limiting choice of $\nu$ is used in the
+endpoint argument.
 
 \subsection{Uniform localization and prefix sieving}
 
@@ -281,17 +301,38 @@ divisor-bounded coefficients survives all these localizations.
 
 \begin{proof}
 Since $U,V$ are integers, the strict comparison is equivalent to
-$U<V-1/2$.  Perron's formula with $c=1/\log x$ and height $T$ gives
+$U<V-1/2$.  Put $y=(V-1/2)/U$ and $c=1/\log x$.  For $y\ne1$, the
+truncated Perron formula is
 \[
- \1_{U<V}=\frac{1}{2\pi i}\int_{c-iT}^{c+iT}
-       \left(\frac{V-1/2}{U}\right)^s\frac{ds}{s}
-   +O\!\left(\min\left\{1,
-       \frac{1}{T\,|\log((V-1/2)/U)|}\right\}\right).
+ \frac{1}{2\pi i}\int_{c-iT}^{c+iT}y^s\frac{ds}{s}
+ =\1_{y>1}+O\!\left(
+ y^c\min\left\{1,\frac1{T|\log y|}\right\}\right).
 \]
+Here is the required estimate, rather than an appeal to an unquantified
+localization principle.  The full vertical integral equals $1$ for $y>1$
+and $0$ for $0<y<1$: close the contour to the left or right, respectively,
+and take the residue at $s=0$.  On either omitted vertical tail, integration
+by parts in
+\(e^{it\log y}/(c+it)\) gives $O(y^c/(T|\log y|))$ when
+$T|\log y|\ge1$; the trivial bound for the complete transition gives
+$O(y^c)$ otherwise.  This proves the displayed formula.
+
+The half-integer cut makes the estimate uniform.  If $U<V$, then
+$y\ge1+1/(2U)$ and
+\[
+ \log y\ge\frac{2}{4U+1}.
+\]
+If $U\ge V$, then $1-y\ge1/(2U)$ and
+$-\log y\ge1-y\ge1/(2U)$.  Hence in both cases
+\[
+ |\log y|\ge\frac{2}{4U+1}ge\frac{2}{5x^C}.
+\]
+Moreover $y^c\le e^C$ when $y>1$, and $y^c\le1$ when $y<1$.
+Thus one comparison has pointwise truncation error
+$O_C(x^C/T)$.
+
 The replacement of $V$ by $V-1/2$ only excludes the equality case.  It
 does not change the underlying representations or their divisor bounds.
-The truncation estimate in the displayed Perron formula remains an analytic
-input and is not part of the Lean audit.
 
 For a cross-condition $U(\boldsymbol m)<V(\boldsymbol n)$, attach
 $U^{-s}$ to the $M$-coefficient and $(V-1/2)^s$ to the $N$-coefficient.
@@ -349,15 +390,24 @@ a Perron condition.
 \end{description}
 
 For each priority class the number $J$ of genuine cross-comparisons is fixed,
-independent of $x$.  On $\Re s=c$, the real powers $U^{-c}$ and
-$(V-1/2)^c$ are $O_C(1)$, while the imaginary powers have modulus one.  Each
-Perron kernel has $L^1$ mass $O(\log T)$.  Moreover
-$|V-1/2-U|\ge1/2$ and $U,V\le x^C$, so
-$|\log((V-1/2)/U)|\gg_C x^{-C}$.  If the unreduced finite decomposition has
-at most $x^B$ tuples, choose $T=x^{A'}$ with $A'>A+B+C$.  Summing the
-pointwise truncation errors is then $O_A(x^{-A})$.  Iterating at most $J$
-comparisons gives total kernel mass $O((\log x)^J)$, which is absorbed by
-the fixed power saving of Corollary~7.2 after decreasing its exponent.
+independent of $x$.  On $\Re s=c$, the real factors are at most $e^C$ and
+the imaginary factors have modulus one.  Also
+\[
+ \int_{-T}^{T}\frac{dt}{|c+it|}
+ \ll\log(T\log x)\ll_{A'}\log x
+ \qquad(T=x^{A'}).
+\]
+Replace the $J$ indicators one at a time and telescope.  If the unreduced
+sum has at most $x^B$ tuples, the total truncation error is
+\[
+ O_{C,J}\!\left(
+ x^B\frac{x^C}{T}(\log x)^{J-1}\right).
+\]
+Given $A>0$, choosing $A'>A+B+C+J+2$ makes this
+$O_A(x^{-A})$.  The resulting multiple integral has total kernel mass
+$O((\log x)^J)$.  Therefore a Type~II error $O(x^{1-\delta})$, uniform for
+divisor-bounded coefficients, becomes
+$O(x^{1-\delta}(\log x)^J)=O(x^{1-\delta/2})$ for large $x$.
 
 For a smooth compactly supported $W$, Mellin inversion separates
 $W(MN/P)$; rapid decay of its Mellin transform gives the same arbitrary
@@ -368,9 +418,8 @@ remain uniformly divisor bounded.  The fixed polylogarithmic kernel mass
 is absorbed after decreasing the power-saving exponent.  This proves the
 lemma.  Merikoski's use of Perron in the proof of Fundamental Proposition~II
 and his Mellin removal of the smooth product weights provide the qualitative
-templates \cite[Sections 2.3 and 3.4]{Merikoski2020}.  The explicit truncated
-formula, its aggregate error, and every branch assignment above remain
-analytic steps not checked in Lean.
+templates \cite[Sections 2.3 and 3.4]{Merikoski2020}.  This proof is an
+ordinary analytic argument and is not part of the Lean formalization.
 \end{proof}
 
 \begin{proposition}[Prefix-uniform linear sieve]\label{prop:prefix-sieve}
@@ -434,14 +483,13 @@ analytic theorems, rather than an additional cancellation assumption.
 
 \begin{remark}[Limitation of the prefix-sieve transfer]
 \label{rem:prefix-sieve-limit}
-Proposition~\ref{prop:prefix-sieve} is an analytic input to the candidate
-theorem, not a Lean theorem.  The proof uses Grimmelt--Merikoski
-Corollary~7.1 for its absolute Type-I discrepancy sum and the
-dimension-one fundamental lemma of \emph{Opera de Cribro}.  Appendix
-\ref{app:prefix-sieve} verifies the prefix collection and the least-prefix
-cutoff bookkeeping, but it does not reprove either cited analytic theorem.
-An independent sieve-theoretic review must still confirm that their stated
-uniform constants apply to the displayed smooth dyadic family.
+Proposition~\ref{prop:prefix-sieve} is not a Lean theorem.  Its external
+inputs are precisely Grimmelt--Merikoski Corollary~7.1 and the
+dimension-one fundamental lemma of \emph{Opera de Cribro}; neither source
+theorem is reproved here.  Appendix~\ref{app:prefix-sieve} checks their
+hypotheses for the least-prefix cutoff, including the uniform Euler product,
+the normalized smooth family, and the collected absolute remainder.  Thus
+no additional ``prefix-uniformity'' assertion is left as an assumption.
 \end{remark}
 
 The decomposition preceding the old linear-sieve term is
@@ -486,10 +534,12 @@ For $A_3$, retain only tuples for which at least one of
 lies in the shifted Type II interval $[a_\nu,\sigma_\nu]$.  The
 corresponding product of
 distinct primes is squarefree and may be chosen as the Type II variable.
-Fix a sufficiently fine exponent mesh and discard cells meeting a Type~II
-endpoint or a priority boundary.  This is one-sided in the required
-direction, since we seek a lower bound for $A_3$; the model loss tends to
-zero with the mesh by dominated convergence.  On every remaining cell,
+Use the canonical $1200\times300\times160$ exponent mesh of
+Proposition~\ref{prop:certificate}.  A cell meeting a Type~II endpoint or a
+priority boundary is assigned the proof-adverse lower contribution (zero if
+no other lower sieve is available).  Thus its loss is already included in
+the certified saving, rather than being postponed to a limiting mesh
+argument.  On every remaining cell,
 Lemma~\ref{lem:localization} removes the finitely many ordering and
 roughness cross-conditions and leaves divisor-bounded coefficients.  This
 Type~II part gives one lower bound for $A_3$.  Unlike the earlier
@@ -753,8 +803,10 @@ Consequently, in the normalization above,
  S(\Acal(P),x^a)
  \le \bigl(H_\nu(\alpha)+o(1)\bigr)\mathfrak M(P),
 \]
-where the $o(1)$ is uniform on compact shifted cells.  Letting the fixed
-margin and mesh width tend to zero gives $H(\alpha)$ below.
+where the $o(1)$ is uniform on the fixed shifted cells.  The quantitative
+comparison between this fixed-margin envelope and $H(\alpha)$ is given
+after Proposition~\ref{prop:certificate}; no unquantified mesh limit is used
+in the endpoint budget.
 \end{proposition}
 
 \begin{proof}
@@ -932,22 +984,98 @@ $0.033508163100$ and $0.034213110567$.  These values support convergence but
 are not used in the theorem.
 \end{remark}
 
-To pass from the analytic margin statement to the certified limiting
-integral, use the explicit parameters in
-\eqref{eq:margin-parameters} and denote the resulting region by $G_\nu$.
-We keep only $\alpha<1.22$, as does the certificate.  On this compact
-range, $\gamma$ is bounded away from zero and all integrands above have a
-common integrable bound.  The Type II, lower-sieve threshold, ordering, and
-cell boundaries lie in a finite union of affine hyperplanes, a null set.
-Their fixed-margin indicators converge pointwise away from this set.
-Dominated convergence therefore shows that the full switched envelope with
-margins converges to \eqref{eq:Delta} as $\nu\to0^+$.  The exact endpoint
-margin in \eqref{eq:budget} is
-$2994511739/9000000000000>0$; choose a fixed positive $\nu$ and a
-sufficiently fine fixed priority mesh for which the total integral loss is
-less than half this margin.
-After that choice, the power-saving and $o(1)$ errors are absorbed by taking
-$x$ sufficiently large.
+\begin{lemma}[Explicit analytic-margin budget]\label{lem:explicit-margin}
+Let $H_t$ be the envelope obtained from the displayed branch ledger by
+using the shifted parameters in \eqref{eq:margin-parameters} with margin
+$t$ on $7/6<\alpha<61/50$; outside that retained range set $H_t=H$.  Put
+\[
+ \Delta_t:=\int_{7/6}^{5/4}\max\{0,4\alpha-H_t(\alpha)\}\,d\alpha.
+\]
+For $0\le t\le10^{-20}$,
+\begin{equation}\label{eq:explicit-margin-loss}
+ |\Delta_t-\Delta|\le10^{11}t.
+\end{equation}
+Consequently the fixed choice
+\begin{equation}\label{eq:explicit-nu}
+ \nu_0=10^{-20}
+\end{equation}
+satisfies all interior inequalities and spends less than half of the exact
+endpoint margin:
+\[
+ 10^{11}\nu_0=10^{-9}<\frac1{10000}
+ <\frac{2994511739}{18000000000000}.
+\]
+\end{lemma}
+
+\begin{proof}
+Only $7/6<\alpha<61/50$ contributes to the certificate.  On this interval
+\[
+ \gamma\ge\frac1{25},\qquad \tau\ge\frac7{50},\qquad
+ \frac12-\beta_1-\beta_2\ge\frac3{50}
+ \quad(\tau<\beta_1<a,\ \beta_2<\beta_1).
+\]
+Hence, for $0\le t\le10^{-20}$,
+\[
+ \gamma_t>\frac1{50},\qquad \tau_t>\frac1{10},\qquad
+ \frac12-\beta_1-\beta_2-t>\frac1{20}.
+\]
+All integration variables are therefore at least $1/50$.  Moreover
+$|\log(\tau_t/\gamma_t)|<\log4<2$, $0\le W_3\le1$, and
+$0\le U_2\le U_{{\rm LS},t}\le40$.  The absolute densities in the
+three-prime and two-prime integrals are consequently bounded by
+\[
+ \frac{61}{50}\,50^4<8\cdot10^6,\qquad
+ \frac{61}{50}\,40\,50^2<2\cdot10^5,
+\]
+respectively; the elementary base term in \eqref{eq:H} is below $400$.
+These are explicit integrable majorants on a unit box.
+
+Away from a branch boundary, differentiate the rational branches with
+respect to $t$.  Since $|\Phi'|\le1$, $|d s_{3,t}/dt|=1/\beta_3\le50$,
+and
+\[
+ \left|\frac d{dt}\frac2{1/2-\beta_1-\beta_2-t}\right|
+ \le800,
+\]
+the base, three-prime, and complete two-prime densities vary by at most
+$10^6t$, $4\cdot10^8t$, and $5\cdot10^8t$, respectively.  The last bound
+also covers the recursive candidate: differentiating $u_+/\gamma_t$ costs
+less than $10^4t$, and its inner $W_3/\beta_3^2$ integral costs less than
+$2\cdot10^5t$.  Taking a maximum or minimum does not enlarge the largest
+of these Lipschitz constants.
+
+It remains to account for changing branch indicators and integration
+limits.  There are eight hyperplanes from the four subset sums against the
+two Type~II endpoints, two from the pair Type~II interval, one from the
+recursive $\xi_t$ test, and five occurrences of moving $\gamma_t$ or
+$\tau_t$ integration limits.  Thus even counting repeated priority
+occurrences separately gives fewer than $32$ moving affine hyperplanes.
+Each right-hand side moves by at most $5t$.
+Because some coefficient of a moving hyperplane is $1$, its symmetric
+difference inside the unit box has measure at most $10t$.  Using the
+$8\cdot10^6$ majorant, all moving slabs contribute less than
+\(32\cdot10t\cdot8\cdot10^6<3\cdot10^9t\).
+Together with the smooth variation above and the fact that the
+$\alpha$-interval has length below $1$, this is less than $10^{11}t$.
+Finally, $r\mapsto\max(0,r)$ is $1$-Lipschitz, which proves
+\eqref{eq:explicit-margin-loss}.
+
+For clarity, no separate grid-limit loss is hidden here.  The canonical
+mesh has $\alpha$-width $1/14400$, three-prime widths at most $1/3000$,
+tail $\beta_1$-width at most $1/2000$, and containing child width at most
+$9/8000$.  Proposition~\ref{prop:certificate} assigns proof-adverse values
+to every one of these boxes, including boxes meeting Type~II or priority
+boundaries.  Thus the locked value $32303187971$ is already the
+post-discard lower bound; the only subsequent loss is the margin comparison
+\eqref{eq:explicit-margin-loss}.
+
+The affine requirements are immediate from
+$4\nu_0<1/25\le\gamma$ and
+$5\nu_0<1/25\le\sigma-a$.  The last displayed rational comparison is also
+checked in the finite Lean audit.  Reserve the other half of the endpoint
+margin and then take $x$ large enough to absorb the power-saving and $o(1)$
+terms.
+\end{proof}
 
 \section{An independent lower bound for the old subtractive term}
 
@@ -1004,8 +1132,8 @@ Merikoski's published strict upper bounds for the other terms are
  F_4&<0.00011,& F_5&=\frac{29}{72}.
 \end{align*}
 Combining these with Lemma \ref{lem:F6} and the complete lower bound in Proposition
-\ref{prop:certificate}, the normalized contribution through exponent $5/4$
-is strictly smaller than
+\ref{prop:certificate}, the certified zero-margin contribution through
+exponent $5/4$ is strictly smaller than
 \begin{align}\label{eq:core}
   C&=\frac16+\frac{287}{10000}+\frac{8622}{100000}
       +\frac{3107}{100000}+\frac{11}{100000}+\frac{29}{72}\notag\\
@@ -1027,9 +1155,15 @@ Exact rational arithmetic gives
 \begin{align}\label{eq:budget}
  C+2\left(\varpi_*^2-\left(\frac54\right)^2\right)
  &=\frac{8997005488261}{9000000000000}<1,\\
- 1-\frac{8997005488261}{9000000000000}
- &=\frac{2994511739}{9000000000000}.
+1-\frac{8997005488261}{9000000000000}
+&=\frac{2994511739}{9000000000000}.
 \end{align}
+At the fixed analytic margin $\nu_0$, Lemma~\ref{lem:explicit-margin}
+increases the upper bound by at most $10^{-9}$, which is less than half the
+last displayed margin.  Choose $x$ large enough that all power-saving,
+fundamental-lemma, and smooth-partition errors together use less than the
+remaining half.  The resulting normalized total is still strictly below
+$1$.
 
 Let $P_x$ denote the greatest prime factor among the values $n^2+1$ selected
 by the smooth index block.  The Chebyshev--Hooley identity used in
@@ -1038,7 +1172,7 @@ by the smooth index block.  The Chebyshev--Hooley identity used in
  \sum_{x<p\le P_x}|\Acal_p|\log p=X_b\log x+O(x).
 \end{equation}
 If $P_x\le x^{\varpi_*}$, summing the smooth modulus blocks and applying
-\eqref{eq:core}, \eqref{eq:tail}, and the interior-margin discussion gives a
+\eqref{eq:core}, \eqref{eq:tail}, and Lemma~\ref{lem:explicit-margin} gives a
 strict upper bound smaller than $X_b\log x$, contradicting
 \eqref{eq:chebyshev} for all sufficiently large $x$.  Hence every
 sufficiently large index block $[x,2x]$ contains an $n$ such that
@@ -1074,19 +1208,27 @@ module proves the final implication $x>2^{13230}$ and $0\le n\le2x$
 imply $n^{1323/1000}<x^{13231/10000}$.  The focused project builds with
 Lean 4 and Mathlib v4.22.0.
 
-Small audit modules check only affine identities for the $\nu$ margins, a
-half-integer cutoff, an abstract count of representations, one-sided box
-geometry, and algebraic normalization.  The normalized expressions are
-$\alpha/\gamma$, $t+1$, $\Phi$, and $U_{\rm LS}$.  These modules construct
-neither the actual Perron localization nor
+Small audit modules check affine identities for the $\nu$ margins, an
+explicit rational $\nu=10^{-20}$ that satisfies those identities on
+$7/6<\alpha<1.22$, a half-integer cutoff, an abstract count of
+representations, one-sided box geometry, algebraic normalization of
+$\alpha/\gamma$, $t+1$, $\Phi$, and $U_{\rm LS}$, the $s<1$ cutoff identity
+$(2/s)/((1-\omega)\log D)=2/\log D$, the exact half-margin split
+$2994511739/18000000000000$, the comparison
+$10^{11}\nu<2994511739/18000000000000$, and the finite Perron budget arithmetic under
+stated hypotheses
+$\log((V-1/2)/U)\ge 2/(4U+1)$ and
+$X^{B}\cdot 2\cdot X^{C-A'}\le X^{-A}$.
+These modules construct neither the actual Perron localization nor
 Rosser coefficients varying with the prefix, and they do not prove any of
 the six analytic transfer gates as a whole.
 
-The formal development treats Grimmelt--Merikoski Corollaries 7.1 and 7.2,
-their application to the actual localized coefficients in Lemma
-\ref{lem:A3-transfer}, the truncated Perron/Mellin transfer for the real
-sifted sums, and the standard upper and lower dimension-one linear-sieve
-theorem as analytic inputs.
+The formal development treats Grimmelt--Merikoski Corollaries 7.1 and 7.2
+and the standard upper and lower dimension-one linear-sieve theorem as
+external analytic inputs.  Sections~\ref{sec:transfer} and
+\ref{sec:switching} verify their hypotheses and prove the finite
+Perron/Mellin localization on paper; these analytic arguments are not Lean
+theorems.
 The finite Buchstab decomposition, the integer computation, its primitive
 outward-rounding rules, the elementary $F_6$ convex midpoint certificate,
 the exact rational endpoint arithmetic, and the real-power dyadic conversion
@@ -1112,8 +1254,9 @@ submitted content. GPT-5.6 Sol is an AI-assisted development tool, not an
 author or an independent verifier. The Lean project checks only the finite
 combinatorial, integer, rounding, elementary $F_6$, rational endpoint, and
 real-power conversion components; the cited
-analytic Type-I/II, linear-sieve, and Mellin--Perron transfers remain external
-inputs.
+analytic Type-I/II and linear-sieve theorems remain external inputs.  The
+finite Mellin--Perron transfer is proved in the paper but not formalized in
+Lean.
 \end{remark}
 
 \par\medskip
@@ -1215,6 +1358,22 @@ dimension-one local factors as in the unprefixed sequence.  In particular,
  =\prod_{\substack{p<z(\boldsymbol q)\\p\nmid u}}(1-g(p))
  =\prod_{p<z(\boldsymbol q)}(1-g(p)).
 \]
+Indeed, after writing \(q_i=Q_iv_i\) and \(k=Pw\), every smooth factor is
+drawn from one fixed compactly supported family in the normalized variables
+\(v_i,w\); its $r$th derivative is \(O_r(1)\), independently of the exact
+prefix and of $x$.  For $p<z=q_j$ one has $p\nmid u$, so the local density is
+exactly $g_u(p)=g(p)$.  Consequently the dimension-one product condition
+used in Chapters~11--12,
+\[
+ \prod_{w\le p<z}(1-g_u(p))^{-1}
+ \le\frac{\log z}{\log w}
+ \left(1+O\!\left(\frac1{\log w}\right)\right),
+\]
+has the same implied constant as the unprefixed product.  The fundamental
+lemma constants depend only on this product bound and the fixed derivative
+seminorms, not on the value of the least prefix prime inside its dyadic
+cell.  This proves the required uniformity when $z=q_j$.
+
 More explicitly, summing over the ordered prefix cells gives
 \[
  \sum_{\boldsymbol q}c(\boldsymbol q)
@@ -1297,7 +1456,16 @@ with fixed \(B,K\).  Put
 Split \([P,4P]\) into a fixed number of smooth dyadic blocks and remove
 \(\log k\) by partial summation.  Corollary~7.1 of
 \cite{GrimmeltMerikoski2025}, with \(a=h=1\), \(\eta=\nu\), and
-\(P\le x^2\), then applies verbatim to \eqref{eq:prefix-density} and gives
+\(P\le x^2\), has inside its modulus-$e$ absolute value exactly
+\[
+ \sum_{k\equiv0\pmod e}\psi_1(k/K)
+ \left\{\sum_{\ell^2+1\equiv0\pmod k}\psi_2(\ell/x)
+       -\frac{\rho(k)}k\,x\widehat\psi_2(0)\right\}.
+\]
+Rescaling $b$ supplies $\psi_2$, the fixed decomposition of $\psi_P$
+supplies $\psi_1$, and partial summation supplies $\log k$; hence this is
+precisely $r_P(e)$ in \eqref{eq:prefix-density}.  Corollary~7.1 therefore
+gives
 \[
  \sum_{e\le x^{1/2-\nu}}|r_P(e)|
  \ll x^{1-\delta_0}(\log x)^{B_0}.
@@ -1339,7 +1507,7 @@ At the endpoint \(\alpha=7/6\),
  \frac12-s_0-\nu>\frac72\nu,
 \]
 so \(D\) remains a positive power of \(x\).  This proves the three-prime
-remainder is admissible before \(\nu\to0^+\).
+remainder is admissible at the fixed margin \(\nu=\nu_0\).
 
 For the two-prime upper branch, \(u=q_1q_2\), \(z=q_2\), and
 \[

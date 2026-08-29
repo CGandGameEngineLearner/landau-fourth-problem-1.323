@@ -32,7 +32,7 @@ explicitly acknowledged.
 
 - `paper/landau_lpf_1_323.tex`: arXiv-ready manuscript source.
 - `output/landau_lpf_1_323.pdf`: rendered manuscript.
-- `lean/`: focused Lean 4 project containing the 22-module dependency closure
+- `lean/`: focused Lean 4 project containing the 24-module dependency closure
   of the recursive `1.323` certificate; unrelated Gaussian/Atkin--Lehner
   research modules are intentionally excluded.
 - `scripts/`: exact C++, arbitrary-precision Python, and branch-coverage
@@ -71,18 +71,23 @@ trust boundary for the four block values; the C++ and Python implementations
 remain independent cross-checks.  Kernel-checked lemmas record the cell sign
 as `max(0, 4alpha+A1+A3+T-A0-A2)`, the `1/(12n)` cell width, conservative
 clipping, and proof-adverse endpoint directions.  They do not prove that the
-integer algorithm equals the analytic `H(alpha)` integral. The analytic Type-I/II, standard
-linear-sieve, Mellin--Perron transfer, and the quoted Buchstab-function lower
-bound remain conventional external inputs, as stated in the paper.
+integer algorithm equals the analytic `H(alpha)` integral. The cited
+Type-I/II and standard linear-sieve theorems, together with the quoted
+Buchstab-function lower bound, remain external inputs.  The paper proves the
+finite Mellin--Perron localization analytically; Lean does not formalize it.
 
 For audit bookkeeping, the focused project also checks affine `nu`-margin
-identities, one-sided common/containing cell geometry, program branch gates,
-and the algebraic normalization of `alpha/gamma`, the lower-sieve `t+1`
-threshold, `Phi(p/q)`, and `U_LS`.  Its gate-2/3 additions are only an integer
-half-threshold fact and an abstract divisor-tuple count; they do not construct
-the Perron localization or the prefix-dependent Rosser coefficients.  None of
-these lemmas proves Grimmelt--Merikoski Corollaries 7.1/7.2, their application
-to the actual sifted sums, or the standard dimension-one sieve functions.
+identities, an explicit rational `nu=10^-20` on the retained range, one-sided
+common/containing cell geometry, program branch gates, the algebraic
+normalization of `alpha/gamma`, the lower-sieve `t+1` threshold, `Phi(p/q)`,
+and `U_LS`, the `s<1` cutoff identity, the exact half-margin split, the
+comparison `10^11*nu < half-margin`, and
+finite Perron budget arithmetic under stated hypotheses.  Its gate-2/3
+additions still do not construct the Perron localization or the
+prefix-dependent Rosser coefficients.  None of these lemmas proves
+Grimmelt--Merikoski Corollaries 7.1/7.2 or the standard dimension-one sieve
+functions.  Their applicability and the collected-prefix calculation are
+proved in the manuscript, not in Lean.
 
 ## Reproduce the exact certificate
 

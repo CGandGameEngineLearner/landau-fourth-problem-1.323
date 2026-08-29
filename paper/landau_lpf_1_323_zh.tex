@@ -32,16 +32,17 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{说明}
 
-\title{关于 $n^2+1$ 的最大素因子的递归 Buchstab 切换改进\\
+\title{关于 $n^2+1$ 的最大素因子的\\递归 Buchstab 切换改进\\
 \large 中文译本}
 \author{JinWen Li}
-\date{2026年8月25日}
+\date{2026年8月29日}
 
 \begin{document}
 \maketitle
 
 \begin{center}
 \small
+西南石油大学\quad\texttt{lifesize1@163.com}\\[4pt]
 本文件是英文论文的中文译本。数学公式、定理编号、证书数字和引用与英文版一致；
 如中英文措辞存在歧义，以英文版为准。
 \end{center}
@@ -54,6 +55,8 @@ Mellin--Perron 传递后，可得无穷多个 $n$ 满足
 $\Pplus(n^2+1)>n^{1.323}$。这是 Landau 第四问题的最大素因子弱形式，
 仍受奇偶障碍限制。
 \end{abstract}
+
+\noindent{\small 2020 MSC：11N32, 11N35, 11N75.}
 
 \section{引言}
 
@@ -73,17 +76,18 @@ Type II 三素数子项，对其余子项使用线性筛下界，并递归上估
 \cite[Lemmas 2.1 and 2.2]{Li2025}，因此本文的三素数项并不包含在该结果中。
 
 \begin{theorem}\label{thm:main-zh}
-存在无穷多个正整数 $n$，使得
+假设第~\ref{sec:transfer-zh} 节与第~\ref{sec:switching-zh} 节的
+Grimmelt--Merikoski Type I/II 估计、维数一线性筛以及有限 Mellin--Perron
+传递成立。则存在无穷多个正整数 $n$，使得
 \[
   \Pplus(n^2+1)>n^{1323/1000}=n^{1.323}.
 \]
 \end{theorem}
 
 \begin{remark}[证明状态边界]
-该候选定理依赖 Grimmelt--Merikoski Type I/II 估计、维数一线性筛和
-第~\ref{sec:switching-zh} 节的有限 Mellin--Perron 传递；这些解析输入未在
-Lean 中形式化。Lean 只核查有限代数、格子几何、整数证书、端点和实幂换算，
-既未验证主定理，也未解决 Landau 第四问题。
+定理中的假设即为上述解析输入，它们未在 Lean 中形式化。Lean 只核查有限代数、
+格子几何、整数证书、端点和实幂换算，既未验证这些解析输入，也未解决
+Landau 第四问题。
 \end{remark}
 
 \begin{remark}[与一个更大孤立主张的比较]
@@ -134,28 +138,39 @@ $MN=x^\alpha$ 且 $M\ge N$，则 \cite[Proposition 4(i)]{Merikoski2020}
 \end{proposition}
 
 \begin{proof}
-在 \cite[Corollaries 7.1 and 7.2]{GrimmeltMerikoski2025} 中取
-$a=h=1$。Corollary 7.1 给出 $x^{1/2-\eta}$ 的 Type I 层级，并控制
-$d\le D$ 上每个模 $d$ 偏差绝对值之和。因此可由三角不等式加入任意除数有界
-系数，损失 $x^{o(1)}$，由原有幂次节约吸收。Corollary 7.2 给出
+在 Grimmelt--Merikoski 中取 $a=h=1$。其 Theorem 1.1 后、PDF 第 2 页的
+段落说明：当 $ah\le x^\varepsilon$ 时，辅助素数密度条件由经典零点自由区域
+无条件推出，可能的例外零点只会使相应和更小。因此本文固定平移不再需要额外
+特征假设。
+
+PDF 第 22 页的 Corollary 7.1 在 $D\le x^{1/2-\eta}$ 上控制完整光滑模
+$d$ 偏差绝对值之和。其测试函数归一化支撑于 $[1,2]$ 与 $[-1,1]$，常数只依赖
+有限个导数半范数。本文每个 dyadic 块均由同一固定光滑分片缩放得到，故这些
+半范数及隐含常数对块一致；$O((\log x)^L)$ 个块和下文 Mellin 核只损失对数幂。
+
+PDF 第 22--23 页的 Corollary 7.2 对除数有界系数成立，要求 $N$ 侧支撑于
+平方自由数，并给出
 \[
  x^{\alpha-1+2\eta}\le N
  \le x^{(2-\alpha)/3-4\eta/3}.
 \]
-$\eta$ 可任意取小，故得到 \eqref{eq:typeII-zh} 的固定闭内区间。其系数条件
-正是命题所述。在本文区间内 $N\le x^{1/3}$，从而 $M=x^\alpha/N\ge N$。
-光滑权与 Mellin 分离沿用 \cite[Section 3.4]{Merikoski2020}。
+本文每次取 $N$ 为至多三个互异前缀素数的子集积，故 $N$ 平方自由且有序表示数
+至多为 $\tau_3(N)$。其余前缀素数、Möbius 变量及余因子使 $M$ 侧系数至多为
+$\tau_5(M)$。局部化相位在竖线上实部有界、虚部模为 $1$，所以有限
+Mellin--Perron 分离后仍保持这些固定除数界。又 $N\le x^{1/3}$，故
+$M=x^\alpha/N\ge N$。固定正 $\eta$ 时上式正是
+\eqref{eq:typeII-zh} 的闭内区间；反之任意固定闭内区间都可由足够小的 $\eta$
+获得。
 
 两推论的误差指数（略去 $x^{o(1)}$）分别为
 \[
  1-(1-2\theta)\eta+\varepsilon/4,
  \qquad 1-(1-2\theta)\eta+\varepsilon/8.
 \]
-无条件情形 $\theta=7/64$。例如取 $\varepsilon=\eta$，分别得到
-$1-17\eta/32$ 与 $1-21\eta/32$，足以吸收下文对数损失。$a=h=1$
-时辅助实特征条件由 \cite[Theorem 1.1]{GrimmeltMerikoski2025} 后的
-零点自由区域讨论无条件满足。该文明确指出这些推论恢复了原先在 Selberg
-特征值猜想下使用的 Type I/II 区间。
+无条件情形 $\theta=7/64$。固定筛余量后取辅助 $\varepsilon=\eta$，分别得到
+$1-17\eta/32$ 与 $1-21\eta/32$，足以吸收对数损失。PDF 第 23 页
+Corollary 7.2 后的段落明确指出，这正是 Merikoski 定理 2 证明所用的
+Type I/II 区间。至此已逐项核对两条推论的假设；推论本身仍作为引用的外部结果。
 \end{proof}
 
 本文还使用 Selberg 参数取零时的 Merikoski 基本命题 II。以本文记号，它把
@@ -195,9 +210,11 @@ $u\le x^{\xi_\nu}$、筛层级 $x^{\gamma_\nu}$ 上一致，因为
  x^{a+2\nu+\gamma_\nu}=x^{\sigma-2\nu}
  <x^{\sigma-4\nu/3}.
 \]
-证书只保留 $\alpha<1.22$；此时充分小的固定 $\nu$ 保证
-$0<\gamma_\nu<\tau_\nu<a<\sigma$。所有解析估计先在固定 $\nu$ 下取得，
-最后才令 $\nu\to0^+$。
+使用引理~\ref{lem:explicit-margin-zh} 的固定值
+$\nu=\nu_0=10^{-20}$。证书只保留 $\alpha<1.22$；此时
+$4\nu_0<1/25\le\gamma$ 且 $5\nu_0<1/25\le\sigma-a$，故
+$0<\gamma_{\nu_0}<\tau_{\nu_0}<a<\sigma$。所有解析估计都使用这一固定正余量，
+端点论证不再令 $\nu$ 取未量化的极限。
 
 \subsection{一致局部化与前缀筛}
 
@@ -213,15 +230,30 @@ $O_A(x^{-A})$。因此对除数有界系数一致的固定幂次节约在这些�
 \end{lemma}
 
 \begin{proof}
-因 $U,V$ 为整数，$U<V$ 等价于 $U<V-1/2$。取
-$c=1/\log x$、高度 $T$，Perron 公式给出
+因 $U,V$ 为整数，$U<V$ 等价于 $U<V-1/2$。令
+$y=(V-1/2)/U$、$c=1/\log x$。对 $y\ne1$，截断 Perron 公式为
 \[
- \1_{U<V}=\frac{1}{2\pi i}\int_{c-iT}^{c+iT}
- \left(\frac{V-1/2}{U}\right)^s\frac{ds}{s}
- +O\!\left(\min\left\{1,
- \frac{1}{T|\log((V-1/2)/U)|}\right\}\right).
+ \frac{1}{2\pi i}\int_{c-iT}^{c+iT}y^s\frac{ds}{s}
+ =\1_{y>1}+O\!\left(y^c
+ \min\left\{1,\frac1{T|\log y|}\right\}\right).
 \]
-半整数只排除相等情形，不改变表示数和除数界。$U^{-s}$ 与
+具体估计如下。完整竖线积分在 $y>1$ 时向左闭合并取 $s=0$ 的留数，等于 $1$；
+在 $0<y<1$ 时向右闭合，等于 $0$。对省略的两条竖直尾，在
+$e^{it\log y}/(c+it)$ 中分部积分；当 $T|\log y|\ge1$ 时得到
+$O(y^c/(T|\log y|))$，否则用完整过渡的平凡界 $O(y^c)$。这证明上式。
+
+半整数给出一致间隔。若 $U<V$，则 $y\ge1+1/(2U)$，从而
+\[
+ \log y\ge\frac2{4U+1}.
+\]
+若 $U\ge V$，则 $1-y\ge1/(2U)$ 且
+$-\log y\ge1-y$。所以两种情形均有
+\[
+ |\log y|\ge\frac2{4U+1}\ge\frac2{5x^C}.
+\]
+又在 $y>1$ 时 $y^c\le e^C$，在 $y<1$ 时 $y^c\le1$，故一次比较的
+逐点截断误差为 $O_C(x^C/T)$。半整数只排除相等情形，不改变表示数和除数界。
+$U^{-s}$ 与
 $(V-1/2)^s$ 分配到相反系数族；若较小变量在 $N$ 侧，则相应交换相位因子，
 但不改变平方自由 Type II 变量的指定。产品条件 $A_MA_N\le Q$ 可写成
 $A_M<\lfloor Q/A_N\rfloor+1$。
@@ -234,15 +266,24 @@ $P^+(d)<q_2$。$A_3$ 下筛与 $U_{\rm LS}$ 分支是 Type I 前缀问题，变�
 由随前缀变化的 Rosser 权携带；一素数尾项基项和递归基项使用固定切点，
 不产生新的跨族条件。
 
-在 $\Re s=c$ 上实部因子为 $O_C(1)$，虚部因子模长为 $1$，每个核的
-$L^1$ 质量为 $O(\log T)$。又因
-$|V-1/2-U|\ge1/2$、$U,V\le x^C$，有
-$|\log((V-1/2)/U)|\gg_Cx^{-C}$。若原有限分解至多有 $x^B$ 个元组，
-取 $T=x^{A'}$ 且 $A'>A+B+C$，总截断误差为 $O_A(x^{-A})$；至多 $J$
-次比较只带来 $O((\log x)^J)$，由 Corollary 7.2 的既有幂次节约吸收。
+在 $\Re s=c$ 上实部因子至多为 $e^C$，虚部因子模为 $1$，且当
+$T=x^{A'}$ 时
+\[
+ \int_{-T}^{T}\frac{dt}{|c+it|}
+ \ll\log(T\log x)\ll_{A'}\log x.
+\]
+把 $J$ 个指标逐一替换并作望远镜求和。若原分解至多有 $x^B$ 个元组，则总误差
+为
+\[
+ O_{C,J}\!\left(x^B\frac{x^C}{T}(\log x)^{J-1}\right).
+\]
+给定 $A>0$，取 $A'>A+B+C+J+2$ 即得 $O_A(x^{-A})$。多重积分核的总
+$L^1$ 质量为 $O((\log x)^J)$，故一致 Type II 误差
+$O(x^{1-\delta})$ 只变为 $O(x^{1-\delta}(\log x)^J)
+=O(x^{1-\delta/2})$。
 光滑产品权由 Mellin 变换分离，$\log(MN)=\log M+\log N$ 由分部求和处理。
-该机制以 \cite[Sections 2.3 and 3.4]{Merikoski2020} 为模板，但截断公式、
-总误差和逐分支变量分配仍是未由 Lean 检查的解析步骤。
+该机制以 \cite[Sections 2.3 and 3.4]{Merikoski2020} 为模板。这是通常的解析
+证明，不属于 Lean 形式化范围。
 \end{proof}
 
 \begin{proposition}[前缀一致线性筛]\label{prop:prefix-sieve-zh}
@@ -286,11 +327,10 @@ $U_{\rm LS}$；若 $0<s<1$，先由正性把切点降至 $z_*=D^{1-\omega}$。
 \end{proof}
 
 \begin{remark}[前缀筛传递的限制]
-本命题是候选定理的解析输入，而非 Lean 定理。证明使用
-Grimmelt--Merikoski Corollary 7.1 的绝对 Type I 偏差和以及
-\emph{Opera de Cribro} 的维数一基本引理。附录核对前缀收集和最小前缀切点，
-但不重证这两个外部定理；仍需筛法专家确认其一致常数适用于所写的光滑 dyadic
-族。
+本命题不是 Lean 定理。外部输入只有两项：Grimmelt--Merikoski 推论 7.1；
+以及 \emph{Opera de Cribro} 的维数一基本引理。本文不重证这两个源定理。附录
+核对最小前缀切点下的全部假设，包括一致 Euler 乘积、归一化光滑函数族和收集后
+的绝对余项；因此不再另留一个“前缀一致性”假设。
 \end{remark}
 
 旧线性筛项之前的分解为
@@ -332,10 +372,11 @@ $[a_\nu,\sigma_\nu]$ 的元组：
  \beta_1+\beta_2,\quad \beta_1+\beta_3,\quad
  \beta_2+\beta_3,\quad \beta_1+\beta_2+\beta_3.
 \end{equation}
-相应素数积平方自由，可作为 Type II 变量。固定足够细的指数网格，舍弃碰到
-Type II 端点或优先级边界的格子；因 $A_3$ 带负号而我们求其下界，这是正确
-的单侧方向，网格损失由支配收敛趋零。其余三素数子项用维数一线性筛下界，
-并在两种可用下界中取较大者。
+相应素数积平方自由，可作为 Type II 变量。使用命题
+\ref{prop:certificate-zh} 的规范 $1200\times300\times160$ 网格。碰到
+Type II 端点或优先级边界的格子直接赋予不利方向下界（若无其他下筛则取零）；
+所以其损失已经包含在认证节约中，不再留到网格极限。其余三素数子项用维数一
+线性筛下界，并在两种可用下界中取较大者。
 
 \begin{lemma}\label{lem:A3-transfer-zh}
 恢复固定内点余量后，$A_3$ 的保留部分在 $\Acal(P)$ 与 $\Bcal(P)$ 上具有
@@ -505,7 +546,8 @@ $\beta_1+\beta_2\le\xi_\nu$ 时取“基项上界减三素数下界”，最后�
  S(\Acal(P),x^a)
  \le \bigl(H_\nu(\alpha)+o(1)\bigr)\mathfrak M(P).
 \]
-固定余量和网格宽度趋零时得到极限 $H(\alpha)$。
+误差在固定平移格上一致。命题~\ref{prop:certificate-zh} 后将显式比较该固定余量
+包络与 $H(\alpha)$；端点预算不使用未量化的网格极限。
 \end{proposition}
 
 \begin{proof}
@@ -616,8 +658,82 @@ $32303187971$。Canonical 模块在不重新展开块计算的情况下检查最
 \]
 因此三套实现独立重算同一有限整数下界；这不等同于 Lean 证明解析积分
 \eqref{eq:Delta-zh}。
-固定解析余量和格子优先级后，由支配收敛将极限模型恢复；最终端点余量为
-$2994511739/9000000000000>0$，可取足够小的固定 $\nu$ 使解析损失小于该余量。
+\end{proof}
+
+\begin{lemma}[显式解析余量预算]\label{lem:explicit-margin-zh}
+令 $H_t$ 表示在分支账本中使用 \eqref{eq:margin-parameters-zh} 的平移参数 $t$
+所得包络（仅在 $7/6<\alpha<61/50$ 使用平移；其外令 $H_t=H$），并令
+\[
+ \Delta_t:=\int_{7/6}^{5/4}\max\{0,4\alpha-H_t(\alpha)\}\,d\alpha.
+\]
+当 $0\le t\le10^{-20}$ 时，
+\begin{equation}\label{eq:explicit-margin-loss-zh}
+ |\Delta_t-\Delta|\le10^{11}t.
+\end{equation}
+因此固定取
+\begin{equation}\label{eq:explicit-nu-zh}
+ \nu_0=10^{-20},
+\end{equation}
+既满足全部内点不等式，又只花掉不到端点半裕度：
+\[
+ 10^{11}\nu_0=10^{-9}<\frac1{10000}
+ <\frac{2994511739}{18000000000000}.
+\]
+\end{lemma}
+
+\begin{proof}
+证书只在 $7/6<\alpha<61/50$ 上取非零贡献。在此区间
+\[
+ \gamma\ge\frac1{25},\qquad \tau\ge\frac7{50},\qquad
+ \frac12-\beta_1-\beta_2\ge\frac3{50}
+ \quad(\tau<\beta_1<a,\ \beta_2<\beta_1).
+\]
+故对 $0\le t\le10^{-20}$，
+\[
+ \gamma_t>\frac1{50},\qquad \tau_t>\frac1{10},\qquad
+ \frac12-\beta_1-\beta_2-t>\frac1{20}.
+\]
+所有积分变量至少为 $1/50$。另外
+$|\log(\tau_t/\gamma_t)|<\log4<2$、$0\le W_3\le1$，并且
+$0\le U_2\le U_{{\rm LS},t}\le40$。三素数与二素数积分的绝对密度分别不超过
+\[
+ \frac{61}{50}\,50^4<8\cdot10^6,\qquad
+ \frac{61}{50}\,40\,50^2<2\cdot10^5,
+\]
+而 \eqref{eq:H-zh} 的初等基项小于 $400$。这些是在单位盒上的显式可积优函数。
+
+离开分支边界后，对各有理分支关于 $t$ 求导。由
+$|\Phi'|\le1$、$|d s_{3,t}/dt|=1/\beta_3\le50$ 以及
+\[
+ \left|\frac d{dt}\frac2{1/2-\beta_1-\beta_2-t}\right|\le800,
+\]
+基项、三素数密度和完整二素数密度的变化分别不超过
+$10^6t$、$4\cdot10^8t$、$5\cdot10^8t$。最后一个界也覆盖递归候选：
+$u_+/\gamma_t$ 的变化小于 $10^4t$，其内部
+$W_3/\beta_3^2$ 积分的变化小于 $2\cdot10^5t$。取最大或最小不会增大候选中
+最大的 Lipschitz 常数。
+
+再处理移动的指标与积分端点。四个子集和对两个 Type II 端点产生 $8$ 个超平面，
+二素数 Type II 区间产生 $2$ 个，递归 $\xi_t$ 测试产生 $1$ 个，移动的
+$\gamma_t$ 或 $\tau_t$ 积分端点出现 $5$ 次；即使重复计算优先级也少于 $32$
+个移动仿射超平面。每个右端最多移动 $5t$；因某个系数为 $1$，其在单位盒内的
+对称差测度至多 $10t$。
+乘以上述 $8\cdot10^6$ 优函数，全部移动薄层的贡献小于
+$32\cdot10t\cdot8\cdot10^6<3\cdot10^9t$。加上光滑变化且利用
+$\alpha$ 区间长度小于 $1$，总量严格小于 $10^{11}t$。函数
+$r\mapsto\max(0,r)$ 为 $1$-Lipschitz，故得到
+\eqref{eq:explicit-margin-loss-zh}。
+
+这里没有隐藏网格极限损失。规范网格的 $\alpha$ 宽度为 $1/14400$，三素数
+宽度至多 $1/3000$，尾项 $\beta_1$ 宽度至多 $1/2000$，包含孩子宽度至多
+$9/8000$。命题~\ref{prop:certificate-zh} 已对每个盒使用不利方向值，包括碰到
+Type II 或优先级边界的盒。因此锁定值 $32303187971$ 已是舍弃边界后的下界；
+其后唯一损失是 \eqref{eq:explicit-margin-loss-zh}。
+
+最后，$4\nu_0<1/25\le\gamma$ 且
+$5\nu_0<1/25\le\sigma-a$，故所有仿射内点条件成立。最后的有理比较也由有限
+Lean 审计核对。保留端点裕度的另一半，再取充分大的 $x$ 吸收幂次节约与
+$o(1)$ 项。
 \end{proof}
 
 \section{旧被减项的独立下界}
@@ -666,8 +782,8 @@ Merikoski 对其余项给出的严格上界为
  F_1<0.0287,\quad F_2<0.08622,\quad F_3<0.03107,\quad
  F_4<0.00011,\quad F_5=\frac{29}{72}.
 \]
-结合引理~\ref{lem:F6-zh} 与命题~\ref{prop:certificate-zh}，$5/4$ 以下的
-归一化贡献严格小于
+结合引理~\ref{lem:F6-zh} 与命题~\ref{prop:certificate-zh}，零余量认证模型在
+$5/4$ 以下的归一化贡献严格小于
 \begin{align}\label{eq:core-zh}
  C&=\frac16+\frac{287}{10000}+\frac{8622}{100000}
  +\frac{3107}{100000}+\frac{11}{100000}+\frac{29}{72}\notag\\
@@ -688,9 +804,12 @@ $5/4$ 以上的标准维数一线性筛尾项为
 \begin{align}\label{eq:budget-zh}
  C+2\left(\varpi_*^2-\left(\frac54\right)^2\right)
  &=\frac{8997005488261}{9000000000000}<1,\\
- 1-\frac{8997005488261}{9000000000000}
- &=\frac{2994511739}{9000000000000}.
+1-\frac{8997005488261}{9000000000000}
+&=\frac{2994511739}{9000000000000}.
 \end{align}
+在固定解析余量 $\nu_0$ 下，引理~\ref{lem:explicit-margin-zh} 使上界至多增加
+$10^{-9}$，小于上述余量的一半。再取充分大的 $x$，使全部幂次节约、基本引理和
+光滑分片误差合计小于另一半，最终归一化总量仍严格小于 $1$。
 
 令 $P_x$ 为光滑指标块中 $n^2+1$ 的最大素因子。Merikoski 使用的
 Chebyshev--Hooley 恒等式为
@@ -698,7 +817,7 @@ Chebyshev--Hooley 恒等式为
  \sum_{x<p\le P_x}|\Acal_p|\log p=X_b\log x+O(x).
 \]
 若 $P_x\le x^{\varpi_*}$，则对光滑模块求和并使用
-\eqref{eq:core-zh}、\eqref{eq:tail-zh} 及固定内点余量，可得严格小于
+\eqref{eq:core-zh}、\eqref{eq:tail-zh} 及引理~\ref{lem:explicit-margin-zh}，可得严格小于
 $X_b\log x$ 的上界，与上式矛盾。因此每个充分大的 $[x,2x]$ 块中存在
 $n$ 使
 \[
@@ -727,16 +846,29 @@ $149403/2500000$ 的严格比较；应用到 $F_6$ 本身仍使用外置的 Buch
  x>2^{13230},\quad0\le n\le2x
  \Longrightarrow n^{1323/1000}<x^{13231/10000}.
 \]
-小型审计模块只检查 $\nu$ 的仿射恒等式、半整数切点、抽象表示数界、不利方向
-格子几何以及 $\alpha/\gamma,t+1,\Phi,U_{\rm LS}$ 的代数归一化。它们不构造
-真实 Perron 局部化或随前缀变化的 Rosser 权，也不证明六个解析传递门。
-Grimmelt--Merikoski Corollaries 7.1/7.2、它们对真实局部化系数的应用、
-截断 Mellin--Perron 传递以及标准维数一线性筛定理均为外部解析输入。
+小型审计模块检查 $\nu$ 的仿射恒等式、在 $7/6<\alpha<1.22$ 上满足这些恒等式
+的显式有理值 $\nu=10^{-20}$、半整数切点、抽象表示数界、不利方向格子几何、
+$\alpha/\gamma,t+1,\Phi,U_{\rm LS}$ 的代数归一化、$s<1$ 切点恒等式
+$(2/s)/((1-\omega)\log D)=2/\log D$，并检查
+\[
+ \frac{2994511739}{18000000000000},\qquad
+ 10^{11}\nu<\frac{2994511739}{18000000000000}.
+\]
+它还检查在所述假设下的有限 Perron 预算算术
+$\log((V-1/2)/U)\ge 2/(4U+1)$ 与
+$X^{B}\cdot 2\cdot X^{C-A'}\le X^{-A}$。
+它们不构造真实 Perron 局部化或随前缀变化的 Rosser 权，也不证明完整解析定理。
+形式化仍把 Grimmelt--Merikoski Corollaries 7.1/7.2 和标准维数一线性筛定理
+作为外部解析输入；第~\ref{sec:transfer-zh}、\ref{sec:switching-zh} 节在论文中
+核对其假设并证明有限 Perron/Mellin 局部化，但这些解析论证不是 Lean 定理。
 
 \begin{remark}[AI 辅助证明开发声明]
 作者声明：GPT-5.6 Sol 在核心递归 Buchstab 切换论证、证明方向与分支账本、
 Lean 证书实现、精确整数审计脚本和论文表述的开发中作为推理与编码助手使用。
 作者审查最终数学陈述并对提交内容负责。GPT-5.6 Sol 不是作者，也不是独立验证者。
+Lean 只核查有限组合、整数、取整、初等 $F_6$、有理端点和实幂换算；所引用的
+Type I/II 与线性筛定理仍是外部输入。有限 Mellin--Perron 传递在论文中证明，
+但未在 Lean 中形式化。
 \end{remark}
 
 \begin{remark}[补充材料]
@@ -745,7 +877,13 @@ Lean 证书实现、精确整数审计脚本和论文表述的开发中作为推
 {GitHub 项目页面}，
 最新归档由 concept DOI
 \url{https://doi.org/10.5281/zenodo.22140874}
-解析。外部 PDF 仅记录来源与 SHA-256，不在仓库中重新分发。
+解析。固定宽度 C++ 证书与任意精度 Python 审计的命令行均为
+\texttt{1200 300 160}，并分别打印
+\[
+ \texttt{saving\_lower=0.032303187971},\qquad
+ \texttt{CERTIFIED=YES}.
+\]
+外部 PDF 仅记录来源与 SHA-256，不在仓库中重新分发。
 \end{remark}
 
 \begin{remark}[解析审查边界]
@@ -803,6 +941,18 @@ $\rho(um)=\rho(u)\rho(m)$。由分部求和、Merikoski 引理 8 和
  =\prod_{\substack{p<z(\boldsymbol q)\\p\nmid u}}(1-g(p))
  =\prod_{p<z(\boldsymbol q)}(1-g(p)).
 \]
+事实上，写 $q_i=Q_iv_i$、$k=Pw$ 后，每个光滑因子都来自归一化变量
+$v_i,w$ 上同一个固定紧支撑函数族，其 $r$ 阶导数一致为 $O_r(1)$。对
+$p<z=q_j$ 有 $p\nmid u$，所以局部密度严格满足 $g_u(p)=g(p)$。因此第
+11--12 章使用的维数一乘积条件
+\[
+ \prod_{w\le p<z}(1-g_u(p))^{-1}
+ \le\frac{\log z}{\log w}
+ \left(1+O\!\left(\frac1{\log w}\right)\right)
+\]
+与无前缀时具有同一隐含常数。基本引理常数只依赖该乘积界和固定导数半范数，
+不依赖最小前缀素数在 dyadic 格中的具体取值。这证明了 $z=q_j$ 时所需的一致性。
+
 更明确地，对有序前缀格求和有
 \[
  \sum_{\boldsymbol q}c(\boldsymbol q)
@@ -867,8 +1017,15 @@ $s_{\boldsymbol q}\ge2$，低于 $2$ 时下界取零。
  \delta_0=(1-2\theta)\nu-\varepsilon_{\rm GM}/4>0.
 \]
 把 $[P,4P]$ 分成固定个光滑 dyadic 块，并用分部求和去掉 $\log k$。
-Corollary 7.1 在 $a=h=1$、$\eta=\nu$ 且 $P\le x^2$ 时逐字适用于上述
-$r_P(e)$，给出
+Corollary 7.1 在 $a=h=1$、$\eta=\nu$ 且 $P\le x^2$ 时，其模 $e$
+绝对值内部正是
+\[
+ \sum_{k\equiv0\pmod e}\psi_1(k/K)
+ \left\{\sum_{\ell^2+1\equiv0\pmod k}\psi_2(\ell/x)
+       -\frac{\rho(k)}k\,x\widehat\psi_2(0)\right\}.
+\]
+缩放 $b$ 得到 $\psi_2$，固定分解 $\psi_P$ 得到 $\psi_1$，分部求和产生
+$\log k$，故它恰为前述 $r_P(e)$。Corollary 7.1 因而给出
 \[
  \sum_{e\le x^{1/2-\nu}}|r_P(e)|
  \ll x^{1-\delta_0}(\log x)^{B_0}.
@@ -981,7 +1138,8 @@ American Mathematical Society, Providence, 2010.
 \bibitem{Iwaniec1978}
 H. Iwaniec,
 \emph{Almost-primes represented by quadratic polynomials},
-Invent. Math. \textbf{47} (1978), 171--188.
+Invent. Math. \textbf{47} (1978), 171--188,
+\href{https://doi.org/10.1007/BF01578070}{doi:10.1007/BF01578070}.
 
 \bibitem{Li2025}
 R. Li,
@@ -991,12 +1149,15 @@ arXiv:2406.07575v2, 2025.
 \bibitem{Merikoski2020}
 J. Merikoski,
 \emph{On the largest prime factor of $n^2+1$},
-J. Eur. Math. Soc. \textbf{25} (2023), 1253--1284.
+J. Eur. Math. Soc. (JEMS) \textbf{25} (2023), 1253--1284,
+\href{https://doi.org/10.4171/JEMS/1216}{doi:10.4171/JEMS/1216}.
 
 \bibitem{Pascadi2026}
 A. Pascadi,
 \emph{Large sieve inequalities for exceptional Maass forms and the greatest prime factor of $n^2+1$},
-Forum Math. Pi \textbf{14} (2026), e8, 1--54.
+Forum Math. Pi \textbf{14} (2026), e8,
+1--54,
+\href{https://doi.org/10.1017/fmp.2026.10025}{doi:10.1017/fmp.2026.10025}.
 
 \end{thebibliography}
 \endgroup

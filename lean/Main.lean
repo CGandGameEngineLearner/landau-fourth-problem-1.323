@@ -32,6 +32,21 @@ namespace Landau
 #check half_threshold_distance_ge
 #check three_prime_prefix_coefficient_bound
 #check three_step_buchstab_signs
+#check lowered_cutoff_normalized_upper
+#check prefix_remainder_delta0
+#check three_prime_remainder_level_at_seven_six
+#check recursive_switching_half_margin_split
+#check certified_recursive_endpoint_margin_eq
+#check explicit_nu_typeII_interior
+#check explicit_nu_shifted_order
+#check explicit_nu_three_prime_level
+#check explicit_nu_delta0
+#check explicitNu_lt_half_margin
+#check explicit_analytic_loss_lt_half_margin
+#check log_ratio_ge_two_div_four_U_succ
+#check two_div_four_U_succ_ge_two_fifths
+#check log_ratio_ge_two_fifths_pow
+#check perron_truncation_nat_budget
 
 end Landau
 

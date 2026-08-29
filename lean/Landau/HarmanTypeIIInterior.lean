@@ -100,4 +100,81 @@ theorem interior_shifted_parameter_order
   · linarith
   constructor <;> linarith
 
+/-- Gate 1 (parameter ledger): the Type-II width `σ-a` is exactly `γ`.
+This is the identity used to compare `5ν` with the unshifted gap. -/
+theorem interior_sigma_sub_a (alpha : ℚ) :
+    interiorSigma alpha - interiorA alpha = interiorGamma alpha := by
+  unfold interiorSigma interiorA interiorGamma
+  ring
+
+/-- Gate 3 (prefix level): a prefix of exponent `s₀` plus remainder level
+`1/2-s₀-ν` is exactly the common Type-I height `1/2-ν`.  This does not
+apply Corollary 7.1. -/
+theorem prefix_plus_remainder_level (s0 nu : ℚ) :
+    s0 + (1 / 2 - s0 - nu) = 1 / 2 - nu := by
+  ring
+
+/-- Unconditional Selberg exponent recorded in Grimmelt--Merikoski
+Corollary 7.1/7.2.  Recording the rational value does not prove those
+corollaries. -/
+def selbergTheta : ℚ := 7 / 64
+
+/-- Gate 1 (error-exponent algebra): with `ε=η` the Type-I exponent in
+the paper simplifies to `1-17η/32`.  This is rational arithmetic only. -/
+theorem grimmelt_typeI_error_exponent (eta : ℚ) :
+    1 - (1 - 2 * selbergTheta) * eta + eta / 4 =
+      1 - 17 * eta / 32 := by
+  unfold selbergTheta
+  ring
+
+/-- Gate 1 (error-exponent algebra): with `ε=η` the Type-II exponent
+simplifies to `1-21η/32`. -/
+theorem grimmelt_typeII_error_exponent (eta : ℚ) :
+    1 - (1 - 2 * selbergTheta) * eta + eta / 8 =
+      1 - 21 * eta / 32 := by
+  unfold selbergTheta
+  ring
+
+/-- Gate 3 (`δ₀` algebra): the paper's choice `ε=ν` gives
+`δ₀=17ν/32`.  Positivity of this rational does not bound `|r_P(e)|`. -/
+theorem prefix_remainder_delta0 (nu : ℚ) :
+    (1 - 2 * selbergTheta) * nu - nu / 4 = 17 * nu / 32 := by
+  unfold selbergTheta
+  ring
+
+theorem prefix_remainder_delta0_pos {nu : ℚ} (hnu : 0 < nu) :
+    0 < (1 - 2 * selbergTheta) * nu - nu / 4 := by
+  rw [prefix_remainder_delta0]
+  linarith
+
+/-- Gate 3 (power-saving arithmetic): if `κ<2δ₀`, the collected-remainder
+exponent `1-δ₀+κ/2` stays strictly below `1`.  This does not identify the
+collected coefficient with Corollary 7.1. -/
+theorem prefix_remainder_exponent_lt_one
+    {delta0 kappa : ℚ} (_hdelta : 0 < delta0) (_hkappa : 0 ≤ kappa)
+    (hgap : kappa < 2 * delta0) :
+    1 - delta0 + kappa / 2 < 1 := by
+  linarith
+
+/-- At the left endpoint `α=7/6`, the unshifted one-prime tail cutoff is
+`τ=1/6`, so three ordered primes have total exponent `1/2`. -/
+theorem tau_at_seven_six : interiorTau (7 / 6) = 1 / 6 := by
+  unfold interiorTau interiorXi
+  norm_num
+
+theorem three_tau_nu_at_seven_six (nu : ℚ) :
+    3 * interiorTauNu (7 / 6) nu = 1 / 2 - 9 / 2 * nu := by
+  unfold interiorTauNu interiorXiNu interiorXi
+  ring
+
+/-- Gate 3 (endpoint Type-I level): if the three-prime prefix stays at most
+`3τ_ν` at `α=7/6`, the remainder height is at least `7ν/2`.  This keeps
+`D` a positive power of `x` in the paper's algebra; it does not prove the
+linear-sieve remainder estimate. -/
+theorem three_prime_remainder_level_at_seven_six
+    {s0 nu : ℚ} (hs0 : s0 ≤ 3 * interiorTauNu (7 / 6) nu) :
+    7 / 2 * nu ≤ 1 / 2 - s0 - nu := by
+  have h := three_tau_nu_at_seven_six nu
+  linarith
+
 end Landau

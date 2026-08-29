@@ -116,4 +116,13 @@ theorem certified_recursive_endpoint_budget :
     publishedF2Upper, publishedF3Upper, publishedF4Upper, publishedF5,
     switchedF6Lower]
 
+/-- Gate 6 (margin identification): the remainder in the certified budget
+is exactly the constant `recursiveSwitchingCertifiedMargin`.  This still
+does not estimate the analytic `ν`/mesh integral loss. -/
+theorem certified_recursive_endpoint_margin_eq :
+    1 - (certifiedRecursiveCoreEnvelope +
+      2 * (recursiveSwitchingBlockExponent ^ 2 - (5 / 4 : ℚ) ^ 2)) =
+      recursiveSwitchingCertifiedMargin :=
+  certified_recursive_endpoint_budget.2.1
+
 end Landau

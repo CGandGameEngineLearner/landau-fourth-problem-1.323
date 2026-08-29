@@ -81,23 +81,23 @@ An analytic-number-theory referee should check the following items directly,
 not merely the final numerical certificate.
 
 1. **Source transfer.** Verify Corollaries 7.1 and 7.2 of
-   Grimmelt--Merikoski with `a=h=1`, including uniformity of the implicit
-   constants after dyadic subdivision.
+   Grimmelt--Merikoski with `a=h=1`, against the manuscript's page-specific
+   zero-free-region, smooth-family, divisor-bound, and squarefree checks.
 2. **Perron localization.** Verify that every ordering and roughness
    condition in the selected Type-II subset is assigned to opposite
-   coefficient families as stated, and that the half-integer strict
-   threshold removes equality terms without changing divisor bounds.
+   coefficient families, and check the written contour-tail estimate and
+   the summed `x^(B+C)/T` truncation budget.
 3. **Variable sieve cutoff.** Verify the prefix-uniform Rosser-weight
-   argument when the cutoff is the least selected prime, including the
-   dyadic partition and the use of the absolute Type-I remainder sum.
+   proof when the cutoff is the least selected prime, including the common
+   local density, normalized smooth seminorms, and the absolute Type-I sum.
 4. **One-sided boundary treatment.** Verify that discarded Type-II priority
    cells are used only for lower bounds, while every upper-bound branch uses
    a containing, proof-adverse cell.
 5. **Model integrals.** Match every Buchstab and linear-sieve multiplier to
    the normalization in Merikoski's Lemma 7 and equations (2.4)--(2.5).
-6. **Endpoint assembly.** Check that the unchanged published deficiencies,
-   the independent `F6` lower bound, and the recursive saving enter with the
-   stated signs.
+6. **Endpoint assembly.** Check the explicit `nu=10^-20` integral-loss
+   majorants and moving-hyperplane count, then check that the unchanged
+   deficiencies, `F6`, and recursive saving enter with the stated signs.
 
 The theorem should remain labelled a complete candidate result until these
 six gates receive an independent signed review.
@@ -106,12 +106,12 @@ six gates receive an independent signed review.
 
 | Gate | Lean now checks | Still requires an analytic-number-theory expert |
 | --- | --- | --- |
-| 1. Source/interior transfer | The shifted `nu` definitions, strict interior interval, exponent-ledger identities, `gamma>0.04`, and cutoff order. | The statements, uniform constants, dyadic use, and applicability of Grimmelt--Merikoski Corollaries 7.1 and 7.2. |
-| 2. Perron localization | Integer strict comparison versus `V-1/2` and the exact rational separation by at least `1/2`. | The truncated Perron/Mellin formulas, aggregate kernel error, and their application to every real ordering/roughness condition. |
-| 3. Variable sieve cutoff | An abstract triangle-inequality coefficient bound and a fixed divisor-tuple representation bound for at most three prefix slots plus one divisor slot. | Check the manuscript's signed-remainder identity `r_u(d)=r_P(ud)`, the resulting collected prefix-dependent Rosser coefficient, and the uniform constants in Corollary 7.1 and the dimension-one fundamental lemma for the displayed smooth dyadic family. |
+| 1. Source/interior transfer | The shifted `nu` definitions, strict interior interval, exponent-ledger identities, `gamma>0.04`, and cutoff order. | The cited Grimmelt--Merikoski corollaries remain external; the manuscript now checks `a=h=1`, the zero-free-region paragraph, uniform dyadic seminorms, divisor bounds, and squarefree support explicitly. |
+| 2. Perron localization | Integer strict comparison versus `V-1/2`, the logarithmic separation, and the final polynomial truncation budget. | The manuscript now proves the contour truncation and aggregate error analytically; a referee should verify that proof and the listed variable assignments. |
+| 3. Variable sieve cutoff | An abstract triangle-inequality coefficient bound and a fixed divisor-tuple representation bound for at most three prefix slots plus one divisor slot. | The dimension-one fundamental lemma and GM Corollary 7.1 remain external; the manuscript now proves their prefix-family hypotheses, `r_u(d)=r_P(ud)`, and the collected absolute-remainder estimate. |
 | 4. One-sided cells | Common-domain and containing-domain endpoints/inclusions, Type-II/subset branch equations, recursive `pairChildUpper` gates, and containing tail-child mesh. | That the cited analytic estimates apply uniformly on those cells and that discarded boundaries/margins pass to the limiting integrals in the required direction. |
 | 5. Model normalization | `alpha/gamma`, the `s3` `t+1` threshold, `Phi(p/q)`, outward rounding, and the two algebraic branches of `U_LS`. | Matching the actual sifted sums to Merikoski's Lemma 7 normalization and the analytic origin/validity of the standard linear-sieve `F/f` factors. |
-| 6. Endpoint assembly | The `F6` convex ten-panel width certificate, exact core/sign assembly with one `F6` and one saving subtraction, endpoint fraction, and dyadic real-power conversion. | The quoted Buchstab lower bound as applied to the original `F6`, the published analytic component estimates, and the full analytic implication leading to the block estimate. |
+| 6. Endpoint assembly | The `F6` convex ten-panel width certificate, exact core/sign assembly, endpoint fraction, `nu=10^-20`, `10^11 nu <` half margin, and dyadic real-power conversion. | The quoted Buchstab lower bound, published analytic components, and the manuscript's explicit integral majorants and moving-boundary estimate. |
 
 This table is an audit map, not a claim that Lean proves the six analytic
 gates or the main greatest-prime-factor theorem.
