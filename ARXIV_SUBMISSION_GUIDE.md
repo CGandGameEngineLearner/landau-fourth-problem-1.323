@@ -85,7 +85,7 @@ or unrelated files in the source package.
 Record the arXiv identifier in the GitHub README and, if desired, add it to
 the paper's references or metadata in a new Git commit. Keep the Lean/GitHub
 repository synchronized with the announced source version. Deposit the same
-commit on Zenodo via a GitHub Release, currently `v1.2.1` under concept DOI
+commit on Zenodo via a GitHub Release, currently `v1.2.2` under concept DOI
 `10.5281/zenodo.22140874`, or with `scripts/package_zenodo_source.sh`. The
 verification repository is:
 

@@ -154,8 +154,8 @@ Before public circulation or submission:
 
 - verify the author line `JinWen Li`, affiliation, and email;
 - add acknowledgements and funding disclosures;
-- GitHub release `v1.2.1` is prepared under concept DOI
-  `10.5281/zenodo.22140874`;
+- GitHub release `v1.2.2` is prepared under concept DOI
+  `10.5281/zenodo.22140874`; `v1.2.1` is `10.5281/zenodo.22164913`;
 - record the new version DOI after Zenodo archives the release;
 - state the source-code license (`GPL-2.0-only`) and the Lean/Mathlib
   toolchain versions (`leanprover/lean4:v4.22.0`, Mathlib `v4.22.0`);
