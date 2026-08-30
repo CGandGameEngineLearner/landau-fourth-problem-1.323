@@ -46,7 +46,7 @@ simplest option.
    - Author: `JinWen Li`
    - Affiliation: `SouthWest Petroleum University`
    - Email: `lifesize1@163.com`
-   - Comments: `22 pages; verification code and exact-integer certificates available on GitHub. The main theorem is stated under the paper's recorded Type I/II, linear-sieve, and Mellin--Perron inputs.`
+   - Comments: `Verification code and exact-integer certificates are available on GitHub. The main theorem is stated under the paper's recorded Type I/II, linear-sieve, and Mellin--Perron inputs.`
 
 4. Paste the abstract from the TeX source. The source already contains the
    same title, author, affiliation, email, keywords, and abstract.

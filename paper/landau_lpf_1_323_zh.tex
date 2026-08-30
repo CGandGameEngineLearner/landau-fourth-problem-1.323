@@ -72,7 +72,9 @@ $1.317$ \cite{Li2025}。
 $m<n^{2-\vartheta+o(1)}$。本文将该余因子指数降到 $0.677$，但仍不能迫使
 $m=1$。新步骤是在旧论证使用线性筛的区间递归使用 Buchstab 恒等式，保留新的
 Type II 三素数子项，对其余子项使用线性筛下界，并递归上估原先舍弃的一素数尾项
-的二素数后代。Li 的 $1.317$ 论证保持原筛分解，仅改变积分数值
+的二素数后代。Merikoski 已指出可在这里继续使用 Buchstab 恒等式产生额外
+Type II 和，但在其发表计算中未使用这些和 \cite[Remark 12]{Merikoski2020}。
+Li 的 $1.317$ 论证保持原筛分解，仅改变积分数值
 \cite[Lemmas 2.1 and 2.2]{Li2025}，因此本文的三素数项并不包含在该结果中。
 
 \begin{theorem}\label{thm:main-zh}
@@ -265,6 +267,33 @@ $A_M<\lfloor Q/A_N\rfloor+1$。
 $P^+(d)<q_2$。$A_3$ 下筛与 $U_{\rm LS}$ 分支是 Type I 前缀问题，变量切点
 由随前缀变化的 Rosser 权携带；一素数尾项基项和递归基项使用固定切点，
 不产生新的跨族条件。
+
+四类分支的变量赋值具体如下。
+\begin{description}
+\item[$A_3$ Type II：]
+对第一个合格子集 $I$，令
+$N=\prod_{i\in I}q_i$、
+$M=(\prod_{i\notin I}q_i)ds$。跨两侧的次序条件把较小素数的
+$U^{-s}$ 相位放到其所在侧，把较大素数的 $(V-1/2)^s$ 相位放到另一侧。
+若 $q_3\in N$，则 $P^+(d)^{-s}$ 放在 $M$ 侧、
+$(q_3-1/2)^s$ 放在 $N$ 侧；若 $q_3\notin N$，粗糙性完全位于 $M$ 侧。
+
+\item[直接二素数 Type II：]
+取 $N=q_1q_2$，把筛余因子与 Möbius 变量放在 $M$ 侧。
+$q_2<q_1$ 在 $N$ 侧内部；当 $d>1$ 时，唯一跨侧条件为
+$P^+(d)<q_2$，按上述半整数 Perron 相位分配。$d=1$ 自动成立。
+
+\item[Type I 前缀：]
+$A_3$ 下筛的前缀为 $q_1q_2q_3$、切点为 $q_3$；通用
+$U_{\rm LS}$ 分支的前缀为 $q_1q_2$、切点为 $q_2$。次序条件在前缀内部，
+可变切点由命题~\ref{prop:prefix-sieve-zh} 的前缀相关 Rosser 权携带；这两类
+分支不使用本 Type II Perron 引理。
+
+\item[固定切点基项：]
+一素数尾项基项的前缀为 $q_1$，递归基项的前缀为 $q_1q_2$，两者切点均为
+$x^{\gamma_\nu}$。格子条件在应用基本命题前已固定；直接上界与递归上界的选择
+也是逐盒决定，不是新的 Perron 条件。
+\end{description}
 
 在 $\Re s=c$ 上实部因子至多为 $e^C$，虚部因子模为 $1$，且当
 $T=x^{A'}$ 时
@@ -482,6 +511,32 @@ $[a,\sigma]$。于是
  U_{\rm LS}(\beta_1,\beta_2)
  =\max\left\{\frac2{\delta_2},\frac2{3\beta_2}\right\}.
 \]
+当 $\beta_1+\beta_2\le\xi$ 时，令
+\[
+ C_{\rm rec}(\beta_1,\beta_2)
+ :=\frac{u_+}{\gamma}
+ -\int_\gamma^{\beta_2}
+ W_3(\beta_1,\beta_2,\beta_3)\frac{d\beta_3}{\beta_3^2}.
+\]
+
+\begin{lemma}[递归候选的非负性]\label{lem:recursive-candidate-nonnegative-zh}
+在上述定义域内，$C_{\rm rec}(\beta_1,\beta_2)\ge0$。
+\end{lemma}
+
+\begin{proof}
+对前缀 $q_1q_2$、切点 $x^\gamma$ 的模型和使用 Buchstab 恒等式。其基项等于
+$x^\gamma<q_3<q_2$ 的孩子之和加上非负的 $q_2$-粗糙余项。分别记归一化模型
+贡献为 $B,C,R$，则 $B=C+R$ 且 $R\ge0$。基本命题 II 与
+\eqref{eq:omega-bounds-zh} 给出 $B\le u_+/\gamma$，而
+\eqref{eq:A3lower-zh} 给出
+\[
+ C\ge\int_\gamma^{\beta_2}
+ W_3(\beta_1,\beta_2,\beta_3)\frac{d\beta_3}{\beta_3^2}.
+\]
+所以 $C_{\rm rec}\ge B-C=R\ge0$。这是解析模型项之间的不等式；有限程序中的
+显式非负检查只是防止向外取整造成过证的保护条件。
+\end{proof}
+
 $U_2$ 取 $U_{\rm LS}$ 与以下可用上界的最小值：
 \[
  \frac{u_+}{\beta_2}\quad
@@ -489,12 +544,10 @@ $U_2$ 取 $U_{\rm LS}$ 与以下可用上界的最小值：
 \]
 以及
 \[
- \frac{u_+}{\gamma}
- -\int_\gamma^{\beta_2}
- W_3(\beta_1,\beta_2,\beta_3)\frac{d\beta_3}{\beta_3^2}
+ C_{\rm rec}(\beta_1,\beta_2)
  \quad\text{若 }\beta_1+\beta_2\le\xi,
 \]
-第二个候选仅在非负时使用。于是
+于是
 \begin{equation}\label{eq:Tlower-zh}
  T(\alpha)=\alpha\int_\tau^a
  \left[\frac{u_-}{\gamma}
@@ -665,6 +718,12 @@ $32303187971$。Canonical 模块在不重新展开块计算的情况下检查最
 \eqref{eq:Delta-zh}。
 \end{proof}
 
+\begin{remark}
+同一源代码在 GCC 未定义行为检查器下编译时给出相同结果。更细的
+$1800\times400\times220$ 与 $2400\times500\times280$ 网格分别给出下界
+$0.033508163100$ 与 $0.034213110567$。这些数值只支持收敛性判断，不进入定理。
+\end{remark}
+
 \begin{lemma}[显式解析余量预算]\label{lem:explicit-margin-zh}
 令 $H_t$ 表示在分支账本中使用 \eqref{eq:margin-parameters-zh} 的平移参数 $t$
 所得包络（仅在 $7/6<\alpha<61/50$ 使用平移；其外令 $H_t=H$），并令
@@ -712,11 +771,38 @@ $|\Phi'|\le1$、$|d s_{3,t}/dt|=1/\beta_3\le50$ 以及
 \[
  \left|\frac d{dt}\frac2{1/2-\beta_1-\beta_2-t}\right|\le800,
 \]
-基项、三素数密度和完整二素数密度的变化分别不超过
-$10^6t$、$4\cdot10^8t$、$5\cdot10^8t$。最后一个界也覆盖递归候选：
-$u_+/\gamma_t$ 的变化小于 $10^4t$，其内部
-$W_3/\beta_3^2$ 积分的变化小于 $2\cdot10^5t$。取最大或最小不会增大候选中
-最大的 Lipschitz 常数。
+令
+\[
+ L_t=\log(\tau_t/\gamma_t),\qquad
+ Q(L)=u_+-u_-L+\frac{u_+}{2}L^2.
+\]
+上述界给出 $|Q(L_t)|\le5$、$|Q'(L_t)|\le3$，并且
+\[
+ |L_t'|\le\frac{3/2}{\tau_t}+\frac4{\gamma_t}\le215.
+\]
+所以
+\[
+ \left|\frac d{dt}\frac{\alpha Q(L_t)}{\gamma_t}\right|
+ \le\frac{4\alpha}{\gamma_t^2}|Q(L_t)|
+ +\frac{\alpha}{\gamma_t}|Q'(L_t)L_t'|<10^6.
+\]
+固定 Type II 指标类内，三素数密度的导数至多为
+\[
+ \frac{61}{50}\,50^4\cdot50<4\cdot10^8.
+\]
+对递归候选，由 Leibniz 公式和
+$|\partial_tW_{3,t}|\le1/\beta_3$，
+\[
+ |\partial_t C_{{\rm rec},t}|
+ \le\frac4{\gamma_t^2}+\frac4{\gamma_t^2}
+ +\int_{\gamma_t}^{\beta_2}\frac{d\beta_3}{\beta_3^3}
+ <3\cdot10^4.
+\]
+结合 $U_{{\rm LS},t}$ 的 $800$ 界、与 $t$ 无关的直接 Type II 候选及
+$\alpha/(\beta_1\beta_2)\le(61/50)50^2$，完整二素数密度的变化小于
+$10^8t$。对这一组处处定义的固定候选取最大、最小或正部时，Lipschitz 常数
+不增大；引理~\ref{lem:recursive-candidate-nonnegative-zh} 正好补上此前依赖候选
+可用性的唯一一点。
 
 再处理移动的指标与积分端点。四个子集和对两个 Type II 端点产生 $8$ 个超平面，
 二素数 Type II 区间产生 $2$ 个，递归 $\xi_t$ 测试产生 $1$ 个，移动的
@@ -787,6 +873,9 @@ Merikoski 对其余项给出的严格上界为
  F_1<0.0287,\quad F_2<0.08622,\quad F_3<0.03107,\quad
  F_4<0.00011,\quad F_5=\frac{29}{72}.
 \]
+单独出现的 $1/6$ 保持不变：它是 Merikoski 已发表的
+$\alpha\le7/6$ 部分中的基线项，与另列的缺陷项 $F_1$--$F_4$ 分开
+\cite[PDF 第 15--16 页，定理 2 的证明]{Merikoski2020}。
 结合引理~\ref{lem:F6-zh} 与命题~\ref{prop:certificate-zh}，零余量认证模型在
 $5/4$ 以下的归一化贡献严格小于
 \begin{align}\label{eq:core-zh}
@@ -905,6 +994,7 @@ Type I/II 与线性筛定理仍是外部输入。有限 Mellin--Perron 传递在
 的证明。
 \end{remark}
 
+\appendix
 \section{前缀一致线性筛的细节}\label{app:prefix-sieve-zh}
 
 \subsection{单个局部化前缀}
@@ -937,37 +1027,81 @@ $(u,d)=1$。令 $k=um$、$e=ud$ 即得精确恒等式
 \end{equation}
 因此偏差不再依赖 $u$ 的有序前缀表示。
 
-模型计算也对前缀一致。$(m,u)>1$ 的项多含一个至少为
-$x^{\gamma_\nu}$ 的素因子，总贡献为 $O(x^{-\gamma_\nu+o(1)}X_u)$；其余项满足
-$\rho(um)=\rho(u)\rho(m)$。由分部求和、Merikoski 引理 8 和
-\emph{Opera de Cribro} 定理 11.12，得到与无前缀序列相同的维数一局部因子：
+定义互素模型序列
 \[
- V_u(z)
- =\prod_{\substack{p<z(\boldsymbol q)\\p\nmid u}}(1-g(p))
- =\prod_{p<z(\boldsymbol q)}(1-g(p)).
+ |\Bcal_{u,d}^{\circ}|:=X_b
+ \sum_{\substack{d\mid m\\(m,u)=1}}
+ \frac{\rho(um)}{um}\psi_P(um)\log(um),\qquad
+ X_u^{\circ}:=|\Bcal_{u,1}^{\circ}|.
 \]
-事实上，写 $q_i=Q_iv_i$、$k=Pw$ 后，每个光滑因子都来自归一化变量
-$v_i,w$ 上同一个固定紧支撑函数族，其 $r$ 阶导数一致为 $O_r(1)$。对
-$p<z=q_j$ 有 $p\nmid u$，所以局部密度严格满足 $g_u(p)=g(p)$。因此第
-11--12 章使用的维数一乘积条件
-\[
- \prod_{w\le p<z}(1-g_u(p))^{-1}
- \le\frac{\log z}{\log w}
- \left(1+O\!\left(\frac1{\log w}\right)\right)
-\]
-与无前缀时具有同一隐含常数。基本引理常数只依赖该乘积界和固定导数半范数，
-不依赖最小前缀素数在 dyadic 格中的具体取值。这证明了 $z=q_j$ 时所需的一致性。
 
-更明确地，对有序前缀格求和有
+\begin{lemma}[带前缀模型筛的一致性]\label{lem:uniform-prefixed-model-zh}
+对所有 $j\le3$ 的有序前缀格及 $z=q_j$，序列 $\Bcal_u^{\circ}$ 与无前缀
+模型具有相同的维数一局部密度和基本引理常数。对层级 $D$ 的 Rosser 权，
+\begin{align*}
+ \sum_{d\mid P(z)}\lambda_{d,\boldsymbol q}^{+}|\Bcal_{u,d}^{\circ}|
+ &\le X_u^{\circ}V(z)
+ \{F(s_{\boldsymbol q})+O((\log D)^{-1/6})\}+E_u,\\
+ \sum_{d\mid P(z)}\lambda_{d,\boldsymbol q}^{-}|\Bcal_{u,d}^{\circ}|
+ &\ge X_u^{\circ}V(z)
+ \{f(s_{\boldsymbol q})-O((\log D)^{-1/6})\}-E_u,
+\end{align*}
+其中常数与具体前缀无关，且
+$\sum_{\boldsymbol q}c(\boldsymbol q)E_u=o(\mathfrak M(P))$。用完整
+$\Bcal_u$ 替换 $\Bcal_u^{\circ}$，对前缀求和后的改变为
+$O(x^{-\gamma_\nu+o(1)}\mathfrak M(P))$。
+\end{lemma}
+
+\begin{proof}
+在 $(m,u)=1$ 上，乘法性给出
+\[
+ \frac{\rho(um)}{um}=\frac{\rho(u)}u\frac{\rho(m)}m.
+\]
+$\rho(u)/u$ 位于余因子筛之外。对奇素数，权 $\rho(m)/m$ 的 Euler 因子给出
+\[
+ g(p)=
+ \frac{\sum_{r\ge1}\rho(p^r)p^{-r}}
+      {\sum_{r\ge0}\rho(p^r)p^{-r}}
+ =\begin{cases}2/(p+1),&p\equiv1\pmod4,\\0,&p\equiv3\pmod4,
+ \end{cases}
+\]
+而 $p=2$ 吸收到固定初始因子中。因 $u$ 的每个素因子均不小于 $z=q_j$，
+$p<z$ 时没有 Euler 因子被移除。因此 $g_u(p)=g(p)$，且
+\[
+ V_u(z)=\prod_{p<z}(1-g_u(p))=\prod_{p<z}(1-g(p))=V(z).
+\]
+模 $4$ 算术级数中的素数定理一致给出
+\[
+ \prod_{w\le p<z}(1-g(p))^{-1}
+ \le\frac{\log z}{\log w}
+ \left(1+O\!\left(\frac1{\log w}\right)\right),
+\]
+这正是 \cite[Theorem 11.12 and Chapter 12]{FriedlanderIwaniec2010}
+使用的维数一乘积假设。
+
+再核对光滑族。令 $Y=P/u$、
+$W_u(m)=\psi_P(um)\log(um)$。在 $m\asymp Y$ 上，对任意固定 $r$，
+\[
+ Y^r|W_u^{(r)}(m)|\ll_r\log P,
+\]
+常数与 $u$ 无关。提出无害的 $\log P$ 后，这正是 Merikoski 引理 8 证明中的
+固定半范数。因此定理 11.12 与第 12 章基本引理给出所述两式，常数不依赖
+$q_j$ 在其 dyadic 格中的具体取值。
+
+最后，若 $(m,u)>1$，则至多三个前缀素数之一满足
+$q_i\mid m$，且 $q_i\ge x^{\gamma_\nu}$。写 $m=q_im'$ 并用
+$\rho(n)\ll\tau(n)$，对有序前缀格求和得到
 \[
  \sum_{\boldsymbol q}c(\boldsymbol q)
  \sum_{i\le j}\sum_{q_i\mid m}
  X_b\frac{\rho(um)}{um}\psi_P(um)\log(um)
  \ll x^{-\gamma_\nu+o(1)}\mathfrak M(P).
 \]
-互素部分在固定格上的 Chapter 11 余项一致为 $o(\mathfrak M(P))$，故总模型计算
-误差为 $o(\mathfrak M(P))$。这正是 Merikoski 引理 8 的计算；新因子
-$\rho(u)/u$ 位于余因子筛之外。
+这证明最后一个断言及本引理。
+\end{proof}
+
+把引理~\ref{lem:uniform-prefixed-model-zh} 的可忽略互素修正吸收到 $E_u$，并恢复
+$X_u=|\Bcal_{u,1}|$ 的记号。
 
 令 $\lambda_{d,\boldsymbol q}^\pm$ 为层级 $D$ 的 Rosser 权，支撑于
 平方自由 $d\mid P(z(\boldsymbol q))$、$d<D$，且绝对值不超过 $1$。

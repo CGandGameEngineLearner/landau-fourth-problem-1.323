@@ -325,7 +325,7 @@ $y\ge1+1/(2U)$ and
 If $U\ge V$, then $1-y\ge1/(2U)$ and
 $-\log y\ge1-y\ge1/(2U)$.  Hence in both cases
 \[
- |\log y|\ge\frac{2}{4U+1}ge\frac{2}{5x^C}.
+ |\log y|\ge\frac{2}{4U+1}\ge\frac{2}{5x^C}.
 \]
 Moreover $y^c\le e^C$ when $y>1$, and $y^c\le1$ when $y<1$.
 Thus one comparison has pointwise truncation error
@@ -718,17 +718,47 @@ linear-sieve envelope
  U_{\rm LS}(\beta_1,\beta_2)
  =\max\left\{\frac2{\delta_2},\frac2{3\beta_2}\right\}.
 \]
+For $\beta_1+\beta_2\le\xi$, put
+\[
+ C_{\rm rec}(\beta_1,\beta_2)
+ :=\frac{u_+}{\gamma}
+   -\int_\gamma^{\beta_2}
+      W_3(\beta_1,\beta_2,\beta_3)\frac{d\beta_3}{\beta_3^2}.
+\]
+
+\begin{lemma}[Nonnegativity of the recursive candidate]
+\label{lem:recursive-candidate-nonnegative}
+On its stated domain, $C_{\rm rec}(\beta_1,\beta_2)\ge0$.
+\end{lemma}
+
+\begin{proof}
+Apply Buchstab's identity to the model sum with prefix $q_1q_2$ and cutoff
+$x^\gamma$.  Its base is the sum of the children with
+$x^\gamma<q_3<q_2$ and the remaining nonnegative $q_2$-rough term.  Denote
+their normalized model contributions by $B$, $C$, and $R$, respectively;
+then $B=C+R$ with $R\ge0$.  Fundamental Proposition~II and
+\eqref{eq:omega-bounds} give the base upper bound
+$B\le u_+/\gamma$, while \eqref{eq:A3lower} gives
+\[
+ C\ge\int_\gamma^{\beta_2}
+ W_3(\beta_1,\beta_2,\beta_3)\frac{d\beta_3}{\beta_3^2}.
+\]
+Therefore
+\[
+ C_{\rm rec}\ge B-C=R\ge0.
+\]
+This is an inequality between the analytic model terms; the finite program's
+explicit nonnegativity guard is only a proof-adverse rounding safeguard.
+\end{proof}
+
 Let $U_2(\beta_1,\beta_2)$ be the minimum of $U_{\rm LS}$ and the following
 available upper bounds:
 \begin{align*}
  &\frac{u_+}{\beta_2},
  &&\text{if }\beta_1+\beta_2\in[a,\sigma],\\
- &\frac{u_+}{\gamma}
-   -\int_\gamma^{\beta_2}
-      W_3(\beta_1,\beta_2,\beta_3)\frac{d\beta_3}{\beta_3^2},
+ &C_{\rm rec}(\beta_1,\beta_2),
  &&\text{if }\beta_1+\beta_2\le\xi,
 \end{align*}
-where the second candidate is used only when it is nonnegative.
 The second line is one more Buchstab identity: Fundamental Proposition II
 evaluates its base and \eqref{eq:A3lower} lower-bounds its children.
 The proof-adverse linear-sieve option is uniform over the two-prime prefix
@@ -1037,12 +1067,42 @@ and
  \left|\frac d{dt}\frac2{1/2-\beta_1-\beta_2-t}\right|
  \le800,
 \]
-the base, three-prime, and complete two-prime densities vary by at most
-$10^6t$, $4\cdot10^8t$, and $5\cdot10^8t$, respectively.  The last bound
-also covers the recursive candidate: differentiating $u_+/\gamma_t$ costs
-less than $10^4t$, and its inner $W_3/\beta_3^2$ integral costs less than
-$2\cdot10^5t$.  Taking a maximum or minimum does not enlarge the largest
-of these Lipschitz constants.
+write
+\[
+ L_t=\log(\tau_t/\gamma_t),\qquad
+ Q(L)=u_+-u_-L+\frac{u_+}{2}L^2.
+\]
+The bounds above give $|Q(L_t)|\le5$, $|Q'(L_t)|\le3$, and
+\[
+ |L_t'|\le\frac{3/2}{\tau_t}+\frac4{\gamma_t}\le215.
+\]
+Consequently
+\[
+ \left|\frac d{dt}\frac{\alpha Q(L_t)}{\gamma_t}\right|
+ \le\frac{4\alpha}{\gamma_t^2}|Q(L_t)|
+   +\frac{\alpha}{\gamma_t}|Q'(L_t)L_t'|<10^6.
+\]
+On a fixed Type~II indicator class, the derivative of the three-prime
+density is at most
+\[
+ \frac{61}{50}\,50^4\cdot50<4\cdot10^8.
+\]
+For the recursive candidate, Leibniz' rule and
+$|\partial_tW_{3,t}|\le1/\beta_3$ give
+\[
+ |\partial_t C_{{\rm rec},t}|
+ \le\frac4{\gamma_t^2}
+   +\frac{4}{\gamma_t^2}
+   +\int_{\gamma_t}^{\beta_2}\frac{d\beta_3}{\beta_3^3}
+ <3\cdot10^4.
+\]
+Together with the $800$ bound for $U_{{\rm LS},t}$, the direct Type~II
+candidate (which is independent of $t$), and
+$\alpha/(\beta_1\beta_2)\le(61/50)50^2$, the complete two-prime density
+varies by less than $10^8t$.  Maxima, minima, and the positive-part map are
+$1$-Lipschitz when applied to this fixed family of everywhere-defined
+candidates.  Lemma~\ref{lem:recursive-candidate-nonnegative} supplies the
+only point that was previously conditional on candidate availability.
 
 It remains to account for changing branch indicators and integration
 limits.  There are eight hyperplanes from the four subset sums against the
@@ -1131,6 +1191,10 @@ Merikoski's published strict upper bounds for the other terms are
  F_1&<0.0287,& F_2&<0.08622,& F_3&<0.03107,\\
  F_4&<0.00011,& F_5&=\frac{29}{72}.
 \end{align*}
+The standalone $1/6$ is unchanged: it is the baseline term in Merikoski's
+published treatment of the contribution with $\alpha\le7/6$, separate from
+the named deficiencies $F_1$--$F_4$
+\cite[PDF pp.~15--16, proof of Theorem 2]{Merikoski2020}.
 Combining these with Lemma \ref{lem:F6} and the complete lower bound in Proposition
 \ref{prop:certificate}, the certified zero-margin contribution through
 exponent $5/4$ is strictly smaller than
@@ -1346,47 +1410,92 @@ the least prefix prime, so \((u,d)=1\).  The changes of variables
 Thus the discrepancy no longer remembers which ordered prefix represents
 \(u\).
 
-For completeness, the model evaluation is uniform in the prefix.  Terms
-with \((m,u)>1\) have an extra prime divisor at least \(x^{\gamma_\nu}\)
-and contribute \(O(x^{-\gamma_\nu+o(1)}X_u)\), uniformly because \(j\le3\).
-On the remaining terms \(\rho(um)=\rho(u)\rho(m)\).  Partial summation and
-the Euler-product calculation of \cite[Lemma 8]{Merikoski2020} and
-\cite[Theorem 11.12]{FriedlanderIwaniec2010} therefore give the same
-dimension-one local factors as in the unprefixed sequence.  In particular,
+Define the coprime model sequence
 \[
- V_u(z)
- =\prod_{\substack{p<z(\boldsymbol q)\\p\nmid u}}(1-g(p))
- =\prod_{p<z(\boldsymbol q)}(1-g(p)).
+ |\Bcal_{u,d}^{\circ}|:=X_b
+ \sum_{\substack{d\mid m\\(m,u)=1}}
+ \frac{\rho(um)}{um}\psi_P(um)\log(um),qquad
+ X_u^{\circ}:=|\Bcal_{u,1}^{\circ}|.
 \]
-Indeed, after writing \(q_i=Q_iv_i\) and \(k=Pw\), every smooth factor is
-drawn from one fixed compactly supported family in the normalized variables
-\(v_i,w\); its $r$th derivative is \(O_r(1)\), independently of the exact
-prefix and of $x$.  For $p<z=q_j$ one has $p\nmid u$, so the local density is
-exactly $g_u(p)=g(p)$.  Consequently the dimension-one product condition
-used in Chapters~11--12,
+
+\begin{lemma}[Uniform prefixed model sieve]
+\label{lem:uniform-prefixed-model}
+Uniformly for every ordered prefix cell with $j\le3$ and
+$z=q_j$, the sequence $\Bcal_u^{\circ}$ has the same dimension-one local
+density and the same fundamental-lemma constants as the unprefixed model.
+For the level-$D$ Rosser weights,
+\begin{align*}
+ \sum_{d\mid P(z)}\lambda_{d,\boldsymbol q}^{+}
+ |\Bcal_{u,d}^{\circ}|
+ &\le X_u^{\circ}V(z)
+ \{F(s_{\boldsymbol q})+O((\log D)^{-1/6})\}+E_u,\\
+ \sum_{d\mid P(z)}\lambda_{d,\boldsymbol q}^{-}
+ |\Bcal_{u,d}^{\circ}|
+ &\ge X_u^{\circ}V(z)
+ \{f(s_{\boldsymbol q})-O((\log D)^{-1/6})\}-E_u,
+\end{align*}
+where the constants are independent of the exact prefix and
+\(\sum_{\boldsymbol q}c(\boldsymbol q)E_u=o(\mathfrak M(P))\).
+Replacing $\Bcal_u^{\circ}$ by the full $\Bcal_u$ changes the summed model
+by $O(x^{-\gamma_\nu+o(1)}\mathfrak M(P))$.
+\end{lemma}
+
+\begin{proof}
+On $(m,u)=1$, multiplicativity gives
 \[
- \prod_{w\le p<z}(1-g_u(p))^{-1}
+ \frac{\rho(um)}{um}=\frac{\rho(u)}u\frac{\rho(m)}m.
+\]
+The factor $\rho(u)/u$ is outside the cofactor sieve.  The Euler factor of
+the remaining weight $\rho(m)/m$ gives, for odd primes,
+\[
+ g(p)=
+ \frac{\sum_{r\ge1}\rho(p^r)p^{-r}}
+      {\sum_{r\ge0}\rho(p^r)p^{-r}}
+ =\begin{cases}2/(p+1),&p\equiv1\pmod4,\\0,&p\equiv3\pmod4,
+ \end{cases}
+\]
+with $p=2$ absorbed into the fixed initial factor.  Since every prime
+dividing $u$ is at least $z=q_j$, no Euler factor with $p<z$ is removed.
+Thus $g_u(p)=g(p)$ for $p<z$ and
+\[
+ V_u(z)=\prod_{p<z}(1-g_u(p))=\prod_{p<z}(1-g(p))=V(z).
+\]
+The prime number theorem in progressions modulo $4$ gives, uniformly for
+$2\le w<z$,
+\[
+ \prod_{w\le p<z}(1-g(p))^{-1}
  \le\frac{\log z}{\log w}
  \left(1+O\!\left(\frac1{\log w}\right)\right),
 \]
-has the same implied constant as the unprefixed product.  The fundamental
-lemma constants depend only on this product bound and the fixed derivative
-seminorms, not on the value of the least prefix prime inside its dyadic
-cell.  This proves the required uniformity when $z=q_j$.
+which is the dimension-one product hypothesis used in
+\cite[Theorem 11.12 and Chapter 12]{FriedlanderIwaniec2010}.
 
-More explicitly, summing over the ordered prefix cells gives
+It remains to check uniformity of the smooth family.  Put $Y=P/u$ and
+\(W_u(m)=\psi_P(um)\log(um)\).  On $m\asymp Y$,
+\[
+ Y^r|W_u^{(r)}(m)|\ll_r\log P
+\]
+for every fixed $r$, with a constant independent of $u$; after extracting
+the harmless factor $\log P$, these are exactly the fixed seminorms in
+Merikoski's proof of Lemma~8.  Hence Theorem~11.12 and the Chapter~12
+fundamental lemma give the two displayed estimates with constants uniform
+in the exact value of $q_j$ inside its dyadic cell.
+
+Finally, if $(m,u)>1$, then $q_i\mid m$ for one of at most three primes
+$q_i\ge x^{\gamma_\nu}$.  Writing $m=q_i m'$ and using
+$\rho(n)\ll\tau(n)$ gives, after summing the ordered prefix cells,
 \[
  \sum_{\boldsymbol q}c(\boldsymbol q)
  \sum_{i\le j}\sum_{q_i\mid m}
  X_b\frac{\rho(um)}{um}\psi_P(um)\log(um)
- \ll x^{-\gamma_\nu+o(1)}\mathfrak M(P),
+ \ll x^{-\gamma_\nu+o(1)}\mathfrak M(P).
 \]
-while the coprime part has the Chapter~11 remainder
-\(o(\mathfrak M(P))\), uniformly on a fixed cell.  Thus the aggregate
-model-evaluation error is \(o(\mathfrak M(P))\).  This is the same
-calculation used in Merikoski's proof of Lemma~8; the only new factor
-\(\rho(u)/u\) is outside the cofactor sieve.
+This proves the final assertion and the lemma.
+\end{proof}
 
+Absorb the negligible coprimality correction from
+Lemma~\ref{lem:uniform-prefixed-model} into $E_u$ and return to the notation
+$X_u=|\Bcal_{u,1}|$.
 Let \(\lambda_{d,\boldsymbol q}^{\pm}\) be the level-\(D\) Rosser weights.
 They are supported on squarefree \(d\mid P(z(\boldsymbol q))\), \(d<D\),
 and satisfy \(|\lambda_{d,\boldsymbol q}^{\pm}|\le1\).
