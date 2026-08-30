@@ -66,13 +66,15 @@ $n$ 使 $n^2+1$ 为素数或两个素数之积 \cite{Iwaniec1978}；筛法无法
 Merikoski 得到指数 $1.279$，并在 Selberg 特征值猜想下得到 $1.312$
 \cite{Merikoski2020}；Pascadi 无条件得到 $1.3$ \cite{Pascadi2026}；Grimmelt 与
 Merikoski 随后无条件恢复 $1.312$ \cite{GrimmeltMerikoski2025}。Li 宣布了
-$1.317$ \cite{Li2025}。
+$1.317$ \cite{Li2025}。\footnote{本文不采用 Carella 的孤立 $3/2$ 主张：其
+(5.3)--(5.4) 把完整 von Mangoldt 除数恒等式换成
+$\log\operatorname{rad}(m)$，遗漏了素数幂贡献 \cite[Section 5]{Carella2025}。}
 
 若 $\Pplus(n^2+1)>n^\vartheta$，则补余因子满足
 $m<n^{2-\vartheta+o(1)}$。本文将该余因子指数降到 $0.677$，但仍不能迫使
 $m=1$。新步骤是在旧论证使用线性筛的区间递归使用 Buchstab 恒等式，保留新的
 Type II 三素数子项，对其余子项使用线性筛下界，并递归上估原先舍弃的一素数尾项
-的二素数后代。Merikoski 已指出可在这里继续使用 Buchstab 恒等式产生额外
+的二素数后代；其思路属于 Harman 筛法 \cite{Harman2007}。Merikoski 已指出可在这里继续使用 Buchstab 恒等式产生额外
 Type II 和，但在其发表计算中未使用这些和 \cite[Remark 12]{Merikoski2020}。
 Li 的 $1.317$ 论证保持原筛分解，仅改变积分数值
 \cite[Lemmas 2.1 and 2.2]{Li2025}，因此本文的三素数项并不包含在该结果中。
@@ -90,19 +92,6 @@ Grimmelt--Merikoski Type I/II 估计、维数一线性筛以及有限 Mellin--Pe
 定理中的假设即为上述解析输入，它们未在 Lean 中形式化。Lean 只核查有限代数、
 格子几何、整数证书、端点和实幂换算，既未验证这些解析输入，也未解决
 Landau 第四问题。
-\end{remark}
-
-\begin{remark}[与一个更大孤立主张的比较]
-Carella 的 arXiv 论文 \cite[Section 5, (5.3)--(5.4)]{Carella2025} 声称指数
-$3/2$，但其从 (5.3) 到 (5.4) 将
-\[
- \sum_{d\mid m}\Lambda(d)=\log m
- \quad\text{替换为}\quad
- \sum_{p\mid m}\log p=\log\operatorname{rad}(m)
-\]
-同时保留下界方向。后者不大于前者，而且 $n^2+1$ 不一定平方自由，例如
-$7^2+1=2\cdot5^2$，故该步骤不能推出所声称的界。本文的比较基准是
-Grimmelt--Merikoski 定理与 Li 的 $1.317$ 计算。
 \end{remark}
 
 本文相对 $1.317$ 的增益为 $0.006$。计算机仅用于显式有限分片有理积分族；
@@ -683,46 +672,23 @@ $R^+_B$ 是包含域上的左端点上和。
  (A_{0,i}^{+}-A_{1,i}^{-}+A_{2,i}^{+}
  -A_{3,i}^{-}-T_i^{-})\}.
 \]
-规范整数输出为
-\begin{verbatim}
-scale=1000000000000
-alpha_steps=1200 beta_steps=300 tail_beta_steps=160
-positive_alpha_cells=727
-tail_lower_integral=0.018330264130
-a3_lower_integral=0.044459636636
-saving_lower_units=32303187971
-saving_lower=0.032303187971
-target=0.032000000000
-CERTIFIED=YES
-\end{verbatim}
+规范网格有 $727$ 个正 $\alpha$ 格。未缩放节约总和为
+$465165906793678$；除以 $12N=14400$ 后向下取整得到
+$32303187971>32000000000$，即 $0.032303187971>0.032$。
 
-Lean 用 \texttt{native\_decide} 分四个 192 格块和一个零块重算。未缩放的
-节约和依次为
-\[
-\begin{aligned}
-&154113574025565,\quad151615832402575,\quad117510700363272,\\
-&41925800002266,\quad0.
-\end{aligned}
-\]
-总和为 $465165906793678$，除以 $12N=14400$ 后向下取整得到
-$32303187971$。Canonical 模块在不重新展开块计算的情况下检查最终加法、
-除法与严格目标不等式。独立 Python 任意精度实现得到同样结果；两套逐格输出
-的 SHA-256 为
+同一整数算法由固定宽度 C++、任意精度 Python 与 Lean 独立实现。Lean 用
+\texttt{native\_decide} 计算四个网格块，随后由内核检查总和、除法、有理归一化
+和端点比较；C++ 与 Python 独立重建每个格。两套规范逐格输出逐字节一致，
+SHA-256 为
 \[
 \begin{aligned}
 &\texttt{6e1901ca1dc8b2c32ae6bcc3759a42ea}\\
 &\texttt{9a3dab8932870eeb3f6e2d42f0ac3175}.
 \end{aligned}
 \]
-因此三套实现独立重算同一有限整数下界；这不等同于 Lean 证明解析积分
-\eqref{eq:Delta-zh}。
+完整命令、块投影、未定义行为检查和诊断性细网格均置于公开验证归档；它们不构成
+定理的额外输入。
 \end{proof}
-
-\begin{remark}
-同一源代码在 GCC 未定义行为检查器下编译时给出相同结果。更细的
-$1800\times400\times220$ 与 $2400\times500\times280$ 网格分别给出下界
-$0.033508163100$ 与 $0.034213110567$。这些数值只支持收敛性判断，不进入定理。
-\end{remark}
 
 \begin{lemma}[显式解析余量预算]\label{lem:explicit-margin-zh}
 令 $H_t$ 表示在分支账本中使用 \eqref{eq:margin-parameters-zh} 的平移参数 $t$
@@ -875,7 +841,7 @@ Merikoski 对其余项给出的严格上界为
 \]
 单独出现的 $1/6$ 保持不变：它是 Merikoski 已发表的
 $\alpha\le7/6$ 部分中的基线项，与另列的缺陷项 $F_1$--$F_4$ 分开
-\cite[PDF 第 15--16 页，定理 2 的证明]{Merikoski2020}。
+\cite[Section 2.6，定理 2 的证明]{Merikoski2020}。
 结合引理~\ref{lem:F6-zh} 与命题~\ref{prop:certificate-zh}，零余量认证模型在
 $5/4$ 以下的归一化贡献严格小于
 \begin{align}\label{eq:core-zh}
@@ -924,75 +890,27 @@ $b-a=1/10000$、$a/(b-a)=13230$，当 $x>2^{13230}$ 且 $n\le2x$ 时，
 \]
 由此得到定理~\ref{thm:main-zh}。
 
-\section{形式化验证范围}
+\section{验证、数据与声明}
 
-精简 Lean 工程包含有限加权 Buchstab 恒等式、首次坏指标的不交迭代、符号
-$A_0-A_1+A_2-A_3$、递归节点上下界规则、尾项下界、向外取整规则以及
-$1200\times300\times160$ 整数证书。四个大块等值由
-\texttt{native\_decide} 计算；导入其小型自然数投影后，Canonical 求和、除法、
-端点有理算术、$F_6$ 凸性及有限几何方向由内核检查。C++ 与 Python 独立交叉
-检查块总值。
+Lean 4（Mathlib v4.22.0）核查有限 Buchstab 符号、不利方向格子几何、向外取整
+规则、$1200\times300\times160$ 整数证书、初等 $F_6$ 中点界、端点算术和
+dyadic 实幂换算。四个大块值由 \texttt{native\_decide} 计算，并由固定宽度
+C++ 与任意精度 Python 独立重算；最终求和、除法和端点比较由内核检查。证书不
+使用浮点或专有计算机代数系统。
 
-$F_6$ 模块证明二阶导数为正、十面板中点积分下界及与
-$149403/2500000$ 的严格比较；应用到 $F_6$ 本身仍使用外置的 Buchstab 下界。
-实幂模块证明
-\[
- x>2^{13230},\quad0\le n\le2x
- \Longrightarrow n^{1323/1000}<x^{13231/10000}.
-\]
-小型审计模块检查 $\nu$ 的仿射恒等式、在 $7/6<\alpha<1.22$ 上满足这些恒等式
-的显式有理值 $\nu=10^{-20}$、半整数切点、抽象表示数界、不利方向格子几何、
-$\alpha/\gamma,t+1,\Phi,U_{\rm LS}$ 的代数归一化、$s<1$ 切点恒等式
-$(2/s)/((1-\omega)\log D)=2/\log D$，并检查
-\[
- \frac{2994511739}{18000000000000},\qquad
- 10^{11}\nu<\frac{2994511739}{18000000000000}.
-\]
-它还检查在所述假设下的有限 Perron 预算算术
-$\log((V-1/2)/U)\ge 2/(4U+1)$ 与
-$X^{B}\cdot 2\cdot X^{C-A'}\le X^{-A}$。
-它们不构造真实 Perron 局部化或随前缀变化的 Rosser 权，也不证明完整解析定理。
-形式化仍把 Grimmelt--Merikoski Corollaries 7.1/7.2 和标准维数一线性筛定理
-作为外部解析输入；第~\ref{sec:transfer-zh}、\ref{sec:switching-zh} 节在论文中
-核对其假设并证明有限 Perron/Mellin 局部化，但这些解析论证不是 Lean 定理。
+Lean 不证明 Grimmelt--Merikoski Type I/II 估计、维数一线性筛、解析
+Perron/Mellin 局部化或主定理。这些解析论证写在第
+\ref{sec:transfer-zh}、\ref{sec:switching-zh} 节及附录 A 中，仍需通常的数学审稿。
 
-\begin{remark}[AI 辅助证明开发声明]
-作者声明：GPT-5.6 Sol 在核心递归 Buchstab 切换论证、证明方向与分支账本、
-Lean 证书实现、精确整数审计脚本和论文表述的开发中作为推理与编码助手使用。
-作者审查最终数学陈述并对提交内容负责。GPT-5.6 Sol 不是作者，也不是独立验证者。
-Lean 只核查有限组合、整数、取整、初等 $F_6$、有理端点和实幂换算；所引用的
-Type I/II 与线性筛定理仍是外部输入。有限 Mellin--Perron 传递在论文中证明，
-但未在 Lean 中形式化。
-\end{remark}
-
-\begin{remark}[补充材料]
-公开验证仓库为
+源码、复现命令、锁定工具链和完整审计账本见
 \href{https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323}
-{GitHub 项目页面}，
-最新归档由 concept DOI
-\url{https://doi.org/10.5281/zenodo.22140874}
-解析。固定宽度 C++ 证书与任意精度 Python 审计的命令行均为
-\texttt{1200 300 160}，并分别打印
-\[
- \texttt{saving\_lower=0.032303187971},\qquad
- \texttt{CERTIFIED=YES}.
-\]
-外部 PDF 仅记录来源与 SHA-256，不在仓库中重新分发。
-\end{remark}
+{公开验证仓库}；不可变版本由
+\href{https://doi.org/10.5281/zenodo.22140874}{Zenodo concept DOI} 标识。
 
-\begin{remark}[解析审查边界]
-有限交叉条件局部化和前缀一致线性筛在本文中给出解析证明，但未在 Lean 中
-形式化。它们与所引用的 Type I/II、线性筛定理仍需传统解析数论专家审查。
-\end{remark}
-
-\begin{remark}[与 Landau 第四问题的距离]
-定理只推出无穷多次分解
-\[
- n^2+1=pm,\qquad p>n^{1.323},\qquad m<n^{0.677+o(1)}.
-\]
-它不迫使 $m=1$，也没有突破奇偶障碍；这是最大素因子弱形式，而不是素数值猜想
-的证明。
-\end{remark}
+\paragraph{AI 辅助开发。}
+GPT-5.6 Sol 作为推理和编码助手参与递归切换论证、证明方向账本、证书实现、审计
+脚本和论文表述。作者审查最终数学陈述并对提交内容负责；该模型不是作者，也不是
+独立验证者。
 
 \appendix
 \section{前缀一致线性筛的细节}\label{app:prefix-sieve-zh}
@@ -1263,16 +1181,22 @@ N. A. Carella,
 \emph{Largest prime factors of polynomials},
 arXiv:2308.10075v7, 2025.
 
+\bibitem{FriedlanderIwaniec2010}
+J. Friedlander and H. Iwaniec,
+\emph{Opera de Cribro},
+vol.~57 of American Mathematical Society Colloquium Publications,
+American Mathematical Society, Providence, RI, 2010.
+
 \bibitem{GrimmeltMerikoski2025}
 L. Grimmelt and J. Merikoski,
 \emph{On the greatest prime factor and uniform equidistribution of quadratic polynomials},
 arXiv:2505.00493v2, 2025.
 
-\bibitem{FriedlanderIwaniec2010}
-J. Friedlander and H. Iwaniec,
-\emph{Opera de Cribro},
-American Mathematical Society Colloquium Publications, vol.~57,
-American Mathematical Society, Providence, 2010.
+\bibitem{Harman2007}
+G. Harman,
+\emph{Prime-Detecting Sieves},
+vol.~33 of London Mathematical Society Monographs Series,
+Princeton University Press, Princeton, NJ, 2007.
 
 \bibitem{Iwaniec1978}
 H. Iwaniec,
@@ -1294,8 +1218,7 @@ J. Eur. Math. Soc. (JEMS) \textbf{25} (2023), 1253--1284,
 \bibitem{Pascadi2026}
 A. Pascadi,
 \emph{Large sieve inequalities for exceptional Maass forms and the greatest prime factor of $n^2+1$},
-Forum Math. Pi \textbf{14} (2026), e8,
-1--54,
+Forum Math. Pi \textbf{14} (2026), Paper No.~e8, 54 pp.,
 \href{https://doi.org/10.1017/fmp.2026.10025}{doi:10.1017/fmp.2026.10025}.
 
 \end{thebibliography}

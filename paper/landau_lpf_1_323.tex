@@ -42,7 +42,7 @@
 \date{29 August 2026}
 
 \subjclass[2020]{11N32, 11N35, 11N75}
-\keywords{greatest prime factor, quadratic polynomial, Harman sieve, Buchstab identity, Landau's fourth problem, computer-assisted proof, Lean}
+\keywords{greatest prime factor, quadratic polynomial, Harman sieve, Buchstab identity, Landau's fourth problem, computer-assisted proof}
 
 \begin{document}
 \raggedbottom
@@ -74,7 +74,10 @@ unconditional exponent $1.3$ \cite{Pascadi2026}.  Grimmelt and Merikoski then
 recovered $1.312$ unconditionally by proving uniform Type I and Type II
 estimates for roots of quadratic congruences
 \cite{GrimmeltMerikoski2025}.  Li announced $1.317$, using sharper numerical
-bounds for the same Buchstab decomposition \cite{Li2025}.
+bounds for the same Buchstab decomposition \cite{Li2025}.\footnote{Carella's
+isolated $3/2$ claim is not used: its transition (5.3)--(5.4) replaces the
+full von Mangoldt divisor identity by $\log\operatorname{rad}(m)$, losing
+prime-power contributions \cite[Section 5]{Carella2025}.}
 
 These exponents quantify progress toward Landau's problem: a bound
 $\Pplus(n^2+1)>n^\vartheta$ leaves a cofactor
@@ -83,7 +86,8 @@ $0.677$, while still leaving the parity distinction $m=1$ versus
 $m>1$ unresolved.
 
 Our new input is a recursive Buchstab switching in the range where the old
-argument used the linear sieve.  Merikoski already observed that Buchstab's
+argument used the linear sieve, in the spirit of Harman's sieve
+\cite{Harman2007}.  Merikoski already observed that Buchstab's
 identity could be applied more times there to generate additional Type II
 sums \cite[Remark 12]{Merikoski2020}.  With the stronger range now available
 unconditionally, this produces a numerically substantial saving.  In
@@ -113,22 +117,6 @@ formalized in Lean.  Lean checks only finite algebra, proof-adverse cell
 geometry, the integer certificate, endpoint arithmetic, and the real-power
 conversion.  It neither verifies those analytic inputs nor solves Landau's
 fourth problem.
-\end{remark}
-
-\begin{remark}[Comparison with an isolated larger claim]
-Carella's arXiv note \cite[Section 5, (5.3)--(5.4)]{Carella2025} claims the
-exponent $3/2$, but the
-transition from its (5.3) to (5.4) replaces
-\[
- \sum_{d\mid m}\Lambda(d)=\log m
- \quad\hbox{by}\quad
- \sum_{p\mid m}\log p=\log\operatorname{rad}(m)
-\]
-while retaining a lower bound.  The latter quantity is at most the former,
-and $n^2+1$ need not be squarefree (for example,
-$7^2+1=2\cdot5^2$).  That step therefore does not establish the claimed
-bound.  Our comparison frontier is the Grimmelt--Merikoski theorem and
-Li's subsequent $1.317$ calculation.
 \end{remark}
 
 The gain over $1.317$ is $0.006$.  The argument is computer assisted only in
@@ -960,59 +948,31 @@ It follows pointwise on the cell that
 \]
 Only $\alpha<1.22$ is retained; zero is used elsewhere.
 
-The exact integer output is
-\begin{verbatim}
-scale=1000000000000
-alpha_steps=1200 beta_steps=300 tail_beta_steps=160
-positive_alpha_cells=727
-tail_lower_integral=0.018330264130
-a3_lower_integral=0.044459636636
-saving_lower_units=32303187971
-saving_lower=0.032303187971
-target=0.032000000000
-CERTIFIED=YES
-\end{verbatim}
-The last comparison is the integer inequality
-$32303187971>32000000000$.
-
-The module \texttt{HarmanRecursiveCertificate.lean} is a third Lean
-implementation of the complete fixed-point algorithm.  Lean evaluates the
-canonical grid by \texttt{native\_decide} in four 192-cell
-blocks and one zero block.  The respective unscaled saving sums are
+The canonical grid has $727$ positive $\alpha$-cells, and
 \[
- 154113574025565,\quad151615832402575,\quad
- 117510700363272,\quad41925800002266,\quad0.
+ \begin{aligned}
+ \text{unscaled saving sum}&=465165906793678,\\
+ \left\lfloor\frac{465165906793678}{14400}\right\rfloor
+ &=32303187971>32000000000.
+ \end{aligned}
 \]
-Their sum is $465165906793678$; downward division by $12N=14400$ is
-$32303187971$.  Small projection modules connect every expensive block
-computation to its exact natural-number value.  Thus the large block
-equalities use Lean's native evaluator; after those equalities are available,
-\texttt{HarmanRecursiveCertificateCanonical.lean} checks the final natural-number
-sum, division, rational normalization, and strict endpoint inequalities by
-kernel elaboration without re-expanding the blocks.
+Thus the certified saving is $0.032303187971>0.032$.
 
-As an implementation-level cross-check, the accompanying Python audit
-program independently
-reconstructs every cell using Python arbitrary-precision integers.  It does
-not call or parse the C++ executable and uses an independent sweep-line
-algorithm for weighted interval maxima.  On the canonical grid it reports
-the same totals.  With the optional \texttt{--dump-cells} flag, all 1200
-canonical cell records agree byte for byte; both dumps have SHA-256
-\par\smallskip
-\noindent\hspace*{1em}\texttt{6e1901ca1dc8b2c32ae6bcc3759a42ea}\par
-\noindent\hspace*{1em}\texttt{9a3dab8932870eeb3f6e2d42f0ac3175}.\par\smallskip
-Thus the Lean, fixed-width, and arbitrary-precision implementations all
-recompute and certify the displayed lower bound independently, with the Lean
-block computations using \texttt{native\_decide} as just stated.
+The same integer algorithm is implemented independently in C++, Python, and
+Lean.  Lean's native evaluator computes four grid blocks; kernel elaboration
+then checks the final sum, division, rational normalization, and endpoint
+comparisons.  The C++ and Python programs reconstruct every cell independently.
+Their canonical cell dumps agree byte for byte and have SHA-256
+\[
+ \begin{aligned}
+ &\texttt{6e1901ca1dc8b2c32ae6bcc3759a42ea},\\
+ &\texttt{9a3dab8932870eeb3f6e2d42f0ac3175}.
+ \end{aligned}
+\]
+Full commands, block projections, sanitizer checks, and diagnostic finer
+grids are provided in the public verification archive; none is an additional
+input to the theorem.
 \end{proof}
-
-\begin{remark}
-The same source compiled with GCC's undefined-behavior sanitizer gives the
-same result.  The finer grids $1800\times400\times220$ and
-$2400\times500\times280$ give the respective lower bounds
-$0.033508163100$ and $0.034213110567$.  These values support convergence but
-are not used in the theorem.
-\end{remark}
 
 \begin{lemma}[Explicit analytic-margin budget]\label{lem:explicit-margin}
 Let $H_t$ be the envelope obtained from the displayed branch ledger by
@@ -1194,7 +1154,7 @@ Merikoski's published strict upper bounds for the other terms are
 The standalone $1/6$ is unchanged: it is the baseline term in Merikoski's
 published treatment of the contribution with $\alpha\le7/6$, separate from
 the named deficiencies $F_1$--$F_4$
-\cite[PDF pp.~15--16, proof of Theorem 2]{Merikoski2020}.
+\cite[Section 2.6, proof of Theorem 2]{Merikoski2020}.
 Combining these with Lemma \ref{lem:F6} and the complete lower bound in Proposition
 \ref{prop:certificate}, the certified zero-margin contribution through
 exponent $5/4$ is strictly smaller than
@@ -1252,120 +1212,35 @@ $a/(b-a)=13230$.  For $x>2^{13230}$ and $n\le2x$,
 \]
 Together with \eqref{eq:block-result}, this proves Theorem \ref{thm:main}.
 
-\section{Formal verification and scope}
+\section{Verification, data availability, and declarations}
 
-The focused Lean project contains the finite weighted Buchstab identity, its
-disjoint first-bad-index iteration, the sign pattern
-$A_0-A_1+A_2-A_3$, the recursive node upper/lower rules, and the
-subtractive-tail inequality used in Section~\ref{sec:switching}.  Its
-rational-envelope module proves the elementary lower envelope used in the
-finite certificate.  The recursive-certificate module and its four block
-modules independently recompute the exact outward-rounded certificate; the
-value and canonical modules aggregate the block totals while keeping peak
-elaboration memory bounded.  The $F_6$ module proves positivity of the
-displayed second derivative, convexity, the ten-panel midpoint integral lower
-bound, and the exact rational comparison with $149403/2500000$; applying this
-width certificate to $F_6$ still uses the quoted Buchstab lower bound.  The
-endpoint module checks the exact rational comparisons, including
-$1323/1000<13231/10000$ and the strict normalized budget.  The real-power
-module proves the final implication $x>2^{13230}$ and $0\le n\le2x$
-imply $n^{1323/1000}<x^{13231/10000}$.  The focused project builds with
-Lean 4 and Mathlib v4.22.0.
+The finite Buchstab signs, proof-adverse cell geometry, outward-rounding
+rules, $1200\times300\times160$ integer certificate, elementary $F_6$
+midpoint bound, endpoint arithmetic, and dyadic real-power conversion are
+checked in Lean 4 with Mathlib v4.22.0.  The four large block values use
+\texttt{native\_decide} and are independently recomputed by fixed-width C++
+and arbitrary-precision Python; the final sum, division, and endpoint
+comparisons are kernel checked.  No floating-point or proprietary
+computer-algebra calculation enters the certificate.
 
-Small audit modules check affine identities for the $\nu$ margins, an
-explicit rational $\nu=10^{-20}$ that satisfies those identities on
-$7/6<\alpha<1.22$, a half-integer cutoff, an abstract count of
-representations, one-sided box geometry, algebraic normalization of
-$\alpha/\gamma$, $t+1$, $\Phi$, and $U_{\rm LS}$, the $s<1$ cutoff identity
-$(2/s)/((1-\omega)\log D)=2/\log D$, the exact half-margin split
-$2994511739/18000000000000$, the comparison
-$10^{11}\nu<2994511739/18000000000000$, and the finite Perron budget arithmetic under
-stated hypotheses
-$\log((V-1/2)/U)\ge 2/(4U+1)$ and
-$X^{B}\cdot 2\cdot X^{C-A'}\le X^{-A}$.
-These modules construct neither the actual Perron localization nor
-Rosser coefficients varying with the prefix, and they do not prove any of
-the six analytic transfer gates as a whole.
+Lean does not prove the Grimmelt--Merikoski Type~I/II estimates, the
+dimension-one linear sieve, the analytic Perron/Mellin localization, or the
+main theorem.  Those analytic arguments are given in
+Sections~\ref{sec:transfer}, \ref{sec:switching}, and Appendix~A and remain
+subject to ordinary mathematical refereeing.
 
-The formal development treats Grimmelt--Merikoski Corollaries 7.1 and 7.2
-and the standard upper and lower dimension-one linear-sieve theorem as
-external analytic inputs.  Sections~\ref{sec:transfer} and
-\ref{sec:switching} verify their hypotheses and prove the finite
-Perron/Mellin localization on paper; these analytic arguments are not Lean
-theorems.
-The finite Buchstab decomposition, the integer computation, its primitive
-outward-rounding rules, the elementary $F_6$ convex midpoint certificate,
-the exact rational endpoint arithmetic, and the real-power dyadic conversion
-are checked in Lean.  The expensive $1200\times300\times160$ block equalities
-are discharged by \texttt{native\_decide}; the canonical sum, division, and
-endpoint comparisons are then checked without native recomputation.  Thus
-the native compiler is a trust boundary only for block values independently
-cross-checked by C++ and Python; downstream arithmetic and the finite
-lemmas on signs, widths, clipping, and endpoint directions are kernel checked.
-None of these facts
-asserts that the integer algorithm equals the analytic $H(\alpha)$ integral.  No
-floating-point or proprietary computer-algebra calculation is an input to
-the finite certificate.
+Source code, reproduction commands, the locked toolchain, and the complete
+audit ledger are available in the
+\href{https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323}
+{public verification repository}; the immutable release is identified by the
+\href{https://doi.org/10.5281/zenodo.22140874}{Zenodo concept DOI}.
 
-\par\medskip
-\begin{remark}[AI-assisted proof development]
-The author discloses that GPT-5.6 Sol was used as a reasoning and coding
-assistant in developing the core recursive Buchstab switching argument, the
-proof-direction and branch ledger, the Lean certificate implementation, the
-exact-integer audit scripts, and the manuscript exposition. The author
-reviewed the final mathematical statements and takes responsibility for the
-submitted content. GPT-5.6 Sol is an AI-assisted development tool, not an
-author or an independent verifier. The Lean project checks only the finite
-combinatorial, integer, rounding, elementary $F_6$, rational endpoint, and
-real-power conversion components; the cited
-analytic Type-I/II and linear-sieve theorems remain external inputs.  The
-finite Mellin--Perron transfer is proved in the paper but not formalized in
-Lean.
-\end{remark}
-
-\par\medskip
-\begin{remark}[Supplementary material]
-The accompanying source archive contains the Lean project and locked
-toolchain, the fixed-width C++ certificate
-\nolinkurl{certify_harman_recursive_tail.cpp}, and the independent
-arbitrary-precision Python audit
-\nolinkurl{audit_harman_recursive_tail.py}.  The command line
-\texttt{1200 300 160} selects the canonical grid in both external
-implementations; each prints
-\texttt{saving\_lower}${}={}$\texttt{0.032303187971} and
-\texttt{CERTIFIED=YES}.  No precomputed binary data are needed.  The
-immutable source archive is
-\url{https://doi.org/10.5281/zenodo.22140874}.
-The separate script
-\nolinkurl{audit_harman_recursive_branch_coverage.py} exhaustively checks
-the analytic branch gates summarized in Remark~\ref{rem:branch-coverage}.
-A supplied build script packages the paper, PDF, locked Lean project,
-audits, and analytic ledger into one checksummed review archive.
-The archive also includes a source-version ledger with theorem locations and
-SHA-256 hashes for the external PDFs; the external PDFs themselves are not
-redistributed.
-The public verification repository is
-\url{https://github.com/CGandGameEngineLearner/landau-fourth-problem-1.323}.
-\end{remark}
-
-\begin{remark}[Analytic review boundary]
-The finite cross-condition localization and prefix-uniform sieve are proved
-in Lemma~\ref{lem:localization} and Proposition~\ref{prop:prefix-sieve}, but
-they are not formalized in Lean.  Together with the quoted Type~I/II and
-linear-sieve theorems, these are the parts that require conventional
-analytic-number-theory refereeing.
-\end{remark}
-
-\par\medskip
-\begin{remark}[Distance from Landau's problem]
-Theorem \ref{thm:main} implies infinitely often a factorization
-\[
- n^2+1=pm,\qquad p>n^{1.323},\qquad m<n^{0.677+o(1)},
-\]
-but it neither forces $m=1$ nor overcomes the parity barrier.  It is a new
-greatest-prime-factor weak form of Landau's fourth problem, not a proof of
-the prime-values conjecture.
-\end{remark}
+\paragraph{AI-assisted development.}
+GPT-5.6 Sol was used as a reasoning and coding assistant for the recursive
+switching argument, proof-direction ledger, certificate implementation,
+audit scripts, and exposition.  The author reviewed the final mathematical
+statements and takes responsibility for the submitted content.  The model is
+neither an author nor an independent verifier.
 
 \appendix
 \section{Details for the prefix-uniform linear sieve}
@@ -1685,16 +1560,22 @@ N. A. Carella,
 \emph{Largest prime factors of polynomials},
 arXiv:2308.10075v7, 2025.
 
+\bibitem{FriedlanderIwaniec2010}
+J. Friedlander and H. Iwaniec,
+\emph{Opera de Cribro},
+vol.~57 of American Mathematical Society Colloquium Publications,
+American Mathematical Society, Providence, RI, 2010.
+
 \bibitem{GrimmeltMerikoski2025}
 L. Grimmelt and J. Merikoski,
 \emph{On the greatest prime factor and uniform equidistribution of quadratic polynomials},
 arXiv:2505.00493v2, 2025.
 
-\bibitem{FriedlanderIwaniec2010}
-J. Friedlander and H. Iwaniec,
-\emph{Opera de Cribro},
-American Mathematical Society Colloquium Publications, vol.~57,
-American Mathematical Society, Providence, 2010.
+\bibitem{Harman2007}
+G. Harman,
+\emph{Prime-Detecting Sieves},
+vol.~33 of London Mathematical Society Monographs Series,
+Princeton University Press, Princeton, NJ, 2007.
 
 \bibitem{Iwaniec1978}
 H. Iwaniec,
@@ -1716,8 +1597,7 @@ J. Eur. Math. Soc. (JEMS) \textbf{25} (2023), 1253--1284,
 \bibitem{Pascadi2026}
 A. Pascadi,
 \emph{Large sieve inequalities for exceptional Maass forms and the greatest prime factor of $n^2+1$},
-Forum Math. Pi \textbf{14} (2026), e8,
-1--54,
+Forum Math. Pi \textbf{14} (2026), Paper No.~e8, 54 pp.,
 \href{https://doi.org/10.1017/fmp.2026.10025}{doi:10.1017/fmp.2026.10025}.
 
 \end{thebibliography}
